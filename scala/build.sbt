@@ -12,3 +12,6 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
+// Json4s
+libraryDependencies += "org.json4s" %% "json4s-native" % "3.6.0-M1"
+
