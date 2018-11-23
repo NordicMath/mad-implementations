@@ -13,6 +13,7 @@ trait MADNavigable[+T] {
     def get : T = throw MADException("Not gettable!")
     def optAssign(possible : Boolean) : Unit = throw MADException("Not opt-assignable!")
     def getInternalValue : MADNavigable[Any] = throw MADException("No internal value!")
+    def listNew() : Unit = throw MADException("Not a list - can't add things")
     def isset : Boolean
     def unset() : Unit
     
@@ -96,6 +97,8 @@ object MADNavigable {
         def madtype = MADList(param)
         
         override def index(i : Int) = list.lift(i)
+        
+        override def listNew() = list += MADNavigable(param)
         
         def isset = false
         def unset() = list.clear()
