@@ -5,8 +5,8 @@ abstract class MADPath {
     
     override def toString = this match {
         case Destination => ""
-        case EnterTree(param, next) => "." + param 
-        case EnterList(index, next) => "." + index
+        case EnterTree(param, next) => ".\"" + param + "\"" + next.toString
+        case EnterList(index, next) => "." + index + next.toString
     }
     
     def +(other : MADPath) : MADPath = this match {
