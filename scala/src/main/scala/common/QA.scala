@@ -83,7 +83,8 @@ case class QA()(implicit io : IO, memory : Memory) {
             def next() : Stage = {
                 show("List of information: ")
                 
-                memory.getInformation.foreach(show)
+                import conceptoids._
+                memory.getInformation.foreach(show[Information])
                 
                 return introOptionsStage
             }

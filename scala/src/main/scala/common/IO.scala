@@ -26,6 +26,7 @@ object IO {
             
             // Custom
             case t if t =:= typeOf[Path] => Console.BLUE
+            case t if t =:= typeOf[Information] => Console.BLUE
             
             case _ => Console.RESET
         }
