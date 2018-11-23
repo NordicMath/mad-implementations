@@ -9,4 +9,9 @@ import interpretation._
 case class Question(text : String, path : Path, interpreter : Interpreter)
 
 object QuestionEngine {
+    import Interpreter._
+    import MADType._
+    
+    def question (p : Path)(implicit mem : Memory) : Question = mem.getAttribute(p).madtype match {
+    }
 }
