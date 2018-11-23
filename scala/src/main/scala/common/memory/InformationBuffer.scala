@@ -50,4 +50,5 @@ class InformationBuffer() extends Memory {
     def add(info : Information) : Unit = secondary.enqueue(info)
     def getObject(ob : String) : Conceptoid = mem(ob)
     def getObjects = mem.toSeq
+    def getAttribute(path : Path) : MADNavigable[Any] = MADPath.navigate(path.mpath, mem(path.cname).tree)
 }
