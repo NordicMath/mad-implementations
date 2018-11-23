@@ -12,7 +12,7 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show(str : String) = io.show(str)
         private def read() = io.read()
     
-        private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "Exit" -> Exit)
+        private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "List paths" -> Paths, "Exit" -> Exit)
     
         case object Exit extends Stage {
             def next() : Stage = {
@@ -34,10 +34,25 @@ case class QA()(implicit io : IO, memory : Memory) {
 
                 // TODO: Improve using locks
                 Thread.sleep(500)
-
+                
                 memory.getObjects.foreach { case (name, conceptoid) =>
                     println(name + ": " + pretty(render(conceptoid.toJSON())))
                 }
+                
+                return introOptionsStage
+            }
+        }
+        
+        case object Paths extends Stage {
+            def next() : Stage = {
+                show("Paths: ")
+                
+                import questions._
+                
+                // TODO: Improve using locks
+                Thread.sleep(500)
+                
+                for (path <- PriorityEngine.generatePaths()) show(path)
                 
                 return introOptionsStage
             }
