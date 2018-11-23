@@ -74,6 +74,10 @@ object MADNavigable {
             case (str, tp) => map.put(str, MADNavigable(tp))
         }
         
+        
+        def toJSON() = JObject(params.map {
+            case (param, _) => param -> attr(param).get.toJSON()
+        } : _*)
     }
 
     class MADValueList (param : MADType) extends MADNavigable[Nothing] {
