@@ -20,4 +20,7 @@ class InformationBuffer() extends Memory {
     private def lock() = locked = true
     private def unlock() = locked = false
     
+    
+    def close() : Unit = running = false
+    
 }
