@@ -84,6 +84,12 @@ case class QA()(implicit io : IO, memory : Memory) {
             import conceptoids._
             
             def next() : Stage = {
+                
+                try {
+                } catch {
+                    case ex : MADException => show(ex.toString)
+                }
+                
                 return introOptionsStage
             }
         }
