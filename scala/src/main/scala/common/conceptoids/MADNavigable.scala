@@ -55,6 +55,11 @@ object MADNavigable {
         
         def madtype = MADTree(name, params : _*)
         
+        def isset = map.values.exists(_.isset)
+        def unset() = params.foreach {
+            case (str, tp) => map.put(str, MADNavigable(tp))
+        }
+        
     }
 
     class MADValueList (param : MADType) extends MADNavigable[Nothing] {
@@ -64,12 +69,18 @@ object MADNavigable {
         
         def madtype = MADList(param)
         
+        def isset = true
+        def unset() = list.clear()
+        
     }
 
     class MADValueOption (param : MADType) extends MADNavigable[Nothing] {
         private var value : Option[Option[MADNavigable[Any]]] = None
         
         def madtype = MADOption(param)
+        
+        def isset = !value.isEmpty
+        def unset() = value = None
         
     }
 
