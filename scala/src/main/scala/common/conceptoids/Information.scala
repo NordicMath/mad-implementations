@@ -3,7 +3,18 @@ package io.github.nordicmath.mad.conceptoids
 import scala.reflect.runtime.universe._
 
 
-abstract class Information
+abstract class Information {
+    import Information._
+    
+    override def toString = this match {
+        case NoInformation => f"No information.."
+        case NewConceptoid(name) => f"There is a conceptoid with name $name"
+        case Apply(path, value) => f"The attribute $path has value $value"
+        case OptionAssign(path, false) => f"$path does not make sense"
+        case OptionAssign(path, true) => f"$path does makes sense"
+        case ListNew(path) => f"There is yet another element in $path"
+    }
+}
 
 object Information {    
     case object NoInformation extends Information
