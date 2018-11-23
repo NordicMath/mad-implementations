@@ -11,6 +11,7 @@ trait MADNavigable[+T] {
     def index(i : Int) : Option[MADNavigable[Any]] = throw MADException("Not index-navigable!")
     def set[S : TypeTag](nval : S) : Unit = throw MADException("Not settable!")
     def get : T = throw MADException("Not gettable!")
+    def optAssign(possible : Boolean) : Unit = throw MADException("Not opt-assignable!")
     def isset : Boolean
     def unset() : Unit
     
@@ -110,6 +111,8 @@ object MADNavigable {
         private var value : Option[Option[MADNavigable[Any]]] = None
         
         def madtype = MADOption(param)
+        
+        override def optAssign(possible : Boolean) = value = Some(if (possible) Some(MADNavigable(param)) else None)
         
         def isset = !value.isEmpty
         def unset() = value = None
