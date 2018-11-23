@@ -58,6 +58,10 @@ object MADNavigable {
     }
 
     class MADValueList (param : MADType) extends MADNavigable[Nothing] {
+        import collection.mutable.Buffer
+        
+        private val list : Buffer[MADNavigable[Any]] = Buffer()
+        
         def madtype = MADList(param)
         
     }
