@@ -13,6 +13,12 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def read() = io.read()
     
         private val introOptionsStage = ???
+    
+        case object Exit extends Stage {
+            def next() : Stage = {
+                return Exit
+            }
+        }
         
         case object Intro extends Stage {
             def next() : Stage = {
