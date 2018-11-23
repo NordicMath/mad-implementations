@@ -90,6 +90,13 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case object NewConceptoid extends Stage {
             def next() : Stage = {
+                import conceptoids._
+                show("What is the path-name of this concept?")
+                val name = read()
+                
+                // TODO: Implement in Question
+                memory.add(Information.NewConceptoid(name))
+                
                 return introOptionsStage
                 
             }
