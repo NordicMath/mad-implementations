@@ -9,7 +9,7 @@ case class QA()(implicit io : IO, memory : Memory) {
     }
     
     object Stage {
-        private def show(str : String) = io.show(str)
+        private def show(ob : Any) = io.show(ob)
         private def read() = io.read()
     
         private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "List paths" -> Paths, "Exit" -> Exit)
