@@ -88,6 +88,13 @@ case class QA()(implicit io : IO, memory : Memory) {
                 try {
                     val path = PriorityEngine.generatePath()
                     val question = QuestionEngine.question(path)
+                    
+                    show(question.text)
+                    
+                    val ans = read()
+                    val info = question.interpreter.interpret(question.path, ans)
+                    
+                    memory.add(info)
                 } catch {
                     case ex : MADException => show(ex.toString)
                 }
