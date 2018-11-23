@@ -104,6 +104,12 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
+        
+        def toJSON() = value match {
+            case None => JNull
+            case Some(None) => JObject("None" -> JNull)
+            case Some(Some(nav)) => JObject("Some" -> nav.toJSON())
+        }
     }
 
 }
