@@ -14,8 +14,14 @@ object IO {
     }
     
     implicit object coloredStdIO extends IO {
+        import conceptoids._
         
         def colorOf[S : TypeTag] = typeOf[S] match {
+            
+            // Custom
+            case t if t =:= typeOf[Path] => Console.BLUE
+            
+            case _ => Console.RESET
         }
         
         def show[S : TypeTag](ob : S) = standardIO.show[String](colorOf[S] + ob.toString + Console.RESET)
