@@ -7,4 +7,9 @@ trait MADNavigable[+T] {
 
 object MADNavigable {
     
+    import MADType._
+    
+    def apply(x : MADType) : MADNavigable[Any] = x match {
+    }
+    
 }
