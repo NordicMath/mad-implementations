@@ -12,7 +12,7 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show(str : String) = io.show(str)
         private def read() = io.read()
     
-        private val introOptionsStage = ???
+        private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "Exit" -> Exit)
     
         case object Exit extends Stage {
             def next() : Stage = {
