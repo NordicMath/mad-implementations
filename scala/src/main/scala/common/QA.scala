@@ -32,6 +32,9 @@ case class QA()(implicit io : IO, memory : Memory) {
                 println("Current state: ")
                 import org.json4s.native.JsonMethods._
 
+                // TODO: Improve using locks
+                Thread.sleep(500)
+
                 
                 return introOptionsStage
             }
