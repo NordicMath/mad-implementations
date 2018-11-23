@@ -34,6 +34,14 @@ object MADNavigable {
             case t => throw MADException("Type not supported by MAD! " + t)
         }
         
+        private var value : Option[T] = None
+        override def set[S : TypeTag](nval : S) = typeOf[S] match {
+            case t if t =:= typeOf[T] => value = Some(nval.asInstanceOf[T])
+            case _ => throw MADException("Wrong type!")
+        }
+        
+        override def get = value.get
+        
     }
 
     class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable[Nothing] {
