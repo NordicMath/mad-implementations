@@ -8,6 +8,9 @@ trait MADNavigable[+T] {
     
     def set[S : TypeTag](nval : S) : Unit = throw MADException("Not settable!")
     def get : T = throw MADException("Not gettable!")
+    def isset : Boolean
+    def unset() : Unit
+    
 }
 
 object MADNavigable {
