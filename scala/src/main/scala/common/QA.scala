@@ -94,7 +94,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     val ans = read()
                     val info = question.interpreter.interpret(question.path, ans)
                     
-                    memory.add(info)
+                    memory.push(info)
                 } catch {
                     case ex : MADException => show(ex.toString)
                 }
@@ -110,7 +110,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                 val name = read()
                 
                 // TODO: Implement in Question
-                memory.add(Information.NewConceptoid(name))
+                memory.push(Information.NewConceptoid(name))
                 
                 return introOptionsStage
                 

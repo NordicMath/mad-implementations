@@ -7,7 +7,7 @@ import MADType._
 trait Memory {
     def close()
     
-    def add(info : Information)
+    def push(info : Information)
     
     def getAttribute(path : Path) : MADNavigable[Any]
     
