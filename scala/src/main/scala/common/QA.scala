@@ -13,7 +13,7 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show[S : TypeTag](ob : S) = io.show[S](ob)
         private def read() = io.read()
     
-        private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "List paths" -> Paths, "Exit" -> Exit)
+        private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "List paths" -> Paths, "Show information list" -> InformationList, "Exit" -> Exit)
     
         case object Exit extends Stage {
             def next() : Stage = {
@@ -76,6 +76,16 @@ case class QA()(implicit io : IO, memory : Memory) {
                 }
                 
                 return enterOption()
+            }
+        }
+        
+        case object InformationList extends Stage {
+            def next() : Stage = {
+                show("List of information: ")
+                
+                memory.getInformation.foreach(show)
+                
+                return introOptionsStage
             }
         }
         
