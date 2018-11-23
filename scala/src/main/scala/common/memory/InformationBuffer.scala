@@ -32,6 +32,8 @@ class InformationBuffer() extends Memory {
                 primary.enqueue(secondary.dequeue) 
             }
             
+
+            Thread.sleep(100)
         }
     }
     
