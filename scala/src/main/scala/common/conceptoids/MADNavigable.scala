@@ -57,6 +57,8 @@ object MADNavigable {
         
         def madtype = MADTree(name, params : _*)
         
+        override def attr(param : String) = map.get(param)
+        
         def isset = map.values.exists(_.isset)
         def unset() = params.foreach {
             case (str, tp) => map.put(str, MADNavigable(tp))
@@ -70,6 +72,8 @@ object MADNavigable {
         private val list : Buffer[MADNavigable[Any]] = Buffer()
         
         def madtype = MADList(param)
+        
+        override def index(i : Int) = list.lift(i)
         
         def isset = true
         def unset() = list.clear()
