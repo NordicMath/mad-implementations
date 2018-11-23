@@ -20,4 +20,8 @@ object Interpreter {
     def boolInterpreter : Interpreter = new Interpreter {
         def interpret (path : Path, str : String) = Information.Apply[Boolean](path, str.toBoolean)
     }
+    
+    def optionInterpreter : Interpreter = new Interpreter {
+        def interpret (path : Path, str : String) = Information.OptionAssign(path, str.toBoolean)
+    }
 }
