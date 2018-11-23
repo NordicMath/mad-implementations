@@ -17,6 +17,7 @@ object QuestionEngine {
         case MADBool => Question(f"Is $p true or false?", p, boolInterpreter)
         case MADInt => Question(f"What number is $p?", p, intInterpreter)
         case MADOption(_) => Question(f"Is something like $p possible?", p, optionInterpreter)
+        case MADList(_) => Question(f"Are there more elements in $p?", p, listInterpreter)
         
         case _ => throw MADException("I don't know what to ask about this path...")
     }
