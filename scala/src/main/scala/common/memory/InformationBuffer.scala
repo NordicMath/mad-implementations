@@ -36,6 +36,8 @@ class InformationBuffer() extends Memory {
                 import Information._
                 
                 primary.dequeue match {
+                    case NoInformation => {}
+                    
                     case NewConceptoid(p) => {
                         if(!mem.contains(p)) 
                             mem.put(p, new Conceptoid()) 
