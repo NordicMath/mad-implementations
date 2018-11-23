@@ -99,10 +99,10 @@ object MADNavigable {
         def isset = false
         def unset() = list.clear()
         
-        override def subpaths = for {
-            (nav, i) <- list.zipWithIndex
+        override def subpaths = {for {
+            (nav, i) <- list.toSeq.zipWithIndex
             sub <- nav.subpaths
-        } yield MADPath.EnterList(i, sub)
+        } yield MADPath.EnterList(i, sub)} ++ Seq(MADPath.Destination)
         
         def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
     }
