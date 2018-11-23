@@ -14,6 +14,7 @@ trait MADNavigable[+T] {
     def isset : Boolean
     def unset() : Unit
     
+    def subpaths : Seq[MADPath] = Seq(MADPath.Destination)
     
     def toJSON() : JValue
 }
@@ -74,6 +75,11 @@ object MADNavigable {
             case (str, tp) => map.put(str, MADNavigable(tp))
         }
         
+        override def subpaths = for {
+            (param, _) <- params
+            nav = map(param)
+            sub <- nav.subpaths
+        } yield MADPath.EnterTree(param, sub)
         
         def toJSON() = JObject(params.map {
             case (param, _) => param -> attr(param).get.toJSON()
@@ -92,6 +98,10 @@ object MADNavigable {
         def isset = true
         def unset() = list.clear()
         
+        override def subpaths = for {
+            (nav, i) <- list.zipWithIndex
+            sub <- nav.subpaths
+        } yield MADPath.EnterList(i, sub)
         
         def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
     }
@@ -104,6 +114,10 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
+        override def subpaths = value match {
+            case None | Some(None) => Seq(MADPath.Destination)
+            case Some(Some(nav)) => nav.subpaths
+        }
         
         def toJSON() = value match {
             case None => JNull
