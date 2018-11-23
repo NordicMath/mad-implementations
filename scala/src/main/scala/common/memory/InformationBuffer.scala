@@ -36,6 +36,7 @@ class InformationBuffer() extends Memory {
                 import Information._
                 
                 primary.dequeue match {
+                    case NewConceptoid(p) => if(!mem.contains(p)) mem.put(p, new Conceptoid()) else throw MADException("Path taken! " + p)
                     case _ => ???
                 }
             }
