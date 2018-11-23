@@ -45,6 +45,12 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case class ShowStages(stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
+                def lookup[S](lst : List[(String, S)], l : String) : Option[S] = lst match {
+                    case (l1, s) :: _ if l1.head.toLower == l.head.toLower => Some(s) 
+                    case Seq() => None
+                    case _ :: tail => lookup(tail, l)
+                }
+                
                 show("Options:")
                 for { (name, stage) <- stages } yield show("* (" + name.head.toLower + ") " + name)
                 
