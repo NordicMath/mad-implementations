@@ -36,8 +36,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                 Thread.sleep(500)
 
                 memory.getObjects.foreach { case (name, conceptoid) =>
-                    println(name)
-                    println(pretty(render(conceptoid.toJSON())))
+                    println(name + ": " + pretty(render(conceptoid.toJSON())))
                 }
                 
                 return introOptionsStage
