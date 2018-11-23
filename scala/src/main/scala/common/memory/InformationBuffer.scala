@@ -48,4 +48,5 @@ class InformationBuffer() extends Memory {
     def close() : Unit = running = false
     
     def add(info : Information) : Unit = secondary.enqueue(info)
+    def getObject(ob : String) : Conceptoid = mem(ob)
 }
