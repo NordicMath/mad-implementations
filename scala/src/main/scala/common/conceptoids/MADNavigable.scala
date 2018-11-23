@@ -1,5 +1,6 @@
 package io.github.nordicmath.mad.conceptoids
 
+import org.json4s._
 import scala.reflect.runtime.universe._
 import io.github.nordicmath.mad._
 
@@ -13,6 +14,8 @@ trait MADNavigable[+T] {
     def isset : Boolean
     def unset() : Unit
     
+    
+    def toJSON() : JValue
 }
 
 object MADNavigable {
