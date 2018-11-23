@@ -23,4 +23,9 @@ object MADPath {
     case class EnterTree(param : String, next : MADPath) extends MADPath
     case class EnterList(index : Int, next : MADPath) extends MADPath
     
+    def navigate(path : MADPath, nav : MADNavigable[Any]) : MADNavigable[Any] = path match {
+        case Destination => nav
+        case EnterTree(p, next) => navigate(next, nav.attr(p).get)
+        case EnterList(i, next) => navigate(next, nav.index(i).get)
+    }
 }
