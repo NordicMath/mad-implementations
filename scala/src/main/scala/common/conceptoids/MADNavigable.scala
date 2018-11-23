@@ -6,6 +6,8 @@ import io.github.nordicmath.mad._
 trait MADNavigable[+T] {
     def madtype : MADType
     
+    def set[S : TypeTag](nval : S) : Unit = throw MADException("Not settable!")
+    def get : T = throw MADException("Not gettable!")
 }
 
 object MADNavigable {
