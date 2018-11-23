@@ -44,6 +44,9 @@ class InformationBuffer() extends Memory {
                     case x @ Apply(path, value) => {
                         getAttribute(path).set(value)(x.typetag)
                     }
+                    case OptionAssign(path, b) => {
+                        getAttribute(path).optAssign(b)
+                    }
                     case x => throw MADException("InformationBuffer can't handle " + x.toString)
                 }
             }
