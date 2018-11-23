@@ -48,6 +48,10 @@ object MADNavigable {
     }
 
     class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable[Nothing] {
+        import collection.mutable.HashMap
+        
+        private val map : HashMap[String, MADNavigable[Any]] = HashMap()
+        unset()
         
         def madtype = MADTree(name, params : _*)
         
