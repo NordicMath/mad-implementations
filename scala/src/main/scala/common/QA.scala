@@ -8,4 +8,10 @@ case class QA()(implicit io : IO, memory : Memory) {
         def next() : Stage
     }
     
+    object Stage {
+        private def show(str : String) = io.show(str)
+        private def read() = io.read()
+    
+    }
+    
 }
