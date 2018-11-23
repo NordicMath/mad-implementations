@@ -36,7 +36,11 @@ class InformationBuffer() extends Memory {
                 import Information._
                 
                 primary.dequeue match {
-                    case NewConceptoid(p) => if(!mem.contains(p)) mem.put(p, new Conceptoid()) else throw MADException("Path taken! " + p)
+                    case NewConceptoid(p) => {
+                        if(!mem.contains(p)) 
+                            mem.put(p, new Conceptoid()) 
+                        else throw MADException("Path taken! " + p)
+                    }
                     case x @ Apply(path, value) => {
                         getAttribute(path).set(value)(x.typetag)
                     }
