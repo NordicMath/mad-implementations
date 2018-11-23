@@ -5,4 +5,14 @@ import conceptoids._
 import MADType._
 
 class InformationBuffer() extends Memory {
+    
+    import collection.mutable.{Queue, HashMap}
+    
+    // Allows additions to enter secondary while primary queue is locked and being processed
+    private val primary : Queue[Information] = Queue()
+    private val secondary : Queue[Information] = Queue()
+    
+    
+    private val mem : HashMap[String, Conceptoid] = HashMap()
+    
 }
