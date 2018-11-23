@@ -1,6 +1,14 @@
 package io.github.nordicmath.mad.conceptoids
 
 abstract class MADPath {
+    import MADPath._
+    
+    override def toString = this match {
+        case Destination => ""
+        case EnterTree(param, next) => "." + param 
+        case EnterList(index, next) => "." + index
+    }
+    
 }
 
 object MADPath {
