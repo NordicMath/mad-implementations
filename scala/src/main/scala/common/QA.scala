@@ -35,6 +35,10 @@ case class QA()(implicit io : IO, memory : Memory) {
                 // TODO: Improve using locks
                 Thread.sleep(500)
 
+                memory.getObjects.foreach { case (name, conceptoid) =>
+                    println(name)
+                    println(pretty(render(conceptoid.toJSON())))
+                }
                 
                 return introOptionsStage
             }
