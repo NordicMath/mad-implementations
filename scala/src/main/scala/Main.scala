@@ -6,6 +6,7 @@ object Main extends App {
     
     implicit val memory = Memory()
     
+    QA().start()
     
     memory.close()
     
