@@ -42,6 +42,9 @@ object MADNavigable {
         
         override def get = value.get
         
+        def isset = !value.isEmpty
+        def unset() = value = None
+        
     }
 
     class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable[Nothing] {
