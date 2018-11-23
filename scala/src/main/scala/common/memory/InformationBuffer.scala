@@ -28,6 +28,10 @@ class InformationBuffer() extends Memory {
 
         while (running) {
             
+            if (!locked && !secondary.isEmpty) { 
+                primary.enqueue(secondary.dequeue) 
+            }
+            
         }
     }
     
