@@ -12,6 +12,9 @@ class InformationBuffer() extends Memory {
     private val primary : Queue[Information] = Queue()
     private val secondary : Queue[Information] = Queue()
     
+    // All the processed information
+    private val finished : Queue[Information] = Queue()
+    
     private var locked : Boolean = false
     private var running : Boolean = true
     
@@ -35,7 +38,9 @@ class InformationBuffer() extends Memory {
             if (!primary.isEmpty) {
                 import Information._
                 
-                primary.dequeue match {
+                val next = primary.dequeue
+                
+                next match {
                     case NoInformation => {}
                     
                     case NewConceptoid(p) => {
@@ -54,6 +59,8 @@ class InformationBuffer() extends Memory {
                     }
                     case x => throw MADException("InformationBuffer can't handle " + x.toString)
                 }
+                
+                finished.enqueue(next)
             }
 
             Thread.sleep(100)
@@ -66,4 +73,5 @@ class InformationBuffer() extends Memory {
     def getObject(ob : String) : Conceptoid = mem(ob)
     def getObjects = mem.toSeq
     def getAttribute(path : Path) : MADNavigable[Any] = MADPath.navigate(path.mpath, mem(path.cname).tree)
+    def getInformation = finished.toSeq
 }

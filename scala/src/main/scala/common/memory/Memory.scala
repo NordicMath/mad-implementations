@@ -14,6 +14,8 @@ trait Memory {
     def getObject(name : String) : Conceptoid
     
     def getObjects : Seq[(String, Conceptoid)]
+    
+    def getInformation : Seq[Information]
 }
 
 object Memory {
