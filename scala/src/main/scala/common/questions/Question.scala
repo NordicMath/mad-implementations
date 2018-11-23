@@ -16,6 +16,7 @@ object QuestionEngine {
         case MADString => Question(f"What is $p?", p, stringInterpreter)
         case MADBool => Question(f"Is $p true or false?", p, boolInterpreter)
         case MADInt => Question(f"What number is $p?", p, intInterpreter)
+        case MADOption(_) => Question(f"Is something like $p possible?", p, optionInterpreter)
         
         case _ => throw MADException("I don't know what to ask about this path...")
     }
