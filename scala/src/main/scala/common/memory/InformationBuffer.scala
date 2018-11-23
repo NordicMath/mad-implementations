@@ -32,6 +32,13 @@ class InformationBuffer() extends Memory {
                 primary.enqueue(secondary.dequeue) 
             }
             
+            if (!primary.isEmpty) {
+                import Information._
+                
+                primary.dequeue match {
+                    case _ => ???
+                }
+            }
 
             Thread.sleep(100)
         }
