@@ -96,7 +96,7 @@ object MADNavigable {
         
         override def index(i : Int) = list.lift(i)
         
-        def isset = true
+        def isset = false
         def unset() = list.clear()
         
         override def subpaths = for {
