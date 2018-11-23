@@ -1,6 +1,7 @@
 package io.github.nordicmath.mad
 
 import memory._
+import scala.reflect.runtime.universe._
 
 case class QA()(implicit io : IO, memory : Memory) {
     
@@ -9,7 +10,7 @@ case class QA()(implicit io : IO, memory : Memory) {
     }
     
     object Stage {
-        private def show(ob : Any) = io.show(ob)
+        private def show[S : TypeTag](ob : S) = io.show[S](ob)
         private def read() = io.read()
     
         private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "List paths" -> Paths, "Exit" -> Exit)
