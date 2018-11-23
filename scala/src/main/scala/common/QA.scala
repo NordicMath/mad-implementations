@@ -55,6 +55,9 @@ case class QA()(implicit io : IO, memory : Memory) {
                 for { (name, stage) <- stages } yield show("* (" + name.head.toLower + ") " + name)
                 
                 def enterOption() : Stage = {
+                    show("Please enter option: ")
+                    val opt = read()
+                    lookup(stages.toList, opt).getOrElse{show("No such option!"); enterOption()}
                 }
                 
                 return enterOption()
