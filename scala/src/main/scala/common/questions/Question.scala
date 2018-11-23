@@ -6,6 +6,7 @@ import conceptoids._
 import interpretation._
 
 
+case class Question(text : String, path : Path, interpreter : Interpreter)
 
 object QuestionEngine {
 }
