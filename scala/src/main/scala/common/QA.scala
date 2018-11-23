@@ -12,6 +12,15 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show(str : String) = io.show(str)
         private def read() = io.read()
     
+        private val introOptionsStage = ???
+        
+        case object Intro extends Stage {
+            def next() : Stage = {
+                show("Welcome to Zophie!")
+                return introOptionsStage
+            }
+        }
+        
     }
     
 }
