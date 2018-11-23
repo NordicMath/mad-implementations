@@ -13,6 +13,7 @@ class InformationBuffer() extends Memory {
     private val secondary : Queue[Information] = Queue()
     
     private var locked : Boolean = false
+    private var running : Boolean = true
     
     private val mem : HashMap[String, Conceptoid] = HashMap()
     
