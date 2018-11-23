@@ -86,6 +86,7 @@ case class QA()(implicit io : IO, memory : Memory) {
             def next() : Stage = {
                 
                 try {
+                    val path = PriorityEngine.generatePath()
                 } catch {
                     case ex : MADException => show(ex.toString)
                 }
