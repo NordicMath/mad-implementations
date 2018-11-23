@@ -50,6 +50,13 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
+        def toJSON() = value match {
+            case None => JNull
+            case Some(str : String) => JString(str)
+            case Some(bool : Boolean) => JBool(bool)
+            case Some(num : Int) => JInt(num)
+            case _ => throw MADException("MADValue not JSON-encodable!")
+        }
     }
 
     class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable[Nothing] {
