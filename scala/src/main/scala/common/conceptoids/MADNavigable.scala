@@ -67,6 +67,8 @@ object MADNavigable {
     }
 
     class MADValueOption (param : MADType) extends MADNavigable[Nothing] {
+        private var value : Option[Option[MADNavigable[Any]]] = None
+        
         def madtype = MADOption(param)
         
     }
