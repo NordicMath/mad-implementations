@@ -24,4 +24,8 @@ object Interpreter {
     def optionInterpreter : Interpreter = new Interpreter {
         def interpret (path : Path, str : String) = Information.OptionAssign(path, str.toBoolean)
     }
+    
+    def listInterpreter : Interpreter = new Interpreter {
+        def interpret (path : Path, str : String) = if (str.toBoolean) Information.ListNew(path) else Information.NoInformation
+    }
 }
