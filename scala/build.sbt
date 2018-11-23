@@ -5,7 +5,7 @@ name := "MAD"
 parallelExecution in Test := false
 
 // Show warnings
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xlint")
 
 // Dependencies
 // Scalatest
