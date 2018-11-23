@@ -13,5 +13,8 @@ object QuestionEngine {
     import MADType._
     
     def question (p : Path)(implicit mem : Memory) : Question = mem.getAttribute(p).madtype match {
+        case MADString => Question(f"What is $p?", p, stringInterpreter)
+        case MADBool => Question(f"Is $p true or false?", p, boolInterpreter)
+        case MADInt => Question(f"What number is $p?", p, intInterpreter)
     }
 }
