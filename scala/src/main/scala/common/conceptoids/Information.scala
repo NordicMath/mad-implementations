@@ -7,5 +7,5 @@ abstract class Information
 
 object Information {    
     case class NewConceptoid(name : String) extends Information
-    case class Apply[S : TypeTag](path : Path, value : S) extends Information
+    case class Apply[S](path : Path, value : S)(implicit val typetag : TypeTag[S]) extends Information
 }
