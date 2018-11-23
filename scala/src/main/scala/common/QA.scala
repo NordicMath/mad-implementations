@@ -4,4 +4,8 @@ import memory._
 
 case class QA()(implicit io : IO, memory : Memory) {
     
+    trait Stage {
+        def next() : Stage
+    }
+    
 }
