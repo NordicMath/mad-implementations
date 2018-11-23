@@ -92,6 +92,8 @@ object MADNavigable {
         def isset = true
         def unset() = list.clear()
         
+        
+        def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
     }
 
     class MADValueOption (param : MADType) extends MADNavigable[Nothing] {
