@@ -12,7 +12,11 @@ class InformationBuffer() extends Memory {
     private val primary : Queue[Information] = Queue()
     private val secondary : Queue[Information] = Queue()
     
+    private var locked : Boolean = false
     
     private val mem : HashMap[String, Conceptoid] = HashMap()
+    
+    private def lock() = locked = true
+    private def unlock() = locked = false
     
 }
