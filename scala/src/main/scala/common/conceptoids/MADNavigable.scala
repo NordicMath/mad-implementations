@@ -12,6 +12,7 @@ trait MADNavigable[+T] {
     def set[S : TypeTag](nval : S) : Unit = throw MADException("Not settable!")
     def get : T = throw MADException("Not gettable!")
     def optAssign(possible : Boolean) : Unit = throw MADException("Not opt-assignable!")
+    def getInternalValue : MADNavigable[Any] = throw MADException("No internal value!")
     def isset : Boolean
     def unset() : Unit
     
@@ -113,6 +114,8 @@ object MADNavigable {
         def madtype = MADOption(param)
         
         override def optAssign(possible : Boolean) = value = Some(if (possible) Some(MADNavigable(param)) else None)
+        
+        override def getInternalValue = value.get.get
         
         def isset = !value.isEmpty
         def unset() = value = None
