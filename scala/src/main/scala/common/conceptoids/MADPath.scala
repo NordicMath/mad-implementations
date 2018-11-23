@@ -9,6 +9,11 @@ abstract class MADPath {
         case EnterList(index, next) => "." + index
     }
     
+    def +(other : MADPath) : MADPath = this match {
+        case Destination => other
+        case EnterTree(param, next) => EnterTree(param, next + other)
+        case EnterList(index, next) => EnterList(index, next + other)
+    }
 }
 
 object MADPath {
