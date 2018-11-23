@@ -14,18 +14,26 @@ object Interpreter {
     }
     
     def intInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.Apply[Int](path, str.toInt)
+        def interpret (path : Path, str : String) = Information.Apply[Int](path, try str.toInt catch {
+            case _ : IllegalArgumentException => throw MADException("Please enter an integer!")
+        })
     }
     
     def boolInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.Apply[Boolean](path, str.toBoolean)
+        def interpret (path : Path, str : String) = Information.Apply[Boolean](path, try str.toBoolean catch {
+            case _ : IllegalArgumentException => throw MADException("Please enter true/false!")
+        })
     }
     
     def optionInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.OptionAssign(path, str.toBoolean)
+        def interpret (path : Path, str : String) = Information.OptionAssign(path, try str.toBoolean catch {
+            case _ : IllegalArgumentException => throw MADException("Please enter true/false!")
+        })
     }
     
     def listInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = if (str.toBoolean) Information.ListNew(path) else Information.NoInformation
+        def interpret (path : Path, str : String) = if (try str.toBoolean catch {
+            case _ : IllegalArgumentException => throw MADException("Please enter true/false!")
+        }) Information.ListNew(path) else Information.NoInformation
     }
 }
