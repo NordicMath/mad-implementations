@@ -27,6 +27,15 @@ case class QA()(implicit io : IO, memory : Memory) {
             }
         }
         
+        case object Display extends Stage {
+            def next() : Stage = {
+                println("Current state: ")
+                import org.json4s.native.JsonMethods._
+
+                
+                return introOptionsStage
+            }
+        }
     }
     
     def start() = {
