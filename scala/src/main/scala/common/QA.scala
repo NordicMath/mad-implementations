@@ -46,6 +46,8 @@ case class QA()(implicit io : IO, memory : Memory) {
         case class ShowStages(stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
                 show("Options:")
+                for { (name, stage) <- stages } yield show("* (" + name.head.toLower + ") " + name)
+                
                 def enterOption() : Stage = {
                 }
                 
