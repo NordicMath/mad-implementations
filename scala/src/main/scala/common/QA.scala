@@ -29,4 +29,11 @@ case class QA()(implicit io : IO, memory : Memory) {
         
     }
     
+    def start() = {
+        var cstage : Stage = Stage.Intro
+        while(cstage != Stage.Exit){
+            cstage = cstage.next()
+        }
+        io.show("Bye!")
+    }    
 }
