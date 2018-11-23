@@ -6,4 +6,7 @@ object Main extends App {
     
     implicit val memory = Memory()
     
+    
+    memory.close()
+    
 }

@@ -5,6 +5,8 @@ import conceptoids._
 import MADType._
 
 trait Memory {
+    def close()
+    
     def add(info : Information)
     
     def getAttribute(path : Path) : MADNavigable[Any]
