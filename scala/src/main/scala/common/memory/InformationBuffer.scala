@@ -20,6 +20,16 @@ class InformationBuffer() extends Memory {
     private def lock() = locked = true
     private def unlock() = locked = false
     
+    import scala.concurrent._
+    import ExecutionContext.Implicits.global
+
+    // Buffer loop: 
+    private val mainloop = Future {
+
+        while (running) {
+            
+        }
+    }
     
     def close() : Unit = running = false
     
