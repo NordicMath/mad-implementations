@@ -11,4 +11,5 @@ object Information {
     case class NewConceptoid(name : String) extends Information
     case class Apply[S](path : Path, value : S)(implicit val typetag : TypeTag[S]) extends Information
     case class OptionAssign(path : Path, possible : Boolean) extends Information
+    case class ListNew(path : Path) extends Information
 }
