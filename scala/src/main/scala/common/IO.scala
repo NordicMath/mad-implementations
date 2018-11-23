@@ -8,6 +8,10 @@ trait IO {
 }
 
 object IO {
+    // Semantic IO objects:
+    case class StageOption (override val toString : String)
+    
+    
     object standardIO extends IO {
         def show[S : TypeTag](ob : S) = println(ob.toString)
         def read() = scala.io.StdIn.readLine()
@@ -17,6 +21,8 @@ object IO {
         import conceptoids._
         
         def colorOf[S : TypeTag] = typeOf[S] match {
+            // Semantic
+            case t if t =:= typeOf[StageOption] => Console.WHITE
             
             // Custom
             case t if t =:= typeOf[Path] => Console.BLUE

@@ -67,7 +67,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                 }
                 
                 show("Options:")
-                for { (name, stage) <- stages } yield show("* (" + name.head.toLower + ") " + name)
+                for { (name, stage) <- stages } yield show(IO.StageOption("* (" + name.head.toLower + ") " + name))
                 
                 def enterOption() : Stage = {
                     show("Please enter option: ")
