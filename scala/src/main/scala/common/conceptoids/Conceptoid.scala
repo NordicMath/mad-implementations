@@ -5,6 +5,7 @@ import MADType._
 class Conceptoid () {
     val tree = MADNavigable(Conceptoid.Conceptoid)
     
+    def toJSON() = tree.toJSON()
 }
 
 object Conceptoid {    
