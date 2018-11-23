@@ -42,6 +42,17 @@ case class QA()(implicit io : IO, memory : Memory) {
                 return introOptionsStage
             }
         }
+        
+        case class ShowStages(stages : (String, Stage)*) extends Stage {
+            def next() : Stage = {
+                show("Options:")
+                def enterOption() : Stage = {
+                }
+                
+                return enterOption()
+            }
+        }
+        
     }
     
     def start() = {
