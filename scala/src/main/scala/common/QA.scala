@@ -31,13 +31,12 @@ case class QA()(implicit io : IO, memory : Memory) {
         case object Display extends Stage {
             def next() : Stage = {
                 show("Current state: ")
-                import org.json4s.native.JsonMethods._
 
                 // TODO: Improve using locks
                 Thread.sleep(500)
                 
                 memory.getObjects.foreach { case (name, conceptoid) =>
-                    show(name + ": " + pretty(render(conceptoid.toJSON())))
+                    show(name + ": " + conceptoid)
                 }
                 
                 return introOptionsStage

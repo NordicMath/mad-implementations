@@ -6,6 +6,9 @@ class Conceptoid () {
     val tree = MADNavigable(Conceptoid.Conceptoid)
     
     def toJSON() = tree.toJSON()
+    
+    import org.json4s.native.JsonMethods._
+    override def toString() = pretty(render(toJSON()))
 }
 
 object Conceptoid {    
