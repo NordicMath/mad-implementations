@@ -28,6 +28,27 @@ case class QA()(implicit io : IO, memory : Memory) {
             }
         }
         
+        case class ShowStages(stages : (String, Stage)*) extends Stage {
+            def next() : Stage = {
+                def lookup[S](lst : List[(String, S)], l : String) : Option[S] = lst match {
+                    case (l1, s) :: _ if l1.head.toLower == l.head.toLower => Some(s) 
+                    case Seq() => None
+                    case _ :: tail => lookup(tail, l)
+                }
+                
+                show("Options:")
+                for { (name, stage) <- stages } yield show(IO.StageOption("* (" + name.head.toLower + ") " + name))
+                
+                def enterOption() : Stage = {
+                    show("Please enter option: ")
+                    val opt = read()
+                    lookup(stages.toList, opt).getOrElse{show("No such option!"); enterOption()}
+                }
+                
+                return enterOption()
+            }
+        }
+        
         case object Display extends Stage {
             def next() : Stage = {
                 show("Current state: ")
@@ -55,27 +76,6 @@ case class QA()(implicit io : IO, memory : Memory) {
                 for (path <- PriorityEngine.generatePaths()) show(path)
                 
                 return introOptionsStage
-            }
-        }
-        
-        case class ShowStages(stages : (String, Stage)*) extends Stage {
-            def next() : Stage = {
-                def lookup[S](lst : List[(String, S)], l : String) : Option[S] = lst match {
-                    case (l1, s) :: _ if l1.head.toLower == l.head.toLower => Some(s) 
-                    case Seq() => None
-                    case _ :: tail => lookup(tail, l)
-                }
-                
-                show("Options:")
-                for { (name, stage) <- stages } yield show(IO.StageOption("* (" + name.head.toLower + ") " + name))
-                
-                def enterOption() : Stage = {
-                    show("Please enter option: ")
-                    val opt = read()
-                    lookup(stages.toList, opt).getOrElse{show("No such option!"); enterOption()}
-                }
-                
-                return enterOption()
             }
         }
         
