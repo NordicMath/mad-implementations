@@ -15,4 +15,5 @@ trait Memory {
 }
 
 object Memory {
+    def apply() : Memory = new InformationBuffer()
 }
