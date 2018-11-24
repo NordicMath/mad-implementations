@@ -9,7 +9,7 @@ object PriorityEngine {
     def generatePath()(implicit mem : Memory) : Path = {
         val paths = generatePaths()
         
-        if(paths.length > 0) paths.apply(0) else throw MADException("No questions!")
+        if(paths.length > 0) paths.apply(0) else throw MADException.NoQuestions
     }
     
     def generatePaths()(implicit mem : Memory) : Seq[Path] = for {

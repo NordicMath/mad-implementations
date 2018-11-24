@@ -7,13 +7,16 @@ import io.github.nordicmath.mad._
 trait MADNavigable[+T] {
     def madtype : MADType
     
-    def attr(str : String) : Option[MADNavigable[Any]] = throw MADException("Not navigable!")
-    def index(i : Int) : Option[MADNavigable[Any]] = throw MADException("Not index-navigable!")
-    def set[S : TypeTag](nval : S) : Unit = throw MADException("Not settable!")
-    def get : T = throw MADException("Not gettable!")
-    def optAssign(possible : Boolean) : Unit = throw MADException("Not opt-assignable!")
-    def getInternalValue : MADNavigable[Any] = throw MADException("No internal value!")
-    def listNew() : Unit = throw MADException("Not a list - can't add things")
+    import MADException._
+    
+    def attr(str : String) : Option[MADNavigable[Any]] =    throw MADNavigableUnsupported("attr")
+    def index(i : Int) : Option[MADNavigable[Any]] =        throw MADNavigableUnsupported("index")
+    def set[S : TypeTag](nval : S) : Unit =                 throw MADNavigableUnsupported("set")
+    def get : T =                                           throw MADNavigableUnsupported("get")
+    def optAssign(possible : Boolean) : Unit =              throw MADNavigableUnsupported("optAssign")
+    def getInternalValue : MADNavigable[Any] =              throw MADNavigableUnsupported("getInternalValue")
+    def listNew() : Unit =                                  throw MADNavigableUnsupported("listNew")
+    
     def isset : Boolean
     def unset() : Unit
     
@@ -40,13 +43,13 @@ object MADNavigable {
             case t if t =:= typeOf[String] => MADString
             case t if t =:= typeOf[Boolean] => MADBool
             case t if t =:= typeOf[Int] => MADInt
-            case t => throw MADException("Type not supported by MAD! " + t)
+            case t => throw MADException.MADValueUnsuppertedType
         }
         
         private var value : Option[T] = None
         override def set[S : TypeTag](nval : S) = typeOf[S] match {
             case t if t =:= typeOf[T] => value = Some(nval.asInstanceOf[T])
-            case _ => throw MADException("Wrong type!")
+            case _ => throw MADException.MADValueUnsuppertedType
         }
         
         override def get = value.get
@@ -59,7 +62,7 @@ object MADNavigable {
             case Some(str : String) => JString(str)
             case Some(bool : Boolean) => JBool(bool)
             case Some(num : Int) => JInt(num)
-            case _ => throw MADException("MADValue not JSON-encodable!")
+            case _ => throw MADException.MADValueUnsuppertedType
         }
     }
 

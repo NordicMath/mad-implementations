@@ -46,7 +46,7 @@ class InformationBuffer() extends Memory {
                     case NewConceptoid(p) => {
                         if(!mem.contains(p)) 
                             mem.put(p, new Conceptoid()) 
-                        else throw MADException("Path taken! " + p)
+                        else throw MADException.ConceptoidNameTaken(p)
                     }
                     case x @ Apply(path, value) => {
                         getAttribute(path).set(value)(x.typetag)
@@ -57,7 +57,7 @@ class InformationBuffer() extends Memory {
                     case ListNew(path) => {
                         getAttribute(path).listNew()
                     }
-                    case x => throw MADException("InformationBuffer can't handle " + x.toString)
+                    case x => throw MADException.InformationUnhandled(x, "InformationBuffer")
                 }
                 
                 finished.enqueue(next)
