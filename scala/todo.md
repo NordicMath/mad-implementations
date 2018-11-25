@@ -6,4 +6,3 @@
 * Implement dependeny-relations for information
 * Unify different display types in QA
 * Seal stuff
-* Handle MADNavigable properly
