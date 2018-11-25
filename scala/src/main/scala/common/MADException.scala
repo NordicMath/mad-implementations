@@ -10,7 +10,6 @@ object MADException {
 	object IntegerInput extends InterpreterIllegalInput("an integer")
 	
 	case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name $p is taken!")
-	case class InformationUnhandled(i : Information, memsys : String) extends MADException(f"$memsys can't handle the following information: $i")
 	
 	object MADValueUnsuppertedType extends MADException(f"Unsupported type passed to MADValue!")
 	

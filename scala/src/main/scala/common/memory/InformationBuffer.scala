@@ -52,7 +52,6 @@ class InformationBuffer() extends Memory {
                     case ListNew(path) => {
                         getAttributeAs[MADValueList](path).listNew()
                     }
-                    case x => throw MADException.InformationUnhandled(x, "InformationBuffer")
                 })
                 
                 p complete proc
