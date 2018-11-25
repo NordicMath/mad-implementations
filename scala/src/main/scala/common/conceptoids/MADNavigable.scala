@@ -6,16 +6,18 @@ import io.github.nordicmath.mad._
 
 trait MADNavigable[+T] {
     def madtype : MADType
+        
+    private def unsupported(mtd : String) = throw MADException.MADNavigableUnsupported(mtd)
     
-    import MADException._
+    def attr(str : String) : Option[MADNavigable[Any]] = unsupported("attr")
+    def index(i : Int) : Option[MADNavigable[Any]] = unsupported("index")
     
-    def attr(str : String) : Option[MADNavigable[Any]] =    throw MADNavigableUnsupported("attr")
-    def index(i : Int) : Option[MADNavigable[Any]] =        throw MADNavigableUnsupported("index")
-    def set[S : TypeTag](nval : S) : Unit =                 throw MADNavigableUnsupported("set")
-    def get : T =                                           throw MADNavigableUnsupported("get")
-    def optAssign(possible : Boolean) : Unit =              throw MADNavigableUnsupported("optAssign")
-    def getInternalValue : MADNavigable[Any] =              throw MADNavigableUnsupported("getInternalValue")
-    def listNew() : Unit =                                  throw MADNavigableUnsupported("listNew")
+    def set[S : TypeTag](nval : S) : Unit = unsupported("set")
+    def optAssign(possible : Boolean) : Unit = unsupported("optAssign")
+    def listNew() : Unit = unsupported("listNew")
+    
+    def get : T = unsupported("get")
+    def getInternalValue : MADNavigable[Any] = unsupported("getInternalValue")
     
     def isset : Boolean
     def unset() : Unit
@@ -43,7 +45,7 @@ object MADNavigable {
             case t if t =:= typeOf[String] => MADString
             case t if t =:= typeOf[Boolean] => MADBool
             case t if t =:= typeOf[Int] => MADInt
-            case t => throw MADException.MADValueUnsuppertedType
+            case _ => throw MADException.MADValueUnsuppertedType
         }
         
         private var value : Option[T] = None
