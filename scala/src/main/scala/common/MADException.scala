@@ -12,8 +12,6 @@ object MADException {
 	case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name $p is taken!")
 	case class InformationUnhandled(i : Information, memsys : String) extends MADException(f"$memsys can't handle the following information: $i")
 	
-	case class MADNavigableUnsupported(method : String) extends MADException(f"The method $method is not supported in this MADNavigable!")
-	
 	object MADValueUnsuppertedType extends MADException(f"Unsupported type passed to MADValue!")
 	
 	object NoQuestions extends MADException(f"No questions found!")

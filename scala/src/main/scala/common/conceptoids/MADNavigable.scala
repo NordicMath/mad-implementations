@@ -6,18 +6,6 @@ import io.github.nordicmath.mad._
 
 trait MADNavigable[+T] {
     def madtype : MADType
-        
-    private def unsupported(mtd : String) = throw MADException.MADNavigableUnsupported(mtd)
-    
-    def attr(str : String) : Option[MADNavigable[Any]] = unsupported("attr")
-    def index(i : Int) : Option[MADNavigable[Any]] = unsupported("index")
-    
-    def set[S : TypeTag](nval : S) : Unit = unsupported("set")
-    def optAssign(possible : Boolean) : Unit = unsupported("optAssign")
-    def listNew() : Unit = unsupported("listNew")
-    
-    def get : T = unsupported("get")
-    def getInternalValue : MADNavigable[Any] = unsupported("getInternalValue")
     
     def isset : Boolean
     def unset() : Unit
@@ -49,12 +37,12 @@ object MADNavigable {
         }
         
         private var value : Option[T] = None
-        override def set[S : TypeTag](nval : S) = typeOf[S] match {
+        def set[S : TypeTag](nval : S) = typeOf[S] match {
             case t if t =:= typeOf[T] => value = Some(nval.asInstanceOf[T])
             case _ => throw MADException.MADValueUnsuppertedType
         }
         
-        override def get = value.get
+        def get = value.get
         
         def isset = !value.isEmpty
         def unset() = value = None
@@ -76,7 +64,7 @@ object MADNavigable {
         
         def madtype = MADTree(name, params : _*)
         
-        override def attr(param : String) = map.get(param)
+        def attr(param : String) = map.get(param)
         
         def isset = map.values.exists(_.isset)
         def unset() = params.foreach {
@@ -101,9 +89,8 @@ object MADNavigable {
         
         def madtype = MADList(param)
         
-        override def index(i : Int) = list.lift(i)
-        
-        override def listNew() = list += MADNavigable(param)
+        def index(i : Int) = list.lift(i)
+        def listNew() = list += MADNavigable(param)
         
         def isset = false
         def unset() = list.clear()
@@ -121,9 +108,8 @@ object MADNavigable {
         
         def madtype = MADOption(param)
         
-        override def optAssign(possible : Boolean) = value = Some(if (possible) Some(MADNavigable(param)) else None)
-        
-        override def getInternalValue = value.get.get
+        def optAssign(possible : Boolean) = value = Some(if (possible) Some(MADNavigable(param)) else None)
+        def getInternalValue = value.get.get
         
         def isset = !value.isEmpty
         def unset() = value = None
