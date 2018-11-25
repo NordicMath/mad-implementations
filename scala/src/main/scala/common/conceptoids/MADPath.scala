@@ -19,7 +19,6 @@ abstract class MADPath {
 }
 
 object MADPath {
-    import MADType._
     
     case object Destination extends MADPath
     case class EnterTree(param : String, next : MADPath) extends MADPath

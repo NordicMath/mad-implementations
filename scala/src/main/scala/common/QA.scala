@@ -92,7 +92,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case object Question extends Stage {
             import questions._
-            import conceptoids._
             
             def next() : Stage = {
                 
