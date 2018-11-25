@@ -2,10 +2,15 @@ package io.github.nordicmath.mad.memory
 
 import io.github.nordicmath.mad._
 import conceptoids._
+import Information._
+
+import collection.mutable.{Queue, HashMap}
+
+import scala.concurrent._
+import ExecutionContext.Implicits.global
 
 class InformationBuffer() extends Memory {
     
-    import collection.mutable.{Queue, HashMap}
     
     // Allows additions to enter secondary while primary queue is locked and being processed
     private val primary : Queue[Information] = Queue()
@@ -22,8 +27,6 @@ class InformationBuffer() extends Memory {
     private def lock() = locked = true
     private def unlock() = locked = false
     
-    import scala.concurrent._
-    import ExecutionContext.Implicits.global
 
     // Buffer loop: 
     private val mainloop = Future {
@@ -35,7 +38,6 @@ class InformationBuffer() extends Memory {
             }
             
             if (!primary.isEmpty) {
-                import Information._
                 
                 val next = primary.dequeue
                 
