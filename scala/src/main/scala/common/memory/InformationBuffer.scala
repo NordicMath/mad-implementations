@@ -25,7 +25,7 @@ class InformationBuffer() extends Memory {
     private val mem : HashMap[String, Conceptoid] = HashMap()
 
     // Buffer loop: 
-    private val mainloop = Future {
+    Future {
 
         while (running) {
             
