@@ -18,5 +18,7 @@ object QuestionEngine {
         case MADInt => Question(f"What number is $p?", p, intInterpreter)
         case MADOption(_) => Question(f"Is something like $p possible?", p, optionInterpreter)
         case MADList(_) => Question(f"Are there more elements in $p?", p, listInterpreter)
+        
+        case mt => throw MADException.QuestionUnsupportedType(p, mt)
     }
 }
