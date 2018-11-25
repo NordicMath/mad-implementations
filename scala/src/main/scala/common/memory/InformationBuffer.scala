@@ -14,35 +14,24 @@ import util.Try
 class InformationBuffer() extends Memory {
     
     
-    // Allows additions to enter secondary while primary queue is locked and being processed
-    private val primary : Queue[(Information, Promise[Unit])] = Queue()
-    private val secondary : Queue[(Information, Promise[Unit])] = Queue()
+    private val informationQueue : Queue[(Information, Promise[Unit])] = Queue()
     
     // All the processed information
     private val finished : Queue[Information] = Queue()
     private val failed : Queue[Information] = Queue()
     
-    private var locked : Boolean = false
     private var running : Boolean = true
     
     private val mem : HashMap[String, Conceptoid] = HashMap()
-    
-    private def lock() = locked = true
-    private def unlock() = locked = false
-    
 
     // Buffer loop: 
     private val mainloop = Future {
 
         while (running) {
             
-            if (!locked && !secondary.isEmpty) { 
-                primary.enqueue(secondary.dequeue) 
-            }
-            
-            if (!primary.isEmpty) {
+            if (!informationQueue.isEmpty) {
                 
-                val (next, p) = primary.dequeue
+                val (next, p) = informationQueue.dequeue
                 
                 
                 val proc : Try[Unit] = Try(next match {
@@ -78,7 +67,7 @@ class InformationBuffer() extends Memory {
     
     def push_async(info : Information) : Future[Unit] = {
         val p = Promise[Unit]()
-        secondary.enqueue ((info, p))
+        informationQueue.enqueue ((info, p))
         return p.future
     }
     

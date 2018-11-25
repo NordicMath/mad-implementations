@@ -52,9 +52,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         case object Display extends Stage {
             def next() : Stage = {
                 show("Current state: ")
-
-                // TODO: Improve using locks
-                Thread.sleep(500)
                 
                 memory.getObjects.foreach { case (name, conceptoid) =>
                     show(name + ": " + conceptoid)
@@ -69,9 +66,6 @@ case class QA()(implicit io : IO, memory : Memory) {
                 show("Paths: ")
                 
                 import questions._
-                
-                // TODO: Improve using locks
-                Thread.sleep(500)
                 
                 for (path <- PriorityEngine.generatePaths()) show(path)
                 
