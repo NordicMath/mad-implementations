@@ -9,15 +9,18 @@ import collection.mutable.{Queue, HashMap}
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
+import util.Try
+
 class InformationBuffer() extends Memory {
     
     
     // Allows additions to enter secondary while primary queue is locked and being processed
-    private val primary : Queue[Information] = Queue()
-    private val secondary : Queue[Information] = Queue()
+    private val primary : Queue[(Information, Promise[Unit])] = Queue()
+    private val secondary : Queue[(Information, Promise[Unit])] = Queue()
     
     // All the processed information
     private val finished : Queue[Information] = Queue()
+    private val failed : Queue[Information] = Queue()
     
     private var locked : Boolean = false
     private var running : Boolean = true
@@ -39,9 +42,10 @@ class InformationBuffer() extends Memory {
             
             if (!primary.isEmpty) {
                 
-                val next = primary.dequeue
+                val (next, p) = primary.dequeue
                 
-                next match {
+                
+                val proc : Try[Unit] = Try(next match {
                     case NoInformation => {}
                     
                     case NewConceptoid(p) => {
@@ -59,9 +63,11 @@ class InformationBuffer() extends Memory {
                         getAttribute(path).listNew()
                     }
                     case x => throw MADException.InformationUnhandled(x, "InformationBuffer")
-                }
+                })
                 
-                finished.enqueue(next)
+                p complete proc
+                
+                (if(proc.isSuccess) finished else failed).enqueue(next)
             }
 
             Thread.sleep(100)
@@ -70,7 +76,12 @@ class InformationBuffer() extends Memory {
     
     def close() : Unit = running = false
     
-    def push(info : Information) : Unit = secondary.enqueue(info)
+    def push_async(info : Information) : Future[Unit] = {
+        val p = Promise[Unit]()
+        secondary.enqueue ((info, p))
+        return p.future
+    }
+    
     def getObject(ob : String) : Conceptoid = mem(ob)
     def getObjects = mem.toSeq
     def getAttribute(path : Path) : MADNavigable[Any] = MADPath.navigate(path.mpath, mem(path.cname).tree)
