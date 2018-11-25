@@ -75,6 +75,7 @@ class InformationBuffer() extends Memory {
     def getObjects = mem.toSeq
     def getAttribute(path : Path) : MADNavigable[Any] = MADPath.navigate(path.mpath, mem(path.cname).tree)
     def getInformation = finished.toSeq
+    def getFailedInformation = failed.toSeq
 }
 
 object InformationBuffer {
