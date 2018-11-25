@@ -19,7 +19,8 @@ case class QA()(implicit io : IO, memory : Memory) {
             "Display..." -> ShowStages(
                 "Memory" -> Display,
                 "Paths" -> Paths,
-                "Information list" -> InformationList
+                "Information list" -> InformationList,
+                "Failed information" -> FailedInformationList
             ),
             "Exit" -> Exit)
     
@@ -87,6 +88,17 @@ case class QA()(implicit io : IO, memory : Memory) {
                 
                 import conceptoids._
                 memory.getInformation.foreach(show[Information])
+                
+                return introOptionsStage
+            }
+        }
+        
+        case object FailedInformationList extends Stage {
+            def next() : Stage = {
+                show("List of failed information: ")
+                
+                import conceptoids._
+                memory.getFailedInformation.foreach(show[Information])
                 
                 return introOptionsStage
             }
