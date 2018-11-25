@@ -1,5 +1,7 @@
 package io.github.nordicmath.mad.conceptoids
 
+import io.github.nordicmath.mad._
+
 abstract class MADPath {
     import MADPath._
     
@@ -25,10 +27,13 @@ object MADPath {
     case class EnterList(index : Int, next : MADPath) extends MADPath
     case class EnterOption(next : MADPath) extends MADPath
     
-    def navigate(path : MADPath, nav : MADNavigable[Any]) : MADNavigable[Any] = path match {
-        case Destination => nav
-        case EnterTree(p, next) => navigate(next, nav.attr(p).get)
-        case EnterList(i, next) => navigate(next, nav.index(i).get)
-        case EnterOption(next) => navigate(next, nav.getInternalValue)
+    import MADNavigable._
+    
+    def navigate(path : MADPath, nav : MADNavigable[Any]) : MADNavigable[Any] = (path, nav) match {
+        case (Destination, _) => nav
+        case (EnterTree(p, next), nav : MADValueTree) => navigate(next, nav.attr(p).get)
+        case (EnterList(i, next), nav : MADValueList) => navigate(next, nav.index(i).get)
+        case (EnterOption(next), nav : MADValueOption) => navigate(next, nav.getInternalValue)
+        case _ => throw MADException.NavigationImpossible(path, nav)
     }
 }

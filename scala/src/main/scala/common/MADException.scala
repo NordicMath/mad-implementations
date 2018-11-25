@@ -16,4 +16,6 @@ object MADException {
 	
 	object NoQuestions extends MADException(f"No questions found!")
 	
+	case class NavigationImpossible(path : MADPath, nav : MADNavigable[_]) extends MADException(f"Navigating $path into something of type ${nav.madtype} is impossible!")
+	
 }
