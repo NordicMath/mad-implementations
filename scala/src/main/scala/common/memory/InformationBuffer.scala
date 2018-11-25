@@ -59,7 +59,7 @@ class InformationBuffer() extends Memory {
                 (if(proc.isSuccess) finished else failed).enqueue(next)
             }
 
-            Thread.sleep(100)
+            Thread.sleep(InformationBuffer.loopInterval)
         }
     }
     
@@ -75,4 +75,8 @@ class InformationBuffer() extends Memory {
     def getObjects = mem.toSeq
     def getAttribute(path : Path) : MADNavigable[Any] = MADPath.navigate(path.mpath, mem(path.cname).tree)
     def getInformation = finished.toSeq
+}
+
+object InformationBuffer {
+    val loopInterval = 20
 }
