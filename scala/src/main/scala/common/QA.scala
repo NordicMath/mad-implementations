@@ -120,7 +120,9 @@ case class QA()(implicit io : IO, memory : Memory) {
                 val name = read()
                 
                 // TODO: Implement in Question
-                memory.push(Information.NewConceptoid(name))
+                try memory.push(Information.NewConceptoid(name)) catch {
+                    case ex : MADException => show(ex.toString)
+                }
                 
                 return introOptionsStage
                 
