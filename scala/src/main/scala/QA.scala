@@ -13,7 +13,15 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show[S : TypeTag](ob : S) = io.show[S](ob)
         private def read() = io.read()
     
-        private val introOptionsStage = ShowStages("New conceptoid" -> NewConceptoid, "Question" -> Question, "Display memory" -> Display, "List paths" -> Paths, "Show information list" -> InformationList, "Exit" -> Exit)
+        private val introOptionsStage = ShowStages(
+            "New conceptoid" -> NewConceptoid,
+            "Question" -> Question,
+            "Display..." -> ShowStages(
+                "Memory" -> Display,
+                "Paths" -> Paths,
+                "Information list" -> InformationList
+            ),
+            "Exit" -> Exit)
     
         case object Exit extends Stage {
             def next() : Stage = {
