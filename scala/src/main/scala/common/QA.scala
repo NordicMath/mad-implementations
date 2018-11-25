@@ -113,7 +113,6 @@ case class QA()(implicit io : IO, memory : Memory) {
                 show("What is the path-name of this concept?")
                 val name = read()
                 
-                // TODO: Implement in Question
                 try memory.push(Information.NewConceptoid(name)) catch {
                     case ex : MADException => show(ex.toString)
                 }
