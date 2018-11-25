@@ -3,6 +3,7 @@ package io.github.nordicmath.mad.memory
 import io.github.nordicmath.mad._
 import conceptoids._
 import Information._
+import MADNavigable._
 
 import collection.mutable.{Queue, HashMap}
 
@@ -43,13 +44,13 @@ class InformationBuffer() extends Memory {
                         else throw MADException.ConceptoidNameTaken(p)
                     }
                     case x @ Apply(path, value) => {
-                        getAttribute(path).set(value)(x.typetag)
+                        getAttributeAs[MADValue[Any]](path).set(value)(x.typetag)
                     }
                     case OptionAssign(path, b) => {
-                        getAttribute(path).optAssign(b)
+                        getAttributeAs[MADValueOption](path).optAssign(b)
                     }
                     case ListNew(path) => {
-                        getAttribute(path).listNew()
+                        getAttributeAs[MADValueList](path).listNew()
                     }
                     case x => throw MADException.InformationUnhandled(x, "InformationBuffer")
                 })
