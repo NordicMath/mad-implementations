@@ -1,39 +1,37 @@
 package io.github.nordicmath.mad.interpretation
 
 import io.github.nordicmath.mad._
-
+import MADException._
 import conceptoids._
+import Information._
+
 
 trait Interpreter {
     def interpret (path : Path, str : String) : Information
 }
 
 object Interpreter {
+    private def catchIA[T](t : => T, ex : MADException) = try t catch {
+        case _ : IllegalArgumentException => throw ex
+    }
+    
     def stringInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.Apply[String](path, str)
+        def interpret (path : Path, str : String) = Apply[String](path, str)
     }
     
     def intInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.Apply[Int](path, try str.toInt catch {
-            case _ : IllegalArgumentException => throw MADException.IntegerInput
-        })
+        def interpret (path : Path, str : String) = Apply[Int](path, catchIA(str.toInt, IntegerInput))
     }
     
     def boolInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.Apply[Boolean](path, try str.toBoolean catch {
-            case _ : IllegalArgumentException => throw MADException.BooleanInput
-        })
+        def interpret (path : Path, str : String) = Apply[Boolean](path, catchIA(str.toBoolean, BooleanInput))
     }
     
     def optionInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = Information.OptionAssign(path, try str.toBoolean catch {
-            case _ : IllegalArgumentException => throw MADException.BooleanInput
-        })
+        def interpret (path : Path, str : String) = OptionAssign(path, catchIA(str.toBoolean, BooleanInput))
     }
     
     def listInterpreter : Interpreter = new Interpreter {
-        def interpret (path : Path, str : String) = if (try str.toBoolean catch {
-            case _ : IllegalArgumentException => throw MADException.BooleanInput
-        }) Information.ListNew(path) else Information.NoInformation
+        def interpret (path : Path, str : String) = if (catchIA(str.toBoolean, BooleanInput)) ListNew(path) else NoInformation
     }
 }
