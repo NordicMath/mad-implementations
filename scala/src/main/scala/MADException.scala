@@ -9,7 +9,7 @@ object MADException {
 	object BooleanInput extends InterpreterIllegalInput("true/false")
 	object IntegerInput extends InterpreterIllegalInput("an integer")
 	
-	case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name $p is taken!")
+	case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name '$p' is taken!")
 	
 	object MADValueUnsuppertedType extends MADException(f"Unsupported type passed to MADValue!")
 	
