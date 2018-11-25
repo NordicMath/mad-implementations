@@ -1,6 +1,6 @@
 package io.github.nordicmath.mad.conceptoids
 
-abstract class MADType(val name : String)
+sealed abstract class MADType(val name : String)
 
 object MADType {
     case object MADString extends MADType("String")

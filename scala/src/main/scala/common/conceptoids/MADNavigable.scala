@@ -4,7 +4,7 @@ import org.json4s._
 import scala.reflect.runtime.universe._
 import io.github.nordicmath.mad._
 
-trait MADNavigable[+T] {
+sealed trait MADNavigable[+T] {
     def madtype : MADType
     
     def isset : Boolean

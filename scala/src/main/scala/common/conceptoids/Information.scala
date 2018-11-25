@@ -3,7 +3,7 @@ package io.github.nordicmath.mad.conceptoids
 import scala.reflect.runtime.universe._
 
 
-abstract class Information {
+sealed abstract class Information {
     import Information._
     
     override def toString = this match {

@@ -5,7 +5,7 @@ import scala.reflect.runtime.universe._
 
 case class QA()(implicit io : IO, memory : Memory) {
     
-    trait Stage {
+    sealed trait Stage {
         def next() : Stage
     }
     

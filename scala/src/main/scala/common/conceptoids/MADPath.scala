@@ -2,7 +2,7 @@ package io.github.nordicmath.mad.conceptoids
 
 import io.github.nordicmath.mad._
 
-abstract class MADPath {
+sealed abstract class MADPath {
     import MADPath._
     
     override def toString = this match {

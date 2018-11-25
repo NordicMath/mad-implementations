@@ -1,6 +1,6 @@
 package io.github.nordicmath.mad
 
-abstract class MADException(msg : String) extends Exception(msg)
+sealed abstract class MADException(msg : String) extends Exception(msg)
 
 object MADException {
 	import conceptoids._
