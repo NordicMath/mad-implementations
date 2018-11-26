@@ -35,7 +35,8 @@ case class QA()(implicit io : IO, memory : Memory) {
                     "Memory" -> Display,
                     "Paths" -> Paths,
                     "Information list" -> InformationList,
-                    "Failed information" -> FailedInformationList
+                    "Failed information" -> FailedInformationList,
+                    "Back" -> MainMenu
                 ),
                 "Exit" -> Exit
             )
