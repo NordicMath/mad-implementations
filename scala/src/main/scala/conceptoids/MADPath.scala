@@ -4,12 +4,20 @@ import io.github.nordicmath.mad._
 
 sealed abstract class MADPath {
     import MADPath._
+    import org.json4s._
     
     override def toString = this match {
         case Destination => ""
         case EnterTree(param, next) => ".\"" + param + "\"" + next.toString
         case EnterList(index, next) => "." + index + next.toString
         case EnterOption(next) => next.toString
+    }
+    
+    def toJSON : JValue = this match {
+        case Destination => JString("Destination")
+        case EnterTree(param, next) => JObject("param" -> JString(param), "next" -> next.toJSON)
+        case EnterList(index, next) => JObject("index" -> JInt(index), "next" -> next.toJSON)
+        case EnterOption(next) => JObject("enter" -> JObject(), "next" -> next.toJSON)
     }
     
     def +(other : MADPath) : MADPath = this match {
