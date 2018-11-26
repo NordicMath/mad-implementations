@@ -2,9 +2,10 @@ package io.github.nordicmath.mad.conceptoids
 
 import io.github.nordicmath.mad._
 
+import org.json4s._
+
 sealed abstract class MADPath {
     import MADPath._
-    import org.json4s._
     
     override def toString = this match {
         case Destination => ""
@@ -43,5 +44,12 @@ object MADPath {
         case (EnterList(i, next), nav : MADValueList) => navigate(next, nav.index(i).get)
         case (EnterOption(next), nav : MADValueOption) => navigate(next, nav.getInternalValue)
         case _ => throw MADException.NavigationImpossible(path, nav)
+    }
+    
+    def fromJSON(x : JValue) : MADPath = x match {
+        case JString("Destination") => Destination
+        case JObject(List(JField("param", JString(param)), JField("next", next))) => EnterTree(param, fromJSON(next))
+        case JObject(List(JField("index", JInt(index)), JField("next", next))) => EnterList(index.toInt, fromJSON(next))
+        case JObject(List(JField("enter", JObject(List())), JField("next", next))) => EnterOption(fromJSON(next))
     }
 }
