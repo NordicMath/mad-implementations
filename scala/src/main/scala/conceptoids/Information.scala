@@ -2,6 +2,9 @@ package io.github.nordicmath.mad.conceptoids
 
 import scala.reflect.runtime.universe._
 
+import io.github.nordicmath.mad._
+
+import org.json4s._
 
 sealed abstract class Information {
     import Information._
@@ -13,6 +16,23 @@ sealed abstract class Information {
         case OptionAssign(path, false) => f"$path does not make sense"
         case OptionAssign(path, true) => f"$path does makes sense"
         case ListNew(path) => f"There is yet another element in $path"
+    }
+    
+    def toJSON : JValue = this match {
+        case NoInformation => JObject("NoInformation" -> JObject())
+        case NewConceptoid(pathname) => JObject("NewConceptoid" -> JObject("pathname" -> JString(pathname)))
+        case x @ Apply(path, value) => {
+            val (tpe : String, v : JValue) = (x.typetag.tpe, value) match {
+                case (t, v : Boolean) if t =:= typeOf[Boolean] => ("Boolean", JBool(v))
+                case (t, v : String) if t =:= typeOf[String] => ("String", JString(v))
+                case (t, v : Int) if t =:= typeOf[Int] => ("Int", JInt(v))
+                case _ => throw MADException.InformationJSONUnsupportedType
+            }
+            
+            JObject("Apply" -> JObject("type" -> JString(tpe), "path" -> path.toJSON, "value" -> v))
+        }
+        case OptionAssign(path, p) => JObject("OptionAssign" -> JObject("path" -> path.toJSON, "possible" -> JBool(p)))
+        case ListNew(path) => JObject("ListNew" -> JObject("path" -> path.toJSON))
     }
 }
 

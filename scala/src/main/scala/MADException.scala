@@ -12,6 +12,7 @@ object MADException {
 	case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name '$p' is taken!")
 	
 	object MADValueUnsuppertedType extends MADException(f"Unsupported type passed to MADValue!")
+	object InformationJSONUnsupportedType extends MADException(f"Cannot JSON the application of an unsupported type!")
 	
 	object NoQuestions extends MADException(f"No questions found!")
 	
