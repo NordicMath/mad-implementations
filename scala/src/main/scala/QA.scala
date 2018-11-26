@@ -13,10 +13,10 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show[S : TypeTag](ob : S) = io.show[S](ob)
         private def read() = io.read()
     
-        private val introOptionsStage = ShowStages(
+        private val introOptionsStage : Stage = ShowStages("Options: ",
             "New conceptoid" -> NewConceptoid,
             "Question" -> Question,
-            "Display..." -> ShowStages(
+            "Display..." -> ShowStages("Display...", 
                 "Memory" -> Display,
                 "Paths" -> Paths,
                 "Information list" -> InformationList,
@@ -37,7 +37,7 @@ case class QA()(implicit io : IO, memory : Memory) {
             }
         }
         
-        case class ShowStages(stages : (String, Stage)*) extends Stage {
+        case class ShowStages(title : String, stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
                 def lookup[S](lst : List[(String, S)], l : String) : Option[S] = lst match {
                     case (l1, s) :: _ if l1.head.toLower == l.head.toLower => Some(s) 
@@ -45,7 +45,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     case _ :: tail => lookup(tail, l)
                 }
                 
-                show("Options:")
+                show(title)
                 for { (name, stage) <- stages } yield show(IO.StageOption("* (" + name.head.toLower + ") " + name))
                 
                 def enterOption() : Stage = {
