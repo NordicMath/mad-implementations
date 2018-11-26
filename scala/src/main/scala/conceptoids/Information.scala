@@ -43,4 +43,18 @@ object Information {
     case class Apply[S](path : Path, value : S)(implicit val typetag : TypeTag[S]) extends Information
     case class OptionAssign(path : Path, possible : Boolean) extends Information
     case class ListNew(path : Path) extends Information
+    
+    def fromJSON (x : JValue) = x match {
+        case JObject(List(JField(name, JObject(lst)))) => (name, lst) match {
+            case ("NoInformation", List()) => NoInformation
+            case ("NewConceptoid", List(JField("pathname", JString(pathname)))) => NewConceptoid(pathname)
+            case ("Apply", List(JField("type", JString(tpe)), JField("path", path), JField("value", v))) => (tpe, v) match {
+                case ("String", JString(vs)) => Apply[String](Path.fromJSON(path), vs)
+                case ("Int", JInt(vi)) => Apply[Int](Path.fromJSON(path), vi.toInt)
+                case ("Boolean", JBool(vb)) => Apply[Boolean](Path.fromJSON(path), vb)
+            }
+            case ("OptionAssign", List(JField("path", path), JField("possible", JBool(p)))) => OptionAssign(Path.fromJSON(path), p)
+            case ("ListNew", List(JField("path", path))) => ListNew(Path.fromJSON(path))
+        } 
+    }
 }
