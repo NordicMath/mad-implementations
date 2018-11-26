@@ -23,6 +23,8 @@ class InformationBuffer() extends Memory {
     
     private var running : Boolean = true
     
+    private var resetPromise : Option[Promise[Unit]] = None
+    
     private val mem : HashMap[String, Conceptoid] = HashMap()
 
     // Buffer loop: 
@@ -58,12 +60,33 @@ class InformationBuffer() extends Memory {
                 
                 (if(proc.isSuccess) finished else failed).enqueue(next)
             }
+            
+            if (!resetPromise.isEmpty) {
+                                
+                resetPromise.get complete Try({
+                    informationQueue.clear()
+                    finished.clear()
+                    failed.clear()
+                    mem.clear()
+                    
+                    resetPromise = None
+                })
+                
+            }
 
             Thread.sleep(InformationBuffer.loopInterval)
         }
     }
     
     def close() : Unit = running = false
+    def reset_async() : Future[Unit] = {
+        val p = Promise[Unit]()
+        resetPromise match {
+            case None => resetPromise = Some(p)
+            case Some(p1) => p.completeWith(p1.future)
+        }
+        return p.future
+    }
     
     def push_async(info : Information) : Future[Unit] = {
         val p = Promise[Unit]()
