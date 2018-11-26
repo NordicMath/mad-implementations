@@ -38,6 +38,10 @@ case class QA()(implicit io : IO, memory : Memory) {
                     "Failed information" -> FailedInformationList,
                     "Back" -> MainMenu
                 ),
+                "Clear memory..." -> Menu("Are you sure?",
+                    "Yes" -> ClearMemory, 
+                    "No, go back" -> MainMenu
+                ), 
                 "Exit" -> Exit
             )
         } 
@@ -60,6 +64,16 @@ case class QA()(implicit io : IO, memory : Memory) {
                 }
                 
                 return enterOption()
+            }
+        }
+        
+        case object ClearMemory extends Stage {
+            def next() : Stage = {
+                show("Clearing meory...")
+                
+                memory.reset()
+                
+                return MainMenu
             }
         }
         
