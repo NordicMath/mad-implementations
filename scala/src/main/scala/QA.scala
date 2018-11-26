@@ -13,16 +13,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         private def show[S : TypeTag](ob : S) = io.show[S](ob)
         private def read() = io.read()
     
-        private val introOptionsStage : Stage = ShowStages("Options: ",
-            "New conceptoid" -> NewConceptoid,
-            "Question" -> Question,
-            "Display..." -> ShowStages("Display...", 
-                "Memory" -> Display,
-                "Paths" -> Paths,
-                "Information list" -> InformationList,
-                "Failed information" -> FailedInformationList
-            ),
-            "Exit" -> Exit)
     
         case object Exit extends Stage {
             def next() : Stage = {
@@ -33,9 +23,23 @@ case class QA()(implicit io : IO, memory : Memory) {
         case object Intro extends Stage {
             def next() : Stage = {
                 show("Welcome to Zophie!")
-                return introOptionsStage
+                return MainMenu
             }
         }
+        
+        case object MainMenu extends Stage {
+            def next() = ShowStages("Options: ",
+                "New conceptoid" -> NewConceptoid,
+                "Question" -> Question,
+                "Display..." -> ShowStages("Display...", 
+                    "Memory" -> Display,
+                    "Paths" -> Paths,
+                    "Information list" -> InformationList,
+                    "Failed information" -> FailedInformationList
+                ),
+                "Exit" -> Exit
+            )
+        } 
         
         case class ShowStages(title : String, stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
@@ -66,7 +70,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     show(name + ": " + conceptoid)
                 }
                 
-                return introOptionsStage
+                return MainMenu
             }
         }
         
@@ -78,7 +82,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                 
                 for (path <- PriorityEngine.generatePaths()) show(path)
                 
-                return introOptionsStage
+                return MainMenu
             }
         }
         
@@ -89,7 +93,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                 import conceptoids._
                 memory.getInformation.foreach(show[Information])
                 
-                return introOptionsStage
+                return MainMenu
             }
         }
         
@@ -100,7 +104,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                 import conceptoids._
                 memory.getFailedInformation.foreach(show[Information])
                 
-                return introOptionsStage
+                return MainMenu
             }
         }
         
@@ -123,7 +127,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     case ex : MADException => show(ex.toString)
                 }
                 
-                return introOptionsStage
+                return MainMenu
             }
         }
         
@@ -137,7 +141,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     case ex : MADException => show(ex.toString)
                 }
                 
-                return introOptionsStage
+                return MainMenu
                 
             }
         }
