@@ -17,11 +17,20 @@ object Conceptoid {
     
     lazy val Conceptoid = MADTree("Conceptoid", 
         "name" -> MADString,
-        "collection structure" -> MADOption(Collection)
+        "description" -> MADString,
+        "collection structure" -> MADOption(Collection),
+        "machine structure" -> MADOption(Machine)
     )
     
     lazy val Collection = MADTree("Collection", 
         "representations" -> MADList(Representation)
+    )
+    
+    lazy val Machine = MADTree("Machine", 
+        //"domain" -> MADList(MADRef where collection),
+        //"codomain" -> MADList(MADRef where collection),
+        "defined everywhere" -> MADBool
+        //"algorithm" -> MADList(Algorithm)
     )
     
     lazy val Representation = MADTree("Representation",
