@@ -45,8 +45,8 @@ class InformationBuffer() extends Memory {
                             mem.put(p, new Conceptoid()) 
                         else throw MADException.ConceptoidNameTaken(p)
                     }
-                    case x @ Apply(path, value) => {
-                        getAttributeAs[MADValue[Any]](path).set(value)(x.typetag)
+                    case Apply(path, value) => {
+                        getAttributeAs[MADValue[Any]](path).set(value)
                     }
                     case OptionAssign(path, b) => {
                         getAttributeAs[MADValueOption](path).optAssign(b)

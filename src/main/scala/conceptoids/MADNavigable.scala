@@ -37,10 +37,7 @@ object MADNavigable {
         }
         
         private var value : Option[T] = None
-        def set[S : TypeTag](nval : S) = typeOf[S] match {
-            case t if t =:= typeOf[T] => value = Some(nval.asInstanceOf[T])
-            case _ => throw MADException.MADValueUnsuppertedType
-        }
+        def set(nval : T) = value = Some(nval)
         
         def get = value.get
         
