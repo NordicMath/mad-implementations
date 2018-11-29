@@ -8,7 +8,7 @@ trait Encoder[-T] {
 }
 
 trait Decoder[+T] {
-    def decode(json : JValue) : T
+    def decode(json : JValue) : Option[T]
 }
 
 trait Codec[T] extends Encoder[T] with Decoder[T]
