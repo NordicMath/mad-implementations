@@ -22,7 +22,7 @@ object MADNavigable {
     import MADType._
     
     
-    sealed abstract class MADValuePrimitive[T : Codec](val madtype : MADType)(implicit val typetag : TypeTag[T]) {
+    sealed abstract class MADValuePrimitive[T](val madtype : MADType)(implicit val typetag : TypeTag[T], val codec : Codec[T]) {
         def conv(x : Any) : T = x.asInstanceOf[T]
         def unapply(x : MADValuePrimitive[Any]) : Option[MADValuePrimitive[T]] = if (typeOf[T] =:= x.typetag.tpe) Some(x.asInstanceOf[MADValuePrimitive[T]]) else None
     }

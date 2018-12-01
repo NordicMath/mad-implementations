@@ -21,11 +21,8 @@ sealed abstract class Information {
         case NoInformation => JObject("NoInformation" -> JObject())
         case NewConceptoid(pathname) => JObject("NewConceptoid" -> JObject("pathname" -> JString(pathname)))
         case x @ Apply(path, value) => {
-            val (tpe : String, v : JValue) = x.madvp match {
-                case booleanPrimitive(p) => ("Boolean", JBool(p.conv(value)))
-                case stringPrimitive(p) => ("String", JString(p.conv(value)))
-                case intPrimitive(p) => ("Int", JInt(p.conv(value)))
-            }
+            val tpe : String = x.madvp.madtype.toString
+            val v : JValue = x.madvp.codec.encode(x.madvp.conv(value))
             
             JObject("Apply" -> JObject("type" -> JString(tpe), "path" -> path.toJSON, "value" -> v))
         }
