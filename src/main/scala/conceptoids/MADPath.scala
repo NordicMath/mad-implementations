@@ -38,7 +38,7 @@ object MADPath {
     
     import MADNavigable._
     
-    def navigate(path : MADPath, nav : MADNavigable[Any]) : MADNavigable[Any] = (path, nav) match {
+    def navigate(path : MADPath, nav : MADNavigable) : MADNavigable = (path, nav) match {
         case (Destination, _) => nav
         case (EnterTree(p, next), nav : MADValueTree) => navigate(next, nav.attr(p).get)
         case (EnterList(i, next), nav : MADValueList) => navigate(next, nav.index(i).get)

@@ -15,8 +15,8 @@ trait Memory {
     def push_async(info : Information) : Future[Unit]
     def push(info : Information) : Unit = Await.result(push_async(info), Duration(60, TimeUnit.SECONDS))
     
-    def getAttribute(path : Path) : MADNavigable[Any]
-    def getAttributeAs[Nav <: MADNavigable[Any]](path : Path) : Nav = getAttribute(path).asInstanceOf[Nav]
+    def getAttribute(path : Path) : MADNavigable
+    def getAttributeAs[Nav <: MADNavigable](path : Path) : Nav = getAttribute(path).asInstanceOf[Nav]
     
     def getObject(name : String) : Conceptoid
     

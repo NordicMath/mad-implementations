@@ -4,7 +4,7 @@ import org.json4s._
 import scala.reflect.runtime.universe._
 import io.github.nordicmath.mad._
 
-sealed trait MADNavigable[+T] {
+sealed trait MADNavigable {
     def madtype : MADType
     
     def isset : Boolean
@@ -19,7 +19,7 @@ object MADNavigable {
     
     import MADType._
     
-    def apply(x : MADType) : MADNavigable[Any] = x match {
+    def apply(x : MADType) : MADNavigable = x match {
         case MADString => new MADValue[String]()
         case MADBool => new MADValue[Boolean]()
         case MADInt => new MADValue[Int]()
@@ -53,10 +53,10 @@ object MADNavigable {
         }
     }
 
-    class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable[Nothing] {
+    class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable {
         import collection.mutable.HashMap
         
-        private val map : HashMap[String, MADNavigable[Any]] = HashMap()
+        private val map : HashMap[String, MADNavigable] = HashMap()
         unset()
         
         def madtype = MADTree(name, params : _*)
@@ -79,10 +79,10 @@ object MADNavigable {
         } : _*)
     }
 
-    class MADValueList (param : MADType) extends MADNavigable[Nothing] {
+    class MADValueList (param : MADType) extends MADNavigable {
         import collection.mutable.Buffer
         
-        private val list : Buffer[MADNavigable[Any]] = Buffer()
+        private val list : Buffer[MADNavigable] = Buffer()
         
         def madtype = MADList(param)
         
@@ -100,8 +100,8 @@ object MADNavigable {
         def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
     }
 
-    class MADValueOption (param : MADType) extends MADNavigable[Nothing] {
-        private var value : Option[Option[MADNavigable[Any]]] = None
+    class MADValueOption (param : MADType) extends MADNavigable {
+        private var value : Option[Option[MADNavigable]] = None
         
         def madtype = MADOption(param)
         
