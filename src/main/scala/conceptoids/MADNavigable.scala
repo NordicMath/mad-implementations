@@ -1,7 +1,10 @@
 package io.github.nordicmath.mad.conceptoids
 
+import io.github.nordicmath.mad.json._
+
 import org.json4s._
 import scala.reflect.runtime.universe._
+
 
 sealed trait MADNavigable {
     def madtype : MADType
@@ -19,7 +22,7 @@ object MADNavigable {
     import MADType._
     
     
-    sealed abstract class MADValuePrimitive[T](val madtype : MADType)(implicit val typetag : TypeTag[T]) {
+    sealed abstract class MADValuePrimitive[T : Codec](val madtype : MADType)(implicit val typetag : TypeTag[T]) {
         def conv(x : Any) : T = x.asInstanceOf[T]
         def unapply(x : MADValuePrimitive[Any]) : Option[MADValuePrimitive[T]] = if (typeOf[T] =:= x.typetag.tpe) Some(x.asInstanceOf[MADValuePrimitive[T]]) else None
     }
@@ -39,7 +42,7 @@ object MADNavigable {
         case MADOption(param) => new MADValueOption(param)
     }
     
-    class MADValue[T] ()(implicit val madvp : MADValuePrimitive[T]) extends MADNavigable {
+    class MADValue[T : Codec] ()(implicit val madvp : MADValuePrimitive[T]) extends MADNavigable {
         def madtype = madvp.madtype
         
         private var value : Option[T] = None
@@ -50,12 +53,7 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
-        def toJSON() = value match {
-            case None => JNull
-            case Some(str : String) => JString(str)
-            case Some(bool : Boolean) => JBool(bool)
-            case Some(num : Int) => JInt(num)
-        }
+        def toJSON() = if(value.nonEmpty) JSON(value.get) else JNull
     }
 
     class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable {
