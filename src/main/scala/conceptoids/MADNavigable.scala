@@ -2,7 +2,6 @@ package io.github.nordicmath.mad.conceptoids
 
 import org.json4s._
 import scala.reflect.runtime.universe._
-import io.github.nordicmath.mad._
 
 sealed trait MADNavigable {
     def madtype : MADType
@@ -56,7 +55,6 @@ object MADNavigable {
             case Some(str : String) => JString(str)
             case Some(bool : Boolean) => JBool(bool)
             case Some(num : Int) => JInt(num)
-            case _ => throw MADException.MADValueUnsuppertedType
         }
     }
 

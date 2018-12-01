@@ -10,10 +10,7 @@ object MADException {
 	object IntegerInput extends InterpreterIllegalInput("an integer")
 	
 	case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name '$p' is taken!")
-	
-	object MADValueUnsuppertedType extends MADException(f"Unsupported type passed to MADValue!")
-	object InformationJSONUnsupportedType extends MADException(f"Cannot JSON the application of an unsupported type!")
-	
+		
 	object NoQuestions extends MADException(f"No questions found!")
 	
 	case class NavigationImpossible(path : MADPath, nav : MADNavigable) extends MADException(f"Navigating $path into something of type ${nav.madtype} is impossible!")
