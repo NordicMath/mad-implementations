@@ -12,9 +12,9 @@ trait Codecs {
         def decode(j : JValue) = for {s <- embed(j); t <- decoder(s)} yield t
     }
         
-    implicit object StringCodec extends SCodec(JString.apply, JString.unapply)
-    implicit object BooleanCodec extends SCodec(JBool.apply, JBool.unapply)
-    implicit object IntCodec extends SCodec(JInt.apply, JInt.unapply)
+    implicit object StringCodec extends SCodec[JString, String](JString.apply, JString.unapply)
+    implicit object BooleanCodec extends SCodec[JBool, Boolean](JBool.apply, JBool.unapply)
+    implicit object IntCodec extends SCodec[JInt, Int](n => JInt(BigInt(n)), j => Some(j.num.toInt) )
     
     
 }
