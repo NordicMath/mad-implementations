@@ -19,6 +19,18 @@ object MADNavigable {
     
     import MADType._
     
+    
+    sealed abstract class MADValuePrimitive[T](val madtype : MADType)(implicit val typetag : TypeTag[T]) {
+        def conv(x : Any) : T = x.asInstanceOf[T]
+        def unapply(x : MADValuePrimitive[Any]) : Option[MADValuePrimitive[T]] = if (typeOf[T] =:= x.typetag.tpe) Some(x.asInstanceOf[MADValuePrimitive[T]]) else None
+    }
+    
+    object MADValuePrimitive {
+        implicit object stringPrimitive extends MADValuePrimitive[String](MADString)
+        implicit object booleanPrimitive extends MADValuePrimitive[Boolean](MADBool)
+        implicit object intPrimitive extends MADValuePrimitive[Int](MADInt)        
+    }
+    
     def apply(x : MADType) : MADNavigable = x match {
         case MADString => new MADValue[String]()
         case MADBool => new MADValue[Boolean]()
@@ -28,13 +40,8 @@ object MADNavigable {
         case MADOption(param) => new MADValueOption(param)
     }
     
-    class MADValue[T : TypeTag] () extends MADNavigable[T] {
-        def madtype = typeOf[T] match {
-            case t if t =:= typeOf[String] => MADString
-            case t if t =:= typeOf[Boolean] => MADBool
-            case t if t =:= typeOf[Int] => MADInt
-            case _ => throw MADException.MADValueUnsuppertedType
-        }
+    class MADValue[T] ()(implicit val madvp : MADValuePrimitive[T]) extends MADNavigable {
+        def madtype = madvp.madtype
         
         private var value : Option[T] = None
         def set(nval : T) = value = Some(nval)

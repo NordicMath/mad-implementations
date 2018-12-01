@@ -1,8 +1,7 @@
 package io.github.nordicmath.mad.conceptoids
 
-import scala.reflect.runtime.universe._
-
-import io.github.nordicmath.mad._
+import MADNavigable._
+import MADValuePrimitive._
 
 import org.json4s._
 
@@ -22,11 +21,10 @@ sealed abstract class Information {
         case NoInformation => JObject("NoInformation" -> JObject())
         case NewConceptoid(pathname) => JObject("NewConceptoid" -> JObject("pathname" -> JString(pathname)))
         case x @ Apply(path, value) => {
-            val (tpe : String, v : JValue) = (x.typetag.tpe, value) match {
-                case (t, v : Boolean) if t =:= typeOf[Boolean] => ("Boolean", JBool(v))
-                case (t, v : String) if t =:= typeOf[String] => ("String", JString(v))
-                case (t, v : Int) if t =:= typeOf[Int] => ("Int", JInt(v))
-                case _ => throw MADException.InformationJSONUnsupportedType
+            val (tpe : String, v : JValue) = x.madvp match {
+                case booleanPrimitive(p) => ("Boolean", JBool(p.conv(value)))
+                case stringPrimitive(p) => ("String", JString(p.conv(value)))
+                case intPrimitive(p) => ("Int", JInt(p.conv(value)))
             }
             
             JObject("Apply" -> JObject("type" -> JString(tpe), "path" -> path.toJSON, "value" -> v))
@@ -40,7 +38,7 @@ object Information {
     case object NoInformation extends Information
     
     case class NewConceptoid(name : String) extends Information
-    case class Apply[S](path : Path, value : S)(implicit val typetag : TypeTag[S]) extends Information
+    case class Apply[S](path : Path, value : S)(implicit val madvp : MADValuePrimitive[S]) extends Information
     case class OptionAssign(path : Path, possible : Boolean) extends Information
     case class ListNew(path : Path) extends Information
     
