@@ -51,6 +51,7 @@ trait Codecs {
     // MAD Codecs
     import io.github.nordicmath.mad.conceptoids._
     import MADPath._
+    import Information._
     
     implicit object MADPathCodec extends PFCodec[MADPath]{
         val encoder = {
@@ -76,5 +77,44 @@ trait Codecs {
                 JField("cname", JString(cname)),
                 JField("mpath", MADPathCodec(mpath))
         )) => Path(cname, mpath)}
+    }
+    
+    implicit object InformationCodec extends PFCodec[Information]{
+        private object JInfo {
+            def apply(name : String, fs : List[JField]) : JValue = JObject(name -> JObject(fs))
+            def unapply(j : JValue) : Option[(String, List[JField])] = j match {
+                case JObject(List(JField(name, JObject(lst)))) => Some((name, lst))
+                case _ => None
+            }
+        }
+        
+        private object JApply {
+            def apply[T : Codec](tpe : String, path : Path, value : T) = JInfo("Apply", List("type" -> JString(tpe), "path" -> PathCodec(path), "value" -> json.encode[T](value)))
+            def unapply(j : JValue) : Option[(String, JValue, Path)] = j match {
+                case JInfo("Apply", List(JField("type", JString(tpe)), JField("path", PathCodec(path)), JField("value", v))) => Some((tpe, v, path))
+                case _ => None
+            }
+        }
+        
+        val encoder = {
+            case NoInformation => JInfo("NoInformation", List())
+            case NewConceptoid(pathname) => JInfo("NewConceptoid", List("pathname" -> JString(pathname)))
+            case Apply(path, value : String) => JApply("String", path, value)
+            case Apply(path, value : Boolean) => JApply("Boolean", path, value)
+            case Apply(path, value : Int) => JApply("Int", path, value)
+            case OptionAssign(path, p) => JInfo("OptionAssign", List("path" -> PathCodec(path), "possible" -> JBool(p)))
+            case ListNew(path) => JInfo("ListNew", List("path" -> PathCodec(path)))
+        }
+        
+        val decoder = {
+            case JInfo("NoInformation", List()) => NoInformation
+            case JInfo("NewConceptoid", List(JField("pathname", JString(pathname)))) => NewConceptoid(pathname)
+            case JApply("String", StringCodec(vs), path) => Apply[String](path, vs)
+            case JApply("Int", IntCodec(vi), path) => Apply[Int](path, vi)
+            case JApply("Boolean", BooleanCodec(vb), path) => Apply[Boolean](path, vb)
+            case JInfo("OptionAssign", List(JField("path", PathCodec(path)), JField("possible", JBool(p)))) => OptionAssign(path, p)
+            case JInfo("ListNew", List(JField("path", PathCodec(path)))) => ListNew(path)
+        }
+        
     }
 }
