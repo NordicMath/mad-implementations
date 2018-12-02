@@ -1,9 +1,6 @@
 package io.github.nordicmath.mad.conceptoids
 
 import MADNavigable._
-import MADValuePrimitive._
-
-import org.json4s._
 
 sealed abstract class Information {
     import Information._

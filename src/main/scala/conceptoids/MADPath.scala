@@ -2,8 +2,6 @@ package io.github.nordicmath.mad.conceptoids
 
 import io.github.nordicmath.mad._
 
-import org.json4s._
-
 sealed abstract class MADPath {
     import MADPath._
     
