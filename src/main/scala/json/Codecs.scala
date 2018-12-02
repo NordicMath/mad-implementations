@@ -102,6 +102,7 @@ trait Codecs {
             case Apply(path, value : String) => JApply("String", path, value)
             case Apply(path, value : Boolean) => JApply("Boolean", path, value)
             case Apply(path, value : Int) => JApply("Int", path, value)
+            case Apply(_, _) => ??? // Unreachable
             case OptionAssign(path, p) => JInfo("OptionAssign", List("path" -> PathCodec(path), "possible" -> JBool(p)))
             case ListNew(path) => JInfo("ListNew", List("path" -> PathCodec(path)))
         }
