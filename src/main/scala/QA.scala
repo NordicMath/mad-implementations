@@ -42,6 +42,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     "Yes" -> ClearMemory, 
                     "No, go back" -> MainMenu
                 ), 
+                "Save" -> Save,
                 "Exit" -> Exit
             )
         } 
@@ -77,6 +78,18 @@ case class QA()(implicit io : IO, memory : Memory) {
             }
         }
         
+        case object Save extends Stage {
+            def next() : Stage = {
+                import json._
+                import org.json4s._
+                
+                show("Data:")
+                show[JValue](encode(memory.getInformation))
+                
+                return MainMenu
+            }
+        }
+                
         case object Display extends Stage {
             def next() : Stage = {
                 show("Current state: ")
