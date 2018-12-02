@@ -28,7 +28,7 @@ object MADNavigable {
     object MADValuePrimitive {
         implicit object stringPrimitive extends MADValuePrimitive[String](MADString)
         implicit object booleanPrimitive extends MADValuePrimitive[Boolean](MADBool)
-        implicit object intPrimitive extends MADValuePrimitive[Int](MADInt)        
+        implicit object intPrimitive extends MADValuePrimitive[Int](MADInt)
     }
     
     def apply(x : MADType) : MADNavigable = x match {

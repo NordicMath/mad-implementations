@@ -8,5 +8,5 @@ object MADType {
     case object MADInt extends MADType("Int")
     case class MADTree(override val name : String, params : (String, MADType)*) extends MADType(name)
     case class MADList(param : MADType) extends MADType("List(" + param.name + ")")
-    case class MADOption(param : MADType) extends MADType("Option(" + param.name + ")")    
+    case class MADOption(param : MADType) extends MADType("Option(" + param.name + ")")
 }

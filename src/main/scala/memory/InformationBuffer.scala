@@ -29,7 +29,7 @@ class InformationBuffer() extends Memory {
 
     // Buffer loop: 
     Future {
-
+        
         while (running) {
             
             if (!informationQueue.isEmpty) {
@@ -62,7 +62,7 @@ class InformationBuffer() extends Memory {
             }
             
             if (!resetPromise.isEmpty) {
-                                
+                
                 resetPromise.get complete Try({
                     informationQueue.clear()
                     finished.clear()
@@ -73,7 +73,7 @@ class InformationBuffer() extends Memory {
                 })
                 
             }
-
+            
             Thread.sleep(InformationBuffer.loopInterval)
         }
     }

@@ -9,7 +9,7 @@ import java.nio.file.{Paths => FilePaths, Files}
 import java.nio.charset.StandardCharsets
 
 import scala.io.Source
-            
+
 import org.json4s.native.JsonMethods._
 import org.json4s._
 
@@ -24,8 +24,8 @@ case class QA()(implicit io : IO, memory : Memory) {
     object Stage {
         private def show[S : TypeTag](ob : S) = io.show[S](ob)
         private def read() = io.read()
-    
-    
+        
+        
         case object Exit extends Stage {
             def next() : Stage = {
                 return Exit

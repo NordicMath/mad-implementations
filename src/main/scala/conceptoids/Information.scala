@@ -16,7 +16,7 @@ sealed abstract class Information {
     
 }
 
-object Information {    
+object Information {
     case object NoInformation extends Information
     
     case class NewConceptoid(name : String) extends Information

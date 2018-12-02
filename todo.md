@@ -5,4 +5,3 @@
 * Implement dependeny-relations for information
 * Add tests!!!!
 * Implement NewConceptoid in Question
-* Fix indentation
