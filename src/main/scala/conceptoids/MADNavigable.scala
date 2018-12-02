@@ -108,10 +108,7 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
-        override def subpaths = value match {
-            case None | Some(None) => Seq(MADPath.Destination)
-            case Some(Some(nav)) => nav.subpaths.map(MADPath.EnterOption)
-        }
+        override def subpaths = value.flatten.fold[Seq[MADPath]](Seq(MADPath.Destination))(_.subpaths.map(MADPath.EnterOption))
         
         def toJSON() = value match {
             case None => JNull
