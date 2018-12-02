@@ -43,6 +43,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     "No, go back" -> MainMenu
                 ), 
                 "Save" -> Save,
+                "Load" -> Load,
                 "Exit" -> Exit
             )
         } 
@@ -90,6 +91,27 @@ case class QA()(implicit io : IO, memory : Memory) {
             }
         }
                 
+        case object Load extends Stage {
+            def next() : Stage = {
+                import json._
+                import org.json4s._
+                import org.json4s.native.JsonMethods._
+                import conceptoids._
+                
+                show("Enter string to load:")
+                val str = read()
+                val j = parse(str)
+                val data = decode[Seq[Information]](j).get
+                
+                memory.reset()
+                data foreach memory.push _
+                 
+                
+                
+                return MainMenu
+            }
+        }
+        
         case object Display extends Stage {
             def next() : Stage = {
                 show("Current state: ")
