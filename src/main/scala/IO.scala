@@ -17,8 +17,9 @@ object IO {
         def read() = scala.io.StdIn.readLine()
     }
     
-    implicit object coloredStdIO extends IO {
+    implicit object improvedIO extends IO {
         import conceptoids._
+        import org.json4s._
         
         def colorOf[S : TypeTag] = typeOf[S] match {
             // Semantic
@@ -27,11 +28,21 @@ object IO {
             // Custom
             case t if t =:= typeOf[Path] => Console.BLUE
             case t if t =:= typeOf[Information] => Console.BLUE
+            case t if t =:= typeOf[JValue] => Console.RED
             
             case _ => Console.RESET
         }
         
-        def show[S : TypeTag](ob : S) = standardIO.show[String](colorOf[S] + ob.toString + Console.RESET)
+        def show[S : TypeTag](ob : S) = {
+            import org.json4s.native.JsonMethods._
+            val txt : String = typeOf[S] match {
+                case t if t <:< typeOf[JValue] => compact(render(ob.asInstanceOf[JValue]))
+                
+                case _ => ob.toString
+            }
+            
+            standardIO.show[String](colorOf[S] + txt + Console.RESET)
+        }
         def read() = standardIO.read()
     }
 }
