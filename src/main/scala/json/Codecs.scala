@@ -66,4 +66,15 @@ trait Codecs {
             case JObject(List(JField("enter", JObject(List())), JField("next", MADPathCodec(next)))) => EnterOption(next)
         }
     }
+    
+    implicit object PathCodec extends PFCodec[Path]{
+        val encoder = { case Path(cname, mpath) => JObject(
+                "cname" -> JString(cname),
+                "mpath" -> MADPathCodec(mpath)
+        )}
+        val decoder = { case JObject(List(
+                JField("cname", JString(cname)),
+                JField("mpath", MADPathCodec(mpath))
+        )) => Path(cname, mpath)}
+    }
 }
