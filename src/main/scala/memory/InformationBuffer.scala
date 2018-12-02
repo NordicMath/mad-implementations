@@ -68,10 +68,9 @@ class InformationBuffer() extends Memory {
                     finished.clear()
                     failed.clear()
                     mem.clear()
-                    
-                    resetPromise = None
                 })
                 
+                resetPromise = None
             }
             
             Thread.sleep(InformationBuffer.loopInterval)
