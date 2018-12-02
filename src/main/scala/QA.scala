@@ -42,8 +42,17 @@ case class QA()(implicit io : IO, memory : Memory) {
                     "Yes" -> ClearMemory, 
                     "No, go back" -> MainMenu
                 ), 
-                "Save" -> Save,
-                "Load" -> Load,
+                "Save..." -> Menu("How do you want to save?", 
+                    "String" -> Save(true),
+                    "File" -> Save(false)
+                ),
+                "Load..." -> Menu("Are you sure? This will clear current memory...",
+                    "Yes..." -> Menu("How do you want to load?",
+                        "String" -> Load(true),
+                        "File" -> Load(false)
+                    ),
+                    "No, go back" -> MainMenu
+                ),
                 "Exit" -> Exit
             )
         } 
@@ -79,34 +88,52 @@ case class QA()(implicit io : IO, memory : Memory) {
             }
         }
         
-        case object Save extends Stage {
+        case class Save(asString : Boolean) extends Stage {
             def next() : Stage = {
                 import json._
                 import org.json4s._
                 
-                show("Data:")
-                show[JValue](encode(memory.getInformation))
+                val j = encode(memory.getInformation)
+                
+                if (asString) {
+                    show("Data:")
+                    show[JValue](j)
+                } else {
+                    import java.nio.file.{Paths => FilePaths, Files}
+                    import java.nio.charset.StandardCharsets
+                    import org.json4s.native.JsonMethods._
+                    
+                    show("Enter filename: ")
+                    val name = read()
+                    Files.write(FilePaths.get(name), compact(render(j)).getBytes(StandardCharsets.UTF_8))
+                }
                 
                 return MainMenu
             }
         }
                 
-        case object Load extends Stage {
+        case class Load(asString : Boolean) extends Stage {
             def next() : Stage = {
                 import json._
                 import org.json4s._
                 import org.json4s.native.JsonMethods._
                 import conceptoids._
                 
-                show("Enter string to load:")
-                val str = read()
+                val str = if(asString) {
+                    show("Enter string to load:")
+                    read()
+                } else {
+                    import scala.io.Source
+                    show("Enter filename: ")
+                    val name = read()
+                    Source.fromFile(name).mkString
+                }
+                
                 val j = parse(str)
                 val data = decode[Seq[Information]](j).get
                 
                 memory.reset()
                 data foreach memory.push _
-                 
-                
                 
                 return MainMenu
             }
