@@ -1,5 +1,7 @@
 package io.github.nordicmath.mad.json
 
+import io.github.nordicmath.mad._
+
 import org.json4s._
 
 import util.Try
@@ -14,8 +16,8 @@ trait Codecs {
     }
     
     class TCodec[T, S : Codec](to : T => S, from : S => T) extends Codec[T] {
-        def encode(t : T) = JSON[S](to(t))
-        def decode(j : JValue) = JSON[S].unapply(j).map(from)
+        def encode(t : T) = json.encode[S](to(t))
+        def decode(j : JValue) = json.decode[S](j).map(from)
     }
     
     class PFCodec[T](encoder : T => JValue, decoder : PartialFunction[JValue, T]) extends SCodec[JValue, T](encoder, decoder.lift)
@@ -30,8 +32,8 @@ trait Codecs {
     // Compound codecs
     implicit def listCodec[T : Codec] = new ListCodec[T]
     class ListCodec[T : Codec] extends SCodec[JArray, List[T]] (
-        lst => JArray(lst.map(JSON[T])),
-        jar => jar.arr.map(JSON[T].unapply) match {
+        lst => JArray(lst.map(json.encode[T])),
+        jar => jar.arr.map(json.decode[T]) match {
             case x if x.contains(None) => None
             case x => Some(x.flatten)
         }
