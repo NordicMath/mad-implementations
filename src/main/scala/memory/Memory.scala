@@ -8,7 +8,6 @@ import scala.concurrent._
 import scala.concurrent.duration.Duration
 
 trait Memory {
-    def close()
     def reset_async() : Future[Unit]
     def reset() : Unit = Await.result(reset_async(), Duration(60, TimeUnit.SECONDS))
     
@@ -24,6 +23,8 @@ trait Memory {
     
     def getInformation : Seq[Information]
     def getFailedInformation : Seq[Information]
+    
+    def close()
 }
 
 object Memory {

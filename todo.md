@@ -1,5 +1,4 @@
 * Add package.scala and documentation to everything
-* Clean more code
 * Conceptoid-references as MADType
 * Add priority and other attributes to MADTypes. Perhaps Rich-MADtypes?
 * Implement dependeny-relations for information

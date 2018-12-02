@@ -34,7 +34,7 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case object Intro extends Stage {
             def next() : Stage = {
-                show("Welcome to Zophie!")
+                show("Welcome to MAD!")
                 return MainMenu
             }
         }
@@ -214,16 +214,13 @@ case class QA()(implicit io : IO, memory : Memory) {
                 }
                 
                 return MainMenu
-                
             }
         }
     }
     
     def start() = {
         var cstage : Stage = Stage.Intro
-        while(cstage != Stage.Exit){
-            cstage = cstage.next()
-        }
+        while (cstage != Stage.Exit) cstage = cstage.next()
         io.show("Bye!")
     }    
 }
