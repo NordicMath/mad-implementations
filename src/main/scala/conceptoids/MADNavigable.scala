@@ -53,7 +53,7 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
-        def toJSON() = if(value.nonEmpty) JSON(value.get) else JNull
+        def toJSON() = if(value.nonEmpty) JSON[T](value.get) else JNull
     }
 
     class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable {
