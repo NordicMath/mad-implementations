@@ -48,4 +48,22 @@ trait Codecs {
     implicit def seqCodec[T : Codec] = new SeqCodec[T]
     class SeqCodec[T : Codec] extends TCodec[Seq[T], List[T]] (_.toList, _.toSeq)
     
+    // MAD Codecs
+    import io.github.nordicmath.mad.conceptoids._
+    import MADPath._
+    
+    implicit object MADPathCodec extends PFCodec[MADPath]{
+        val encoder = {
+            case Destination => JString("Destination")
+            case EnterTree(param, next) => JObject("param" -> JString(param), "next" -> MADPathCodec(next))
+            case EnterList(index, next) => JObject("index" -> JInt(index), "next" -> MADPathCodec(next))
+            case EnterOption(next) => JObject("enter" -> JObject(), "next" -> MADPathCodec(next))
+        }
+        val decoder = {
+            case JString("Destination") => Destination
+            case JObject(List(JField("param", JString(param)), JField("next", MADPathCodec(next)))) => EnterTree(param, next)
+            case JObject(List(JField("index", JInt(index)), JField("next", MADPathCodec(next)))) => EnterList(index.toInt, next)
+            case JObject(List(JField("enter", JObject(List())), JField("next", MADPathCodec(next)))) => EnterOption(next)
+        }
+    }
 }
