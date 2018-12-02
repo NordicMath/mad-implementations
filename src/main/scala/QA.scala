@@ -1,6 +1,18 @@
 package io.github.nordicmath.mad
 
+import conceptoids._
+import questions._
 import memory._
+import json._
+
+import java.nio.file.{Paths => FilePaths, Files}
+import java.nio.charset.StandardCharsets
+
+import scala.io.Source
+            
+import org.json4s.native.JsonMethods._
+import org.json4s._
+
 import scala.reflect.runtime.universe._
 
 case class QA()(implicit io : IO, memory : Memory) {
@@ -90,8 +102,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case class Save(asString : Boolean) extends Stage {
             def next() : Stage = {
-                import json._
-                import org.json4s._
                 
                 val j = encode(memory.getInformation)
                 
@@ -99,10 +109,6 @@ case class QA()(implicit io : IO, memory : Memory) {
                     show("Data:")
                     show[JValue](j)
                 } else {
-                    import java.nio.file.{Paths => FilePaths, Files}
-                    import java.nio.charset.StandardCharsets
-                    import org.json4s.native.JsonMethods._
-                    
                     show("Enter filename: ")
                     val name = read()
                     Files.write(FilePaths.get(name), compact(render(j)).getBytes(StandardCharsets.UTF_8))
@@ -114,16 +120,11 @@ case class QA()(implicit io : IO, memory : Memory) {
                 
         case class Load(asString : Boolean) extends Stage {
             def next() : Stage = {
-                import json._
-                import org.json4s._
-                import org.json4s.native.JsonMethods._
-                import conceptoids._
                 
                 val str = if(asString) {
                     show("Enter string to load:")
                     read()
                 } else {
-                    import scala.io.Source
                     show("Enter filename: ")
                     val name = read()
                     Source.fromFile(name).mkString
@@ -155,8 +156,6 @@ case class QA()(implicit io : IO, memory : Memory) {
             def next() : Stage = {
                 show("Paths: ")
                 
-                import questions._
-                
                 for (path <- PriorityEngine.generatePaths()) show(path)
                 
                 return MainMenu
@@ -167,7 +166,6 @@ case class QA()(implicit io : IO, memory : Memory) {
             def next() : Stage = {
                 show("List of information: ")
                 
-                import conceptoids._
                 memory.getInformation.foreach(show[Information])
                 
                 return MainMenu
@@ -178,7 +176,6 @@ case class QA()(implicit io : IO, memory : Memory) {
             def next() : Stage = {
                 show("List of failed information: ")
                 
-                import conceptoids._
                 memory.getFailedInformation.foreach(show[Information])
                 
                 return MainMenu
@@ -186,7 +183,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         }
         
         case object Question extends Stage {
-            import questions._
             
             def next() : Stage = {
                 
@@ -210,7 +206,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case object NewConceptoid extends Stage {
             def next() : Stage = {
-                import conceptoids._
                 show("What is the path-name of this concept?")
                 val name = read()
                 
