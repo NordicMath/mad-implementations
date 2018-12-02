@@ -6,4 +6,3 @@
 * Add tests!!!!
 * Implement NewConceptoid in Question
 * Fix indentation
-* Organise imports better, esp. in QA

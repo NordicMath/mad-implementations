@@ -1,9 +1,9 @@
 package io.github.nordicmath.mad.interpretation
 
 import io.github.nordicmath.mad._
-import MADException._
 import conceptoids._
 import Information._
+import MADException._
 
 
 trait Interpreter {

@@ -1,9 +1,10 @@
 package io.github.nordicmath.mad
 
+import conceptoids._
+	
 sealed abstract class MADException(msg : String) extends Exception(msg)
 
 object MADException {
-	import conceptoids._
 	
 	abstract class InterpreterIllegalInput(correct : String) extends MADException(f"Please enter $correct!")
 	object BooleanInput extends InterpreterIllegalInput("true/false")

@@ -19,7 +19,9 @@ object IO {
     
     implicit object improvedIO extends IO {
         import conceptoids._
+        
         import org.json4s._
+        import org.json4s.native.JsonMethods._
         
         def colorOf[S : TypeTag] = typeOf[S] match {
             // Semantic
@@ -34,7 +36,6 @@ object IO {
         }
         
         def show[S : TypeTag](ob : S) = {
-            import org.json4s.native.JsonMethods._
             val txt : String = typeOf[S] match {
                 case t if t <:< typeOf[JValue] => compact(render(ob.asInstanceOf[JValue]))
                 

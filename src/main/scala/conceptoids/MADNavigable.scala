@@ -1,6 +1,7 @@
 package io.github.nordicmath.mad.conceptoids
 
 import io.github.nordicmath.mad.json._
+import MADType._
 
 import org.json4s._
 import scala.reflect.runtime.universe._
@@ -18,9 +19,6 @@ sealed trait MADNavigable {
 }
 
 object MADNavigable {
-    
-    import MADType._
-    
     
     sealed abstract class MADValuePrimitive[T](val madtype : MADType)(implicit val typetag : TypeTag[T], val codec : Codec[T]) {
         def conv(x : Any) : T = x.asInstanceOf[T]

@@ -49,7 +49,7 @@ trait Codecs {
     class SeqCodec[T : Codec] extends TCodec[Seq[T], List[T]] (_.toList, _.toSeq)
     
     // MAD Codecs
-    import io.github.nordicmath.mad.conceptoids._
+    import conceptoids._
     import MADPath._
     import Information._
     
