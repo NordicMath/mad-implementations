@@ -19,7 +19,8 @@ trait Codecs {
         
     implicit object StringCodec extends SCodec[JString, String](JString.apply, JString.unapply)
     implicit object BooleanCodec extends SCodec[JBool, Boolean](JBool.apply, JBool.unapply)
-    implicit object IntCodec extends SCodec[JInt, Int](n => JInt(BigInt(n)), j => Some(j.num.toInt) )
+    implicit object BigIntCodec extends SCodec[JInt, BigInt](JInt.apply, JInt.unapply)
     
+    implicit object IntCodec extends TCodec[Int, BigInt](BigInt(_), _.toInt)
     
 }
