@@ -11,6 +11,11 @@ trait Codecs {
         def encode(t : T) = encoder(t)
         def decode(j : JValue) = for {s <- embed(j); t <- decoder(s)} yield t
     }
+    
+    case class TCodec[T, S : Codec](to : T => S, from : S => T) extends Codec[T] {
+        def encode(t : T) = JSON[S](to(t))
+        def decode(j : JValue) = JSON[S].unapply(j).map(from)
+    }
         
     implicit object StringCodec extends SCodec[JString, String](JString.apply, JString.unapply)
     implicit object BooleanCodec extends SCodec[JBool, Boolean](JBool.apply, JBool.unapply)
