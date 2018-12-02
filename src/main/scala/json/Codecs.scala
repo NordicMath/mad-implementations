@@ -20,7 +20,13 @@ trait Codecs {
         def decode(j : JValue) = json.decode[S](j).map(from)
     }
     
-    class PFCodec[T](encoder : T => JValue, decoder : PartialFunction[JValue, T]) extends SCodec[JValue, T](encoder, decoder.lift)
+    abstract class PFCodec[T] extends Codec[T] {
+        def encoder : (T => JValue)
+        def decoder : PartialFunction[JValue, T]
+        
+        final def encode(t : T) = encoder(t)
+        final def decode(j : JValue) = decoder.lift(j)
+    }
     
     // Primitive codecs
     implicit object StringCodec extends SCodec[JString, String](JString.apply, JString.unapply)
