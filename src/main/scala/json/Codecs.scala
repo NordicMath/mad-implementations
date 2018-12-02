@@ -6,17 +6,19 @@ import util.Try
 
 trait Codecs {
     // Codec helpers
-    case class SCodec[S <: JValue, T](encoder : T => S, decoder : S => Option[T]) extends Codec[T] {
+    class SCodec[S <: JValue, T](encoder : T => S, decoder : S => Option[T]) extends Codec[T] {
         def embed (j : JValue) : Option[S] = Try(j.asInstanceOf[S]).toOption
         
         def encode(t : T) = encoder(t)
         def decode(j : JValue) = for {s <- embed(j); t <- decoder(s)} yield t
     }
     
-    case class TCodec[T, S : Codec](to : T => S, from : S => T) extends Codec[T] {
+    class TCodec[T, S : Codec](to : T => S, from : S => T) extends Codec[T] {
         def encode(t : T) = JSON[S](to(t))
         def decode(j : JValue) = JSON[S].unapply(j).map(from)
     }
+    
+    class PFCodec[T](encoder : T => JValue, decoder : PartialFunction[JValue, T]) extends SCodec[JValue, T](encoder, decoder.lift)
     
     // Primitive codecs
     implicit object StringCodec extends SCodec[JString, String](JString.apply, JString.unapply)
