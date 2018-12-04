@@ -6,9 +6,7 @@ import MADType._
 import org.json4s._
 
 
-sealed trait MADNavigable {
-    def madtype : MADType
-    
+sealed abstract class MADNavigable (val madtype : RichMADType) {    
     def isset : Boolean
     def unset() : Unit
     
