@@ -69,14 +69,14 @@ trait Codecs {
     }
     
     implicit object PathCodec extends PFCodec[Path]{
-        val encoder = { case Path(cname, mpath) => JObject(
+        val encoder = { case Path(DBPath(cname), mpath) => JObject(
                 "cname" -> JString(cname),
                 "mpath" -> MADPathCodec(mpath)
         )}
         val decoder = { case JObject(List(
                 JField("cname", JString(cname)),
                 JField("mpath", MADPathCodec(mpath))
-        )) => Path(cname, mpath)}
+        )) => Path(DBPath(cname), mpath)}
     }
     
     implicit object InformationCodec extends PFCodec[Information]{

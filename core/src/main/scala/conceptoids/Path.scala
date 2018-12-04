@@ -1,5 +1,7 @@
 package io.github.nordicmath.mad.conceptoids
 
-case class Path(cname : String, mpath : MADPath) {
-    override def toString = cname + mpath.toString
+case class DBPath(name : String)
+
+case class Path(dbpath : DBPath, mpath : MADPath) {
+    override def toString = dbpath.name + mpath.toString
 }
