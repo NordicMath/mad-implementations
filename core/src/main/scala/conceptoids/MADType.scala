@@ -9,4 +9,7 @@ object MADType {
     case class MADTree(override val name : String, params : (String, MADType)*) extends MADType(name)
     case class MADList(param : MADType) extends MADType("List(" + param.name + ")")
     case class MADOption(param : MADType) extends MADType("Option(" + param.name + ")")
+    
+    import scala.language.implicitConversions
+    implicit def enrich(tp : MADType) : RichMADType = RichMADType(tp)
 }
