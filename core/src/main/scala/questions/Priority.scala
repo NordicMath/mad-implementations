@@ -6,10 +6,10 @@ import memory._
 import conceptoids._
 
 object PriorityEngine {
-    def generatePath()(implicit mem : Memory) : GPath = {
-        val paths = generatePaths()
+    def generateQuestion()(implicit mem : Memory) : Question = {
+        val questions = generateQuestions()
         
-        if(paths.length > 0) paths.apply(0) else throw MADException.NoQuestions
+        if(questions.length > 0) questions.apply(0) else throw MADException.NoQuestions
     }
     
     def generatePaths()(implicit mem : Memory) : Seq[GPath] = (for {
@@ -18,4 +18,9 @@ object PriorityEngine {
         path = Path(DBPath(cname), sub)
         if !mem.getAttribute(path).isset
     } yield path) ++ Seq(EmptyPath)
+    
+    def generateQuestions()(implicit mem : Memory) : Seq[Question] = for {
+        path <- generatePaths()
+        question <- QuestionEngine.questions(path)
+    } yield question
 }
