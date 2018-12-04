@@ -14,6 +14,7 @@ case class Question(text : String, path : GPath, interpreter : Interpreter)
 object QuestionEngine {
     def question (p : GPath)(implicit mem : Memory) : Question = p match {
         case p : Path => fromMadtype(p, mem.getAttribute(p).madtype)
+        case EmptyPath => Question(f"What is the path of a new conceptoid?", p, conceptoidPathInterpreter)
     }
     
     private def fromMadtype(p : Path, madtype : MADType) = madtype match {
