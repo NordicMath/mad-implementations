@@ -8,4 +8,6 @@ case class Path(dbpath : DBPath, mpath : MADPath) extends GPath {
     override def toString = dbpath.name + mpath.toString
 }
 
-case object EmptyPath extends GPath
+case object EmptyPath extends GPath {
+    override def toString = "root"
+}
