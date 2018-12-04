@@ -3,4 +3,3 @@
 * Add priority and other attributes to MADTypes. Perhaps Rich-MADtypes?
 * Implement dependeny-relations for information
 * Add tests!!!!
-* Implement NewConceptoid in Question
