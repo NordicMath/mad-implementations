@@ -24,18 +24,16 @@ object MADNavigable {
         implicit object intPrimitive extends MADValuePrimitive[Int](MADInt)
     }
     
-    def apply(x : MADType) : MADNavigable = x match {
-        case MADString => new MADValue[String]()
-        case MADBool => new MADValue[Boolean]()
-        case MADInt => new MADValue[Int]()
-        case MADTree(name, params @ _*) => new MADValueTree(name, params)
-        case MADList(param) => new MADValueList(param)
-        case MADOption(param) => new MADValueOption(param)
+    def apply(x : RichMADType) : MADNavigable = (x : MADType) match {
+        case MADString => new MADValue[String](x)
+        case MADBool => new MADValue[Boolean](x)
+        case MADInt => new MADValue[Int](x)
+        case MADTree(_, _*) => new MADValueTree(x)
+        case MADList(_) => new MADValueList(x)
+        case MADOption(_) => new MADValueOption(x)
     }
     
-    class MADValue[T : MADValuePrimitive] () extends MADNavigable {
-        private val madvp = implicitly[MADValuePrimitive[T]]
-        def madtype = madvp.madtype
+    class MADValue[T : MADValuePrimitive] (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
         
         private var value : Option[T] = None
         def set(nval : T) = value = Some(nval)
@@ -45,16 +43,17 @@ object MADNavigable {
         def isset = !value.isEmpty
         def unset() = value = None
         
+        private val madvp = implicitly[MADValuePrimitive[T]]
         def toJSON() = if(value.nonEmpty) madvp.codec(value.get) else JNull
     }
 
-    class MADValueTree (name : String, params : Seq[(String, MADType)]) extends MADNavigable {
+    class MADValueTree (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        private val params = madtype.inner.asInstanceOf[MADTree].params
+        
         import collection.mutable.HashMap
         
         private val map : HashMap[String, MADNavigable] = HashMap()
         unset()
-        
-        def madtype = MADTree(name, params : _*)
         
         def attr(param : String) = map.get(param)
         
@@ -74,13 +73,13 @@ object MADNavigable {
         } : _*)
     }
 
-    class MADValueList (param : MADType) extends MADNavigable {
+    class MADValueList (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        private val param = madtype.inner.asInstanceOf[MADList].param
+
         import collection.mutable.Buffer
         
         private val list : Buffer[MADNavigable] = Buffer()
-        
-        def madtype = MADList(param)
-        
+                
         def index(i : Int) = list.lift(i)
         def listNew() = list += MADNavigable(param)
         
@@ -95,11 +94,11 @@ object MADNavigable {
         def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
     }
 
-    class MADValueOption (param : MADType) extends MADNavigable {
+    class MADValueOption (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        private val param = madtype.inner.asInstanceOf[MADOption].param
+        
         private var value : Option[Option[MADNavigable]] = None
-        
-        def madtype = MADOption(param)
-        
+                
         def optAssign(possible : Boolean) = value = Some(if (possible) Some(MADNavigable(param)) else None)
         def getInternalValue = value.get.get
         
