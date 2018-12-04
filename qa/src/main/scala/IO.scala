@@ -1,4 +1,6 @@
-package io.github.nordicmath.mad
+package io.github.nordicmath.mad.qa
+
+import io.github.nordicmath.mad._
 
 import scala.reflect.runtime.universe._
 
