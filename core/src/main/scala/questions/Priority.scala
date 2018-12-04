@@ -6,7 +6,7 @@ import memory._
 import conceptoids._
 
 object PriorityEngine {
-    def generatePath()(implicit mem : Memory) : Path = {
+    def generatePath()(implicit mem : Memory) : GPath = {
         val paths = generatePaths()
         
         if(paths.length > 0) paths.apply(0) else throw MADException.NoQuestions

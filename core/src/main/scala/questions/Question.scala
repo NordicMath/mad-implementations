@@ -9,10 +9,14 @@ import Interpreter._
 import MADType._
 
 
-case class Question(text : String, path : Path, interpreter : Interpreter)
+case class Question(text : String, path : GPath, interpreter : Interpreter)
 
 object QuestionEngine {
-    def question (p : Path)(implicit mem : Memory) : Question = mem.getAttribute(p).madtype match {
+    def question (p : GPath)(implicit mem : Memory) : Question = p match {
+        case p : Path => fromMadtype(p, mem.getAttribute(p).madtype)
+    }
+    
+    private def fromMadtype(p : Path, madtype : MADType) = madtype match {
         case MADString => Question(f"What is $p?", p, stringInterpreter)
         case MADBool => Question(f"Is $p true or false?", p, boolInterpreter)
         case MADInt => Question(f"What number is $p?", p, intInterpreter)
