@@ -42,7 +42,6 @@ case class QA()(implicit io : IO, memory : Memory) {
         
         case object MainMenu extends Stage {
             def next() = Menu("Options: ",
-                "New conceptoid" -> NewConceptoid,
                 "Question" -> Question,
                 "Display..." -> Menu("Display...", 
                     "Memory" -> Display,
@@ -198,19 +197,6 @@ case class QA()(implicit io : IO, memory : Memory) {
                     
                     memory.push(info)
                 } catch {
-                    case ex : MADException => show(ex.toString)
-                }
-                
-                return MainMenu
-            }
-        }
-        
-        case object NewConceptoid extends Stage {
-            def next() : Stage = {
-                show("What is the path-name of this concept?")
-                val name = read()
-                
-                try memory.push(Information.NewConceptoid(name)) catch {
                     case ex : MADException => show(ex.toString)
                 }
                 
