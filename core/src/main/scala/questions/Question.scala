@@ -13,11 +13,11 @@ case class Question(text : String, path : GPath, interpreter : Interpreter)
 
 object QuestionEngine {
     def questions (p : GPath)(implicit mem : Memory) : Seq[Question] = p match {
-        case p : Path => fromMadtype(p, mem.getAttribute(p).madtype)
+        case p : Path => fromMADType(p, mem.getAttribute(p).madtype)
         case EmptyPath => Seq(Question(f"What is the path of a new conceptoid?", p, conceptoidPathInterpreter))
     }
     
-    private def fromMadtype(p : Path, madtype : RichMADType) : Seq[Question] = madtype.inner match {
+    private def fromMADType(p : Path, madtype : RichMADType) : Seq[Question] = madtype.inner match {
         case MADString => Seq(Question(f"What is $p?", p, stringInterpreter))
         case MADBool => Seq(Question(f"Is $p true or false?", p, boolInterpreter))
         case MADInt => Seq(Question(f"What number is $p?", p, intInterpreter))
