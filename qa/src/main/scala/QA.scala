@@ -187,8 +187,7 @@ case class QA()(implicit io : IO, memory : Memory) {
             def next() : Stage = {
                 
                 try {
-                    val path = PriorityEngine.generatePath()
-                    val question = QuestionEngine.question(path)
+                    val question = PriorityEngine.generateQuestion()
                     
                     show(question.text)
                     
