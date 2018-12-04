@@ -1,6 +1,6 @@
-* Add package.scala and documentation to everything
-* Conceptoid-references as MADType
 * Add priority and other attributes to MADTypes. Perhaps Rich-MADtypes?
-* Implement dependency-relations for information
-* Add tests!!!!
+* Conceptoid-references as MADType
 * Web-interface (!)
+* Add package.scala and documentation to everything
+* Implement dependency-relations for information (do we want this?)
+* Add tests
