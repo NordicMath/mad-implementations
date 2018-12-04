@@ -12,17 +12,17 @@ import MADType._
 case class Question(text : String, path : GPath, interpreter : Interpreter)
 
 object QuestionEngine {
-    def question (p : GPath)(implicit mem : Memory) : Question = p match {
+    def questions (p : GPath)(implicit mem : Memory) : Seq[Question] = p match {
         case p : Path => fromMadtype(p, mem.getAttribute(p).madtype)
-        case EmptyPath => Question(f"What is the path of a new conceptoid?", p, conceptoidPathInterpreter)
+        case EmptyPath => Seq(Question(f"What is the path of a new conceptoid?", p, conceptoidPathInterpreter))
     }
     
-    private def fromMadtype(p : Path, madtype : MADType) = madtype match {
-        case MADString => Question(f"What is $p?", p, stringInterpreter)
-        case MADBool => Question(f"Is $p true or false?", p, boolInterpreter)
-        case MADInt => Question(f"What number is $p?", p, intInterpreter)
-        case MADOption(_) => Question(f"Is something like $p possible?", p, optionInterpreter)
-        case MADList(_) => Question(f"Are there more elements in $p?", p, listInterpreter)
+    private def fromMadtype(p : Path, madtype : MADType) : Seq[Question] = madtype match {
+        case MADString => Seq(Question(f"What is $p?", p, stringInterpreter))
+        case MADBool => Seq(Question(f"Is $p true or false?", p, boolInterpreter))
+        case MADInt => Seq(Question(f"What number is $p?", p, intInterpreter))
+        case MADOption(_) => Seq(Question(f"Is something like $p possible?", p, optionInterpreter))
+        case MADList(_) => Seq(Question(f"Are there more elements in $p?", p, listInterpreter))
         
         case mt => throw MADException.QuestionUnsupportedType(p, mt)
     }
