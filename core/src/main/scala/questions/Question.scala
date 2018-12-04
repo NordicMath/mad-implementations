@@ -17,7 +17,7 @@ object QuestionEngine {
         case EmptyPath => Seq(Question(f"What is the path of a new conceptoid?", p, conceptoidPathInterpreter))
     }
     
-    private def fromMadtype(p : Path, madtype : MADType) : Seq[Question] = madtype match {
+    private def fromMadtype(p : Path, madtype : RichMADType) : Seq[Question] = madtype.inner match {
         case MADString => Seq(Question(f"What is $p?", p, stringInterpreter))
         case MADBool => Seq(Question(f"Is $p true or false?", p, boolInterpreter))
         case MADInt => Seq(Question(f"What number is $p?", p, intInterpreter))
