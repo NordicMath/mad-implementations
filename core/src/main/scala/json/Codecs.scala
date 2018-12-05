@@ -57,7 +57,15 @@ trait Codecs {
     // MAD Codecs
     import conceptoids._
     import MADPath._
+    import MADType._
     import Information._
+    
+    implicit object MADTypeCodec extends PFCodec[MADType]{
+        val paramsCodec = implicitly[Codec[Seq[(String, RichMADType)]]]
+    }
+    
+    implicit object RichMADTypeCodec extends PFCodec[RichMADType]{
+    }
     
     implicit object MADPathCodec extends PFCodec[MADPath]{
         val encoder = {
