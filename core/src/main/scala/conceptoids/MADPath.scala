@@ -16,6 +16,8 @@ sealed abstract class MADPath(val madtype : RichMADType, next : Option[MADPath])
     }
     protected def inner_navigate (nav : Nav) : MADNavigable
     
+    final def tree : Seq[MADPath] = Seq(this) ++ next.map(_.tree).getOrElse(Seq())
+    
     def partStrings : Seq[String]
 }
 
