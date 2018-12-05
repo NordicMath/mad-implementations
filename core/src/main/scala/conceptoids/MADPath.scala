@@ -16,6 +16,7 @@ sealed abstract class MADPath(val madtype : RichMADType, next : Option[MADPath])
     }
     protected def inner_navigate (nav : Nav) : MADNavigable
     
+    def partStrings : Seq[String]
 }
 
 object MADPath {
@@ -26,6 +27,7 @@ object MADPath {
         type Nav = MADNavigable
         def inner_navigate (nav : MADNavigable) = nav
         
+        def partStrings = Seq()
     }
     
     case class EnterTree(param : String, next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
@@ -37,6 +39,7 @@ object MADPath {
         type Nav = MADValueTree
         def inner_navigate (nav : MADValueTree) = next.navigate(nav.attr(param).get)
         
+        def partStrings = Seq(param)
     }
     
     case class EnterList(index : Int, next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
@@ -45,6 +48,7 @@ object MADPath {
         type Nav = MADValueList
         def inner_navigate (nav : MADValueList) = next.navigate(nav.index(index).get)
         
+        def partStrings = Seq(index.toString)
     }
     
     case class EnterOption(next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
@@ -53,5 +57,6 @@ object MADPath {
         type Nav = MADValueOption
         def inner_navigate (nav : MADValueOption) = next.navigate(nav.getInternalValue)
         
+        def partStrings = Seq()
     }
 }
