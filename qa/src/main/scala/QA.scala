@@ -72,7 +72,7 @@ case class QA()(implicit io : IO, memory : Memory) {
         case class Menu(title : String, stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
                 def lookup[S](lst : List[(String, S)], l : String) : Option[S] = lst match {
-                    case (l1, s) :: _ if l1.head.toLower == l.head.toLower => Some(s) 
+                    case (l1, s) :: _ if l1.headOption.map(_.toLower) == l.headOption.map(_.toLower) => Some(s) 
                     case Seq() => None
                     case _ :: tail => lookup(tail, l)
                 }
