@@ -70,6 +70,14 @@ trait Codecs {
             case MADList(param) => JObject(List(JField("type", JString("list")), JField("param", RichMADTypeCodec(param))))
             case MADOption(param) => JObject(List(JField("type", JString("option")), JField("param", RichMADTypeCodec(param))))
         }
+        lazy val decoder = {
+            case JObject(List(JField("type", JString("string")))) => MADString
+            case JObject(List(JField("type", JString("bool")))) => MADBool
+            case JObject(List(JField("type", JString("int")))) => MADInt
+            case JObject(List(JField("type", JString("tree")), JField("name", JString(name)), JField("params", paramsCodec(params)))) => MADTree(name, params : _*)
+            case JObject(List(JField("type", JString("list")), JField("param", RichMADTypeCodec(param)))) => MADList(param)
+            case JObject(List(JField("type", JString("option")), JField("param", RichMADTypeCodec(param)))) => MADOption(param)
+        }
     }
     
     implicit object RichMADTypeCodec extends PFCodec[RichMADType]{
