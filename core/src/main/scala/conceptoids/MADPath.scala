@@ -21,14 +21,25 @@ sealed abstract class MADPath(val madtype : RichMADType, next : Option[MADPath])
 object MADPath {
     
     case class Destination(override val madtype : RichMADType) extends MADPath(madtype, None){
+        def validate = true
+        
     }
     
     case class EnterTree(param : String, next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
+        def validate = madtype.inner match {
+            case tp : MADTree => tp.params.map(_._1).contains(param)
+            case _ => false
+        }
+        
     }
     
     case class EnterList(index : Int, next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
+        def validate = madtype.inner.isInstanceOf[MADList]
+        
     }
     
     case class EnterOption(next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
+        def validate = madtype.inner.isInstanceOf[MADOption]
+        
     }
 }
