@@ -20,5 +20,15 @@ sealed abstract class MADPath(val madtype : RichMADType, next : Option[MADPath])
 
 object MADPath {
     
+    case class Destination(override val madtype : RichMADType) extends MADPath(madtype, None){
+    }
+    
+    case class EnterTree(param : String, next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
+    }
+    
+    case class EnterList(index : Int, next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
+    }
+    
+    case class EnterOption(next : MADPath, override val madtype : RichMADType) extends MADPath(madtype, Some(next)){
     }
 }
