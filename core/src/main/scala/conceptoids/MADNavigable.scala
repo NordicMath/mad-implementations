@@ -28,9 +28,9 @@ object MADNavigable {
         case MADString => new MADValue[String](x)
         case MADBool => new MADValue[Boolean](x)
         case MADInt => new MADValue[Int](x)
-        case MADTree(_, _*) => new MADValueTree(x)
-        case MADList(_) => new MADValueList(x)
-        case MADOption(_) => new MADValueOption(x)
+        case x : MADTree => new MADValueTree(x)
+        case x : MADList => new MADValueList(x)
+        case x : MADOption => new MADValueOption(x)
     }
     
     class MADValue[T : MADValuePrimitive] (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
