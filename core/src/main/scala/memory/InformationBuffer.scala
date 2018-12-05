@@ -40,10 +40,10 @@ class InformationBuffer() extends Memory {
                 val proc : Try[Unit] = Try(next match {
                     case NoInformation => {}
                     
-                    case NewConceptoid(p) => {
-                        if(!mem.contains(p)) 
-                            mem.put(p, new Conceptoid()) 
-                        else throw MADException.ConceptoidNameTaken(p)
+                    case NewConceptoid(p) => p match {
+                        case "" => throw MADException.ConceptoidNameEmpty
+                        case p if mem.contains(p) => throw MADException.ConceptoidNameTaken(p)
+                        case p => mem.put(p, new Conceptoid()) 
                     }
                     case Apply(path, value) => {
                         getAttributeAs[MADValue[Any]](path).set(value)

@@ -11,6 +11,7 @@ object MADException {
     object IntegerInput extends InterpreterIllegalInput("an integer")
     
     case class ConceptoidNameTaken(p : String) extends MADException(f"The path-name '$p' is taken!")
+    case object ConceptoidNameEmpty extends MADException(f"The path-name may not be empty!")
     
     object NoQuestions extends MADException(f"No questions found!")
     
