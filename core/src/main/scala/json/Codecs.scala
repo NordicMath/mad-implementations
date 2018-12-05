@@ -21,7 +21,7 @@ trait Codecs {
     }
     
     abstract class PFCodec[T] extends Codec[T] {
-        def encoder : (T => JValue)
+        def encoder : PartialFunction[T, JValue]
         def decoder : PartialFunction[JValue, T]
         
         final def encode(t : T) = encoder(t)
