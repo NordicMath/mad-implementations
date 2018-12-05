@@ -95,7 +95,7 @@ class InformationBuffer() extends Memory {
     
     def getObject(ob : String) : Conceptoid = mem(ob)
     def getObjects = mem.toSeq
-    def getAttribute(path : Path) : MADNavigable = MADPath.navigate(path.mpath, mem(path.dbpath.name).tree)
+    def getAttribute(path : Path) : MADNavigable = path.mpath.navigate(mem(path.dbpath.name).tree)
     def getInformation = finished.toSeq
     def getFailedInformation = failed.toSeq
 }
