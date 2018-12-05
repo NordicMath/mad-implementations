@@ -48,6 +48,12 @@ trait Codecs {
     implicit def seqCodec[T : Codec] = new SeqCodec[T]
     class SeqCodec[T : Codec] extends TCodec[Seq[T], List[T]] (_.toList, _.toSeq)
     
+    implicit def pairCodec[T : Codec, S : Codec] = new PairCodec[T, S]
+    class PairCodec[T, S](implicit tc : Codec[T], sc : Codec[S]) extends PFCodec[(T, S)] {
+        val encoder = { case (t, s) => JObject(List(JField("t1", tc(t)), JField("t2", sc(s))))}
+        val decoder = { case JObject(List(JField("t1", tc(t)), JField("t2", sc(s)))) => (t, s)}
+    }
+    
     // MAD Codecs
     import conceptoids._
     import MADPath._
