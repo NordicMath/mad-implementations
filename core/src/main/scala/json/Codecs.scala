@@ -91,16 +91,16 @@ trait Codecs {
     
     implicit object MADPathCodec extends PFCodec[MADPath]{
         val encoder = {
-            case Destination => JString("Destination")
-            case EnterTree(param, next) => JObject("param" -> JString(param), "next" -> MADPathCodec(next))
-            case EnterList(index, next) => JObject("index" -> JInt(index), "next" -> MADPathCodec(next))
-            case EnterOption(next) => JObject("enter" -> JObject(), "next" -> MADPathCodec(next))
+            case Destination(madtype) => JObject("dest" -> RichMADTypeCodec(madtype)) 
+            case EnterTree(param, next, madtype) => JObject("param" -> JString(param), "type" -> RichMADTypeCodec(madtype), "next" -> MADPathCodec(next))
+            case EnterList(index, next, madtype) => JObject("index" -> JInt(index), "type" -> RichMADTypeCodec(madtype), "next" -> MADPathCodec(next))
+            case EnterOption(next, madtype) => JObject("enter" -> JObject(), "type" -> RichMADTypeCodec(madtype), "next" -> MADPathCodec(next))
         }
         val decoder = {
-            case JString("Destination") => Destination
-            case JObject(List(JField("param", JString(param)), JField("next", MADPathCodec(next)))) => EnterTree(param, next)
-            case JObject(List(JField("index", JInt(index)), JField("next", MADPathCodec(next)))) => EnterList(index.toInt, next)
-            case JObject(List(JField("enter", JObject(List())), JField("next", MADPathCodec(next)))) => EnterOption(next)
+            case JObject(List(JField("dest", RichMADTypeCodec(madtype)))) => Destination(madtype)
+            case JObject(List(JField("param", JString(param)), JField("type", RichMADTypeCodec(madtype)), JField("next", MADPathCodec(next)))) => EnterTree(param, next, madtype)
+            case JObject(List(JField("index", JInt(index)), JField("type", RichMADTypeCodec(madtype)), JField("next", MADPathCodec(next)))) => EnterList(index.toInt, next, madtype)
+            case JObject(List(JField("enter", JObject(List())), JField("type", RichMADTypeCodec(madtype)), JField("next", MADPathCodec(next)))) => EnterOption(next, madtype)
         }
     }
     
