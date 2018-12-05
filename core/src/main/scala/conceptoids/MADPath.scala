@@ -18,6 +18,7 @@ sealed abstract class MADPath(val madtype : RichMADType, next : Option[MADPath])
     
     final def tree : Seq[MADPath] = Seq(this) ++ next.map(_.tree).getOrElse(Seq())
     
+    final override def toString = tree.flatMap(_.partStrings).mkString(".")
     def partStrings : Seq[String]
 }
 
