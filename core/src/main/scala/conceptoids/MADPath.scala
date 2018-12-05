@@ -5,6 +5,9 @@ import MADNavigable._
 import MADType._
 
 sealed abstract class MADPath(val madtype : RichMADType, next : Option[MADPath]) {
+    if (!validate) throw MADException.MADPathMismatch(this)
+    def validate : Boolean
+    
     type Nav <: MADNavigable 
     
     final def navigate (nav : MADNavigable) : MADNavigable = nav match {
