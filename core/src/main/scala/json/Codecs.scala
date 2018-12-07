@@ -152,14 +152,8 @@ trait Codecs {
         }
     }
     
-    implicit object RichMADTypeCodec extends PFCodec[RichMADType]{
-        val encoder = {
-            case RichMADType(madtype, priority) => JObject(List(JField("madtype", MADTypeCodec(madtype)), JField("priority", IntCodec(priority))))
-        }
-        val decoder = {
-            case JObject(List(JField("madtype", MADTypeCodec(madtype)), JField("priority", IntCodec(priority)))) => RichMADType(madtype, priority)
-        }
-    }
+    implicit object RichMADTypeCodec extends TCodec[RichMADType, (MADType, Int)](RichMADType.unapply(_).get, RichMADType.tupled)(new NT2Codec[MADType, Int]("madtype", "priority"))
+    
     
     implicit object MADPathCodec extends PFCodec[MADPath]{
         val encoder = {
