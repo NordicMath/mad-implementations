@@ -116,6 +116,12 @@ trait Codecs {
             }
         }
         
+        class NT1Codec[T](name1 : String)(implicit codec1 : Codec[T]) extends NamedTupleGenericCodec[Tuple1[T]]((name1, codec1))
+        class NT2Codec[T, S](name1 : String, name2 : String)(implicit codec1 : Codec[T], codec2 : Codec[S]) extends NamedTupleGenericCodec[Tuple2[T, S]]((name1, codec1), (name2, codec2))
+        class NT3Codec[T, S, U](name1 : String, name2 : String, name3 : String)(implicit codec1 : Codec[T], codec2 : Codec[S], codec3 : Codec[U]) extends NamedTupleGenericCodec[Tuple3[T, S, U]]((name1, codec1), (name2, codec2), (name3, codec3))
+        class NT4Codec[T, S, U, V](name1 : String, name2 : String, name3 : String, name4 : String)(implicit codec1 : Codec[T], codec2 : Codec[S], codec3 : Codec[U], codec4 : Codec[V]) extends NamedTupleGenericCodec[Tuple4[T, S, U, V]]((name1, codec1), (name2, codec2), (name3, codec3), (name4, codec4))
+        class NT5Codec[T, S, U, V, W](name1 : String, name2 : String, name3 : String, name4 : String, name5 : String)(implicit codec1 : Codec[T], codec2 : Codec[S], codec3 : Codec[U], codec4 : Codec[V], codec5 : Codec[W]) extends NamedTupleGenericCodec[Tuple5[T, S, U, V, W]]((name1, codec1), (name2, codec2), (name3, codec3), (name4, codec4), (name5, codec5))
+        
     }
     
     import NamedTuples._
