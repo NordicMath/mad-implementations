@@ -28,6 +28,12 @@ trait Codecs {
         final def decode(j : JValue) = decoder.lift(j)
     }
     
+    
+    class UnionCodec[T] (codecs : PFCodec[T]*) extends PFCodec[T] {
+        def encoder = codecs.map(_.encoder).reduceLeft(_ orElse _)
+        def decoder = codecs.map(_.decoder).reduceLeft(_ orElse _)
+    }
+    
     // Primitive codecs
     implicit object StringCodec extends SCodec[JString, String](JString.apply, JString.unapply)
     implicit object BooleanCodec extends SCodec[JBool, Boolean](JBool.apply, JBool.unapply)
