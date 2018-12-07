@@ -61,7 +61,7 @@ trait Codecs {
     import Information._
     
     implicit object MADTypeCodec extends PFCodec[MADType]{
-        val paramsCodec = implicitly[Codec[Seq[(String, RichMADType)]]]
+        lazy val paramsCodec = implicitly[Codec[Seq[(String, RichMADType)]]]
         lazy val encoder = {
             case MADString => JObject(List(JField("type", JString("string"))))
             case MADBool => JObject(List(JField("type", JString("bool"))))
