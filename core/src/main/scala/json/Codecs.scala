@@ -29,6 +29,11 @@ trait Codecs {
     }
     
     
+    class SingletonCodec[T](t : T, j : JValue) extends PFCodec[T] {
+        lazy val encoder = {case `t` => j}
+        lazy val decoder = {case `j` => t}
+    }
+    
     class UnionCodec[T] (codecs : PFCodec[T]*) extends PFCodec[T] {
         def encoder = codecs.map(_.encoder).reduceLeft(_ orElse _)
         def decoder = codecs.map(_.decoder).reduceLeft(_ orElse _)
