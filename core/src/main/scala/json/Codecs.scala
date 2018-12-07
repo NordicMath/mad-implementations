@@ -76,6 +76,30 @@ trait Codecs {
         val decoder = { case JObject(List(JField("t1", tc(t)), JField("t2", sc(s)))) => (t, s)}
     }
     
+    case class AnyCodec[T](c : Codec[T]) {
+        def apply (x : Any) = c.apply(x.asInstanceOf[T])
+        def unapply (j : JValue) = c.unapply(j)
+    }
+    private class NamedListCodec (params : (String, Codec[_])*) extends Codec[Seq[Any]] {
+        private val paramsA : Seq[(String, AnyCodec[_])] = params.map{case (str, codec) => (str, AnyCodec(codec))}
+        def encode (seq : Seq[Any]) = JObject((paramsA zip seq).map{case ((param, codec), ob) => JField(param, codec(ob))} : _*)
+        
+        def decode (jval : JValue) = Try{
+            jval match {
+                case JObject(fields) => (for {
+                    ((p1, codec), (p2, j)) <- paramsA zip fields
+                    if p1 == p2
+                    ob <- codec.unapply(j)
+                } yield ob) match {
+                    case x if x.length == fields.length => Some(x)
+                    case _ => None
+                }
+                
+                case _ => None
+            }
+        }.toOption.flatten
+    }
+    
     object NamedTuples {
     }
     
