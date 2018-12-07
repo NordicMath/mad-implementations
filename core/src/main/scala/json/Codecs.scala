@@ -6,6 +6,10 @@ import org.json4s._
 
 import util.Try
 
+import scala.reflect.ClassTag
+
+import scala.language.implicitConversions
+
 trait Codecs {
     // Codec helpers
     class SCodec[S <: JValue, T](encoder : T => S, decoder : S => Option[T]) extends Codec[T] {
@@ -20,6 +24,7 @@ trait Codecs {
         def decode(j : JValue) = json.decode[S](j).map(from)
     }
     
+    
     abstract class PFCodec[T] extends Codec[T] {
         def encoder : PartialFunction[T, JValue]
         def decoder : PartialFunction[JValue, T]
@@ -28,6 +33,12 @@ trait Codecs {
         final def decode(j : JValue) = decoder.lift(j)
     }
     
+    implicit def subPFCodec[T : ClassTag, S >: T](codec : T) : PFCodec[S] = new SubPFCodec()(codec, implicitly[ClassTag[T]])
+    class SubPFCodec[T : Codec : ClassTag, S >: T] extends PFCodec[S] {
+        lazy val codec = implicitly[Codec[T]]
+        lazy val encoder = { case x : T => codec(x) }
+        lazy val decoder = { case codec(x : T) => x }
+    }
     
     class SingletonCodec[T](t : T, j : JValue) extends PFCodec[T] {
         lazy val encoder = {case `t` => j}
