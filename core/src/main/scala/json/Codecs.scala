@@ -76,6 +76,11 @@ trait Codecs {
         val decoder = { case JObject(List(JField("t1", tc(t)), JField("t2", sc(s)))) => (t, s)}
     }
     
+    object NamedTuples {
+    }
+    
+    import NamedTuples._
+    
     // MAD Codecs
     import conceptoids._
     import MADPath._
