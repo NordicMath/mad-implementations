@@ -101,6 +101,21 @@ trait Codecs {
     }
     
     object NamedTuples {
+        sealed class NamedTupleGenericCodec[T <: Product](params : (String, Codec[_])*) extends Codec[T] {
+            private val inner = new NamedListCodec(params : _*)
+            def encode (t : T) = inner.encode(t.productIterator.toSeq)
+            def decode (j : JValue) = inner.decode(j).map(toTuple(_).asInstanceOf[T])
+            
+            def toTuple (s : Seq[Any]) : Product = s.size match {
+                case 1 => Tuple1(s(0))
+                case 2 => Tuple2(s(0), s(1))
+                case 3 => Tuple3(s(0), s(1), s(2))
+                case 4 => Tuple4(s(0), s(1), s(2), s(3))
+                case 5 => Tuple5(s(0), s(1), s(2), s(3), s(4))
+                case _ => ???
+            }
+        }
+        
     }
     
     import NamedTuples._
