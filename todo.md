@@ -13,6 +13,7 @@ Interface:
 
 Misc:
 * Write about category structure on MAD-states (w/ Information as morphisms)
+* Look into using same core - different spec - for other kinds of information. Philosophy? Physics? Comp. Sci?
 
 Features:
 * MADRef (reference to a conceptoid, w/ predicate)
@@ -22,5 +23,4 @@ Features:
 * Inference engine! Both "right-hemisphere" and "left-hemisphere"; inference of Information through relations and etc... and inference of questions through analogies 
 
 Cleanup:
-* Move Conceptoid.scala to subproject to keep core clean -- possibly for other projects
 * General pattern of factoring out from core
