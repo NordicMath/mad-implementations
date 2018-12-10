@@ -12,12 +12,10 @@ object PriorityEngine {
         if(questions.length > 0) questions.apply(0) else throw MADException.NoQuestions
     }
     
-    def generatePaths()(implicit mem : Memory) : Seq[GPath] = (for {
-        (cname, conceptoid) <- mem.getObjects
-        sub <- conceptoid.tree.subpaths
-        path = Path(DBPath(cname), sub)
-        if !mem.getAttribute(path).isset
-    } yield path) ++ Seq(EmptyPath)
+    def generatePaths()(implicit mem : Memory) : Seq[MADPath] = for {
+        path <- mem.getTree.subpaths
+        if !mem.getObject(path).isset
+    } yield path
     
     def generateQuestions()(implicit mem : Memory) : Seq[Question] = for {
         path <- generatePaths()
