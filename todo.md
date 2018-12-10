@@ -23,4 +23,7 @@ Features:
 * Inference engine! Both "right-hemisphere" and "left-hemisphere"; inference of Information through relations and etc... and inference of questions through analogies 
 
 Cleanup:
+* Improve structure of MADPath - make it a list
+* Remove madtype from MADPath codec, seriously
+* Change interpreter? Maybe just "String => Information"
 * General pattern of factoring out from core
