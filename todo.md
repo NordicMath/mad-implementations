@@ -22,6 +22,5 @@ Features:
 * Inference engine! Both "right-hemisphere" and "left-hemisphere"; inference of Information through relations and etc... and inference of questions through analogies 
 
 Cleanup:
-* Instead of List[(String, MADNavigable)] use a single MADNavigable ( a MADMap) -- change in paradigm
 * Move Conceptoid.scala to subproject to keep core clean -- possibly for other projects
 * General pattern of factoring out from core
