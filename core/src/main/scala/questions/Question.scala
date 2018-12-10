@@ -1,7 +1,6 @@
 package io.github.nordicmath.mad.questions
 
 import io.github.nordicmath.mad._
-import memory._
 import conceptoids._
 import interpretation._
 
@@ -12,7 +11,7 @@ import MADType._
 case class Question(text : String, path : MADPath, interpreter : Interpreter)
 
 object QuestionEngine {
-    def questions (p : MADPath)(implicit mem : Memory) : Seq[Question] = fromMADType(p, p.madtype)
+    def questions (p : MADPath) : Seq[Question] = fromMADType(p, p.madtype)
     
     private def fromMADType(p : MADPath, madtype : RichMADType) : Seq[Question] = madtype.inner match {
         case MADString => Seq(Question(f"What is $p?", p, stringInterpreter))

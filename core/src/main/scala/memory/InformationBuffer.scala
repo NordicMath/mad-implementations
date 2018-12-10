@@ -5,7 +5,7 @@ import conceptoids._
 import Information._
 import MADNavigable._
 
-import collection.mutable.{Queue, HashMap}
+import collection.mutable.Queue
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
