@@ -12,7 +12,7 @@ import ExecutionContext.Implicits.global
 
 import util.Try
 
-class InformationBuffer() extends Memory {
+class InformationBuffer(val madtype : RichMADType) extends Memory {
     
     
     private val informationQueue : Queue[(Information, Promise[Unit])] = Queue()
@@ -25,7 +25,7 @@ class InformationBuffer() extends Memory {
     
     private var resetPromise : Option[Promise[Unit]] = None
     
-    private val mem : HashMap[String, Conceptoid] = HashMap()
+    private val mem : MADNavigable = MADNavigable(madtype)
 
     // Buffer loop: 
     Future {
@@ -40,19 +40,19 @@ class InformationBuffer() extends Memory {
                 val proc : Try[Unit] = Try(next match {
                     case NoInformation => {}
                     
-                    case NewConceptoid(p) => p match {
+                    /*case NewConceptoid(p) => p match {
                         case "" => throw MADException.ConceptoidNameEmpty
                         case p if mem.contains(p) => throw MADException.ConceptoidNameTaken(p)
                         case p => mem.put(p, new Conceptoid()) 
-                    }
+                    }*/
                     case Apply(path, value) => {
-                        getAttributeAs[MADValue[Any]](path).set(value)
+                        getObjectAs[MADValue[Any]](path).set(value)
                     }
                     case OptionAssign(path, b) => {
-                        getAttributeAs[MADValueOption](path).optAssign(b)
+                        getObjectAs[MADValueOption](path).optAssign(b)
                     }
                     case ListNew(path) => {
-                        getAttributeAs[MADValueList](path).listNew()
+                        getObjectAs[MADValueList](path).listNew()
                     }
                 })
                 
@@ -67,7 +67,7 @@ class InformationBuffer() extends Memory {
                     informationQueue.clear()
                     finished.clear()
                     failed.clear()
-                    mem.clear()
+                    mem.unset()
                 })
                 
                 resetPromise = None
@@ -93,9 +93,7 @@ class InformationBuffer() extends Memory {
         return p.future
     }
     
-    def getObject(ob : String) : Conceptoid = mem(ob)
-    def getObjects = mem.toSeq
-    def getAttribute(path : Path) : MADNavigable = path.mpath.navigate(mem(path.dbpath.name).tree)
+    def getTree = mem
     def getInformation = finished.toSeq
     def getFailedInformation = failed.toSeq
 }

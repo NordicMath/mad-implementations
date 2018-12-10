@@ -8,18 +8,18 @@ import scala.concurrent._
 import scala.concurrent.duration.Duration
 
 trait Memory {
+    def madtype : RichMADType
+    
     def reset_async() : Future[Unit]
     def reset() : Unit = Await.result(reset_async(), Duration(60, TimeUnit.SECONDS))
     
     def push_async(info : Information) : Future[Unit]
     def push(info : Information) : Unit = Await.result(push_async(info), Duration(60, TimeUnit.SECONDS))
     
-    def getAttribute(path : Path) : MADNavigable
-    def getAttributeAs[Nav <: MADNavigable](path : Path) : Nav = getAttribute(path).asInstanceOf[Nav]
+    def getObject(path : MADPath) : MADNavigable = path.navigate(getTree)
+    def getObjectAs[Nav <: MADNavigable](path : MADPath) : Nav = getObject(path).asInstanceOf[Nav]
     
-    def getObject(name : String) : Conceptoid
-    
-    def getObjects : Seq[(String, Conceptoid)]
+    def getTree : MADNavigable
     
     def getInformation : Seq[Information]
     def getFailedInformation : Seq[Information]
@@ -28,5 +28,5 @@ trait Memory {
 }
 
 object Memory {
-    def apply() : Memory = new InformationBuffer()
+    def apply(madtype : RichMADType) : Memory = new InformationBuffer(madtype)
 }
