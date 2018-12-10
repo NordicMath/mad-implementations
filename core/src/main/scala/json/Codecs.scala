@@ -170,17 +170,6 @@ trait Codecs {
         }
     }
     
-    implicit object PathCodec extends PFCodec[Path]{
-        val encoder = { case Path(DBPath(cname), mpath) => JObject(
-                "cname" -> JString(cname),
-                "mpath" -> MADPathCodec(mpath)
-        )}
-        val decoder = { case JObject(List(
-                JField("cname", JString(cname)),
-                JField("mpath", MADPathCodec(mpath))
-        )) => Path(DBPath(cname), mpath)}
-    }
-    
     implicit object InformationCodec extends PFCodec[Information]{
         private object JInfo {
             def apply(name : String, fs : List[JField]) : JValue = JObject(name -> JObject(fs))
@@ -191,9 +180,9 @@ trait Codecs {
         }
         
         private object JApply {
-            def apply[T : Codec](tpe : String, path : Path, value : T) = JInfo("Apply", List("type" -> JString(tpe), "path" -> PathCodec(path), "value" -> json.encode[T](value)))
-            def unapply(j : JValue) : Option[(String, JValue, Path)] = j match {
-                case JInfo("Apply", List(JField("type", JString(tpe)), JField("path", PathCodec(path)), JField("value", v))) => Some((tpe, v, path))
+            def apply[T : Codec](tpe : String, path : MADPath, value : T) = JInfo("Apply", List("type" -> JString(tpe), "path" -> MADPathCodec(path), "value" -> json.encode[T](value)))
+            def unapply(j : JValue) : Option[(String, JValue, MADPath)] = j match {
+                case JInfo("Apply", List(JField("type", JString(tpe)), JField("path", MADPathCodec(path)), JField("value", v))) => Some((tpe, v, path))
                 case _ => None
             }
         }
@@ -205,8 +194,8 @@ trait Codecs {
             case Apply(path, value : Boolean) => JApply("Boolean", path, value)
             case Apply(path, value : Int) => JApply("Int", path, value)
             case Apply(_, _) => ??? // Unreachable
-            case OptionAssign(path, p) => JInfo("OptionAssign", List("path" -> PathCodec(path), "possible" -> JBool(p)))
-            case ListNew(path) => JInfo("ListNew", List("path" -> PathCodec(path)))
+            case OptionAssign(path, p) => JInfo("OptionAssign", List("path" -> MADPathCodec(path), "possible" -> JBool(p)))
+            case ListNew(path) => JInfo("ListNew", List("path" -> MADPathCodec(path)))
         }
         
         val decoder = {
@@ -215,8 +204,8 @@ trait Codecs {
             case JApply("String", StringCodec(vs), path) => Apply[String](path, vs)
             case JApply("Int", IntCodec(vi), path) => Apply[Int](path, vi)
             case JApply("Boolean", BooleanCodec(vb), path) => Apply[Boolean](path, vb)
-            case JInfo("OptionAssign", List(JField("path", PathCodec(path)), JField("possible", JBool(p)))) => OptionAssign(path, p)
-            case JInfo("ListNew", List(JField("path", PathCodec(path)))) => ListNew(path)
+            case JInfo("OptionAssign", List(JField("path", MADPathCodec(path)), JField("possible", JBool(p)))) => OptionAssign(path, p)
+            case JInfo("ListNew", List(JField("path", MADPathCodec(path)))) => ListNew(path)
         }
         
     }
