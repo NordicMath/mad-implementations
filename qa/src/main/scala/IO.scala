@@ -39,7 +39,7 @@ object IO {
         
         def show[S : TypeTag](ob : S) = {
             val txt : String = typeOf[S] match {
-                case t if t <:< typeOf[JValue] => compact(render(ob.asInstanceOf[JValue]))
+                case t if t <:< typeOf[JValue] => pretty(render(ob.asInstanceOf[JValue]))
                 
                 case _ => ob.toString
             }
