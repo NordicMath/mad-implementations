@@ -20,8 +20,8 @@ object Information {
     case object NoInformation extends Information
     
     case class NewConceptoid(name : String) extends Information
-    case class Apply[S](path : Path, value : S)(implicit val madvp : MADValuePrimitive[S]) extends Information
-    case class OptionAssign(path : Path, possible : Boolean) extends Information
-    case class ListNew(path : Path) extends Information
+    case class Apply[S](path : MADPath, value : S)(implicit val madvp : MADValuePrimitive[S]) extends Information
+    case class OptionAssign(path : MADPath, possible : Boolean) extends Information
+    case class ListNew(path : MADPath) extends Information
     
 }

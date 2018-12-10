@@ -30,7 +30,7 @@ object IO {
             case t if t =:= typeOf[StageOption] => Console.WHITE
             
             // Custom
-            case t if t =:= typeOf[Path] => Console.BLUE
+            case t if t =:= typeOf[MADPath] => Console.BLUE
             case t if t =:= typeOf[Information] => Console.BLUE
             case t if t =:= typeOf[JValue] => Console.RED
             
