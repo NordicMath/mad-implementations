@@ -20,9 +20,15 @@ lazy val core = (project in file("core"))
         commonSettings, 
         name := "MAD-core"
     )
+    
+lazy val spec = (project in file("spec"))
+    .settings(
+        commonSettings,
+        name := "MAD-spec"
+    ).dependsOn(core)
 
 lazy val qa = (project in file("qa"))
     .settings(
         commonSettings,
         name := "MAD-QA"
-    ).dependsOn(core)
+    ).dependsOn(core, spec)
