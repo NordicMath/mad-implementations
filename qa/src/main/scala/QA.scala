@@ -143,10 +143,8 @@ case class QA()(implicit io : IO, memory : Memory) {
         case object Display extends Stage {
             def next() : Stage = {
                 show("Current state: ")
-                
-                memory.getObjects.foreach { case (name, conceptoid) =>
-                    show(name + ": " + conceptoid)
-                }
+                                
+                show(memory.getTree.toJSON())
                 
                 return MainMenu
             }
