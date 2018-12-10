@@ -1,4 +1,4 @@
-package io.github.nordicmath.mad.conceptoids
+package io.github.nordicmath.mad.structure
 
 sealed abstract class MADType(val name : String)
 

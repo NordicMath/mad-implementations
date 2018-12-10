@@ -1,7 +1,7 @@
 package io.github.nordicmath.mad.qa
 
 import io.github.nordicmath.mad._
-import conceptoids._
+import structure._
 import questions._
 import memory._
 import json._

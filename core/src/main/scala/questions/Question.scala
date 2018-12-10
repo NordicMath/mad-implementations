@@ -1,7 +1,7 @@
 package io.github.nordicmath.mad.questions
 
 import io.github.nordicmath.mad._
-import conceptoids._
+import structure._
 import interpretation._
 
 import Interpreter._

@@ -20,7 +20,7 @@ object IO {
     }
     
     implicit object improvedIO extends IO {
-        import conceptoids._
+        import structure._
         
         import org.json4s._
         import org.json4s.native.JsonMethods._

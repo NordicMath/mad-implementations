@@ -1,7 +1,7 @@
 package io.github.nordicmath.mad.memory
 
 import io.github.nordicmath.mad._
-import conceptoids._
+import structure._
 import Information._
 import MADNavigable._
 

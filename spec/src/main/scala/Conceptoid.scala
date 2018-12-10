@@ -1,5 +1,6 @@
 package io.github.nordicmath.mad.conceptoids
 
+import io.github.nordicmath.mad.structure._
 import MADType._
 
 

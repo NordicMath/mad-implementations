@@ -127,7 +127,7 @@ trait Codecs {
     import NamedTuples._
     
     // MAD Codecs
-    import conceptoids._
+    import structure._
     import MADPath._
     import MADType._
     import Information._
