@@ -15,10 +15,6 @@ object Interpreter {
         case _ : IllegalArgumentException => throw ex
     }
     
-    def conceptoidPathInterpreter : Interpreter = new Interpreter {
-        def interpret (path : MADPath, str : String) = NewConceptoid(str)
-    }
-    
     def stringInterpreter : Interpreter = new Interpreter {
         def interpret (path : MADPath, str : String) = Apply[String](path, str)
     }

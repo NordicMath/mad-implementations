@@ -40,11 +40,6 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                 val proc : Try[Unit] = Try(next match {
                     case NoInformation => {}
                     
-                    /*case NewConceptoid(p) => p match {
-                        case "" => throw MADException.ConceptoidNameEmpty
-                        case p if mem.contains(p) => throw MADException.ConceptoidNameTaken(p)
-                        case p => mem.put(p, new Conceptoid()) 
-                    }*/
                     case Apply(path, value) => {
                         getObjectAs[MADValue[Any]](path).set(value)
                     }

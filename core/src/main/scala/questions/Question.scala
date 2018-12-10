@@ -12,10 +12,7 @@ import MADType._
 case class Question(text : String, path : MADPath, interpreter : Interpreter)
 
 object QuestionEngine {
-    def questions (p : MADPath)(implicit mem : Memory) : Seq[Question] = p match {
-        case p : MADPath => fromMADType(p, mem.getObject(p).madtype)
-        //case EmptyPath => Seq(Question(f"What is the path of a new conceptoid?", p, conceptoidPathInterpreter))
-    }
+    def questions (p : MADPath)(implicit mem : Memory) : Seq[Question] = fromMADType(p, p.madtype)
     
     private def fromMADType(p : MADPath, madtype : RichMADType) : Seq[Question] = madtype.inner match {
         case MADString => Seq(Question(f"What is $p?", p, stringInterpreter))
