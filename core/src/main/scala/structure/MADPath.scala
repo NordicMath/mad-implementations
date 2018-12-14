@@ -36,6 +36,7 @@ object MADPath {
         case _ => ???
     }
     
+    def pathsFrom(nav : MADNavigable) = instructionsFrom(nav).map(MADPath(nav.madtype, _))
     def instructionsFrom(nav : MADNavigable) : Seq[Seq[MADPathInstruction]] = (nav match {
     }) :+ Seq()
     
