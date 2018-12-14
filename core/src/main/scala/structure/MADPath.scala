@@ -13,6 +13,9 @@ class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) 
     
     def ++(p : MADPath) = MADPath(on, instructions ++ p.instructions)
     
+    def /(instr : MADPathInstruction) = MADPath(on, instructions :+ instr)
+    def /(param : String) = MADPath(on, instructions :+ EnterTree(param))
+    def /(index : Int) = MADPath(on, instructions :+ EnterList(index))
     
     override def toString = (f"Root" +: instructions.map(_.toString)).mkString(" / ")
 
