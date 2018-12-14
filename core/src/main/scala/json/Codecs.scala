@@ -154,6 +154,11 @@ trait Codecs {
     
     implicit object RichMADTypeCodec extends TCodec[RichMADType, (MADType, Int)](RichMADType.unapply(_).get, RichMADType.tupled)(new NT2Codec[MADType, Int]("madtype", "priority"))
     
+    implicit object MADPathInstructionCodec extends UnionCodec[MADPathInstruction](
+        new TCodec[EnterTree, String](_.param, EnterTree.apply)(new NT1CodecUT[String]("tree")),
+        new TCodec[EnterList, Int](_.index, EnterList.apply)(new NT1CodecUT[Int]("list")),
+        new SingletonCodec(EnterOption, JObject("option" -> JNull))
+    )
     
     
     implicit object InformationCodec extends PFCodec[Information]{
