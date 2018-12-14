@@ -26,4 +26,3 @@ Features:
 * Tags! for helping inference engine. Use the weird apply-any method.. (?)
 
 Cleanup:
-* General pattern of factoring out from core
