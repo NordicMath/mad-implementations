@@ -36,6 +36,9 @@ object MADPath {
         case _ => ???
     }
     
+    def instructionsFrom(nav : MADNavigable) : Seq[Seq[MADPathInstruction]] = (nav match {
+    }) :+ Seq()
+    
     def validate (on : RichMADType, instructions : Seq[MADPathInstruction]) : Option[RichMADType] = (on.inner, instructions) match {
         case (_, Seq()) => Some(on)
         case (MADTree(_, params @ _*), Seq(EnterTree(param), next @ _*)) => params.find(_._1 == param).map(t => validate(t._2, next)).getOrElse(None)
