@@ -13,7 +13,7 @@ object PriorityEngine {
     }
     
     def generatePaths()(implicit mem : Memory) : Seq[MADPath] = for {
-        path <- mem.getTree.subpaths
+        path <- MADPath.pathsFrom(mem.getTree)
         if !mem.getObject(path).isset
     } yield path
     
