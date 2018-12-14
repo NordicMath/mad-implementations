@@ -16,7 +16,7 @@ import org.json4s._
 
 import scala.reflect.runtime.universe._
 
-case class QA()(implicit io : IO, memory : Memory) {
+case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
     
     sealed trait Stage {
         def next() : Stage
