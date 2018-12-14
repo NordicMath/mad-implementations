@@ -20,6 +20,7 @@ object QuestionEngine {
         case MADOption(_) => Seq(Question(f"Is something like $p possible?", p, optionInterpreter))
         case MADList(_) => Seq(Question(f"Are there more elements in $p?", p, listInterpreter))
         
+        case MADTree(_, _*) => Seq()
         case mt => throw MADException.QuestionUnsupportedType(p, mt)
     }
 }
