@@ -46,7 +46,7 @@ object MADNavigable {
     }
 
     class MADValueTree (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
-        private val params = madtype.inner.asInstanceOf[MADTree].params
+        private[structure] val params = madtype.inner.asInstanceOf[MADTree].params
         
         import collection.mutable.HashMap
         
