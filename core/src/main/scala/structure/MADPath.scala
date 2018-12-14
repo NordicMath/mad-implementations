@@ -10,6 +10,9 @@ case class EnterList(index : Int) extends MADPathInstruction(index.toString)
 case object EnterOption extends MADPathInstruction("EnterOption")
 
 class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) {
+    
+    override def toString = (f"Root" +: instructions.map(_.toString)).mkString(" / ")
+
 }
 
 object MADPath {
