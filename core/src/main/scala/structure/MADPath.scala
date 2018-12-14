@@ -32,5 +32,10 @@ object MADPath {
     }
     
     def validate (on : RichMADType, instructions : Seq[MADPathInstruction]) : Option[RichMADType] = (on.inner, instructions) match {
+        case (_, Seq()) => Some(on)
+        case (MADTree(_, params @ _*), Seq(EnterTree(param), next @ _*)) => params.find(_._1 == param).map(t => validate(t._2, next)).getOrElse(None)
+        case (MADList(param), Seq(EnterList(index), next @ _*)) => if (index < 0) None else validate(param, next)
+        case (MADOption(param), Seq(EnterOption, next @ _*)) => validate(param, next)
+        case _ => None
     }
 }
