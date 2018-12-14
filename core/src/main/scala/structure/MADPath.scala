@@ -29,6 +29,11 @@ object MADPath {
     def unapply(p : MADPath) = Some((p.on, p.instructions))
     
     protected def navigate(nav : MADNavigable, instructions : Seq[MADPathInstruction]) : MADNavigable = (nav, instructions) match {
+        case (nav, Seq()) => nav
+        case (nav : MADValueTree, Seq(EnterTree(param), next @ _*)) => navigate(nav.attr(param), next)
+        case (nav : MADValueList, Seq(EnterList(index), next @ _*)) => navigate(nav.index(index), next)
+        case (nav : MADValueOption, Seq(EnterOption, next @ _*)) => navigate(nav.internal, next)
+        case _ => ???
     }
     
     def validate (on : RichMADType, instructions : Seq[MADPathInstruction]) : Option[RichMADType] = (on.inner, instructions) match {
