@@ -10,6 +10,7 @@ case class EnterList(index : Int) extends MADPathInstruction(index.toString)
 case object EnterOption extends MADPathInstruction("EnterOption")
 
 class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) {
+    val madtype = MADPath.validate(on, instructions).getOrElse(throw MADException.MADPathMismatch(this))
     
     def ++(p : MADPath) = MADPath(on, instructions ++ p.instructions)
     
