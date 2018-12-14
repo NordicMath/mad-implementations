@@ -73,6 +73,7 @@ object MADNavigable {
         private val list : Buffer[MADNavigable] = Buffer()
                 
         def index(i : Int) = list(i)
+        def seq = list.toSeq
         def listNew() : Unit = list += MADNavigable(param)
         
         def isset = false
