@@ -72,8 +72,8 @@ object MADNavigable {
         
         private val list : Buffer[MADNavigable] = Buffer()
                 
-        def listNew() = list += MADNavigable(param)
         def index(i : Int) = list(i)
+        def listNew() : Unit = list += MADNavigable(param)
         
         def isset = false
         def unset() = list.clear()
