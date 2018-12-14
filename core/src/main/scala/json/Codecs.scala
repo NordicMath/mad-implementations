@@ -160,6 +160,7 @@ trait Codecs {
         new SingletonCodec(EnterOption, JObject("option" -> JNull))
     )
     
+    implicit object MADPathCodec extends TCodec[MADPath, (RichMADType, Seq[MADPathInstruction])](MADPath.unapply(_).get, (MADPath.apply _).tupled)(new NT2Codec[RichMADType, Seq[MADPathInstruction]]("type", "instructions"))
     
     implicit object InformationCodec extends PFCodec[Information]{
         private object JInfo {
