@@ -89,6 +89,7 @@ object MADNavigable {
                 
         def optAssign(possible : Boolean) : Unit = value = Some(if (possible) Some(MADNavigable(param)) else None)
         def internal = value.get.get
+        def optInternal = value.flatten
         
         def isset = !value.isEmpty
         def unset() = value = None
