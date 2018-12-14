@@ -26,5 +26,4 @@ Features:
 * Tags! for helping inference engine. Use the weird apply-any method.. (?)
 
 Cleanup:
-* Remove madtype from MADPath codec, seriously
 * General pattern of factoring out from core
