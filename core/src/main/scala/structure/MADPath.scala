@@ -38,6 +38,23 @@ object MADPath {
     
     def pathsFrom(nav : MADNavigable) = instructionsFrom(nav).map(MADPath(nav.madtype, _))
     def instructionsFrom(nav : MADNavigable) : Seq[Seq[MADPathInstruction]] = (nav match {
+        case nav : MADValueTree => for {
+            (param, _) <- nav.params
+            sub = nav.attr(param)
+            subsub <- instructionsFrom(sub)
+        } yield EnterTree(param) +: subsub
+        
+        case nav : MADValueList => for {
+            (sub, i) <- nav.seq.zipWithIndex
+            subsub <- instructionsFrom(sub)
+        } yield EnterList(i) +: subsub
+        
+        case nav : MADValueOption => for {
+            sub <- nav.optInternal.toSeq
+            subsub <- instructionsFrom(sub)
+        } yield EnterOption +: subsub
+        
+        case _ : MADValue[_] => Seq()
     }) :+ Seq()
     
     def validate (on : RichMADType, instructions : Seq[MADPathInstruction]) : Option[RichMADType] = (on.inner, instructions) match {
