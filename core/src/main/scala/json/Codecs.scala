@@ -33,7 +33,7 @@ trait Codecs {
         final def decode(j : JValue) = decoder.lift(j)
     }
     
-    implicit def subPFCodec[T : ClassTag, S >: T](codec : T) : PFCodec[S] = new SubPFCodec()(codec, implicitly[ClassTag[T]])
+    implicit def subPFCodec[T : ClassTag, S >: T](codec : Codec[T]) : PFCodec[S] = new SubPFCodec()(codec, implicitly[ClassTag[T]])
     class SubPFCodec[T : Codec : ClassTag, S >: T] extends PFCodec[S] {
         lazy val codec = implicitly[Codec[T]]
         lazy val encoder = { case x : T => codec(x) }
