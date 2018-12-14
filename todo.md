@@ -27,5 +27,4 @@ Features:
 
 Cleanup:
 * Remove madtype from MADPath codec, seriously
-* Change interpreter? Maybe just "String => Information"
 * General pattern of factoring out from core

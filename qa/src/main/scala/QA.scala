@@ -190,7 +190,7 @@ case class QA()(implicit io : IO, memory : Memory) {
                     show(question.text)
                     
                     val ans = read()
-                    val info = question.interpreter.interpret(question.path, ans)
+                    val info = question.interpreter.interpret(ans)
                     
                     memory.push(info)
                 } catch {
