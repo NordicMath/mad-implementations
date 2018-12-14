@@ -53,7 +53,7 @@ object MADNavigable {
         private val map : HashMap[String, MADNavigable] = HashMap()
         unset()
         
-        def attr(param : String) = map.get(param)
+        def attr(param : String) = map.get(param).get
         
         def isset = map.values.exists(_.isset)
         def unset() = params.foreach {
@@ -61,7 +61,7 @@ object MADNavigable {
         }
         
         def toJSON() = JObject(params.map {
-            case (param, _) => param -> attr(param).get.toJSON()
+            case (param, _) => param -> attr(param).toJSON()
         } : _*)
     }
 
@@ -72,8 +72,8 @@ object MADNavigable {
         
         private val list : Buffer[MADNavigable] = Buffer()
                 
-        def index(i : Int) = list.lift(i)
         def listNew() = list += MADNavigable(param)
+        def index(i : Int) = list(i)
         
         def isset = false
         def unset() = list.clear()
