@@ -9,3 +9,9 @@ case class EnterTree(param : String) extends MADPathInstruction(f""""$param"""")
 case class EnterList(index : Int) extends MADPathInstruction(index.toString)
 case object EnterOption extends MADPathInstruction("EnterOption")
 
+class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) {
+}
+
+object MADPath {
+    
+}
