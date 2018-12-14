@@ -129,7 +129,6 @@ trait Codecs {
     
     // MAD Codecs
     import structure._
-    import MADPath._
     import MADType._
     import Information._
     
@@ -156,20 +155,6 @@ trait Codecs {
     implicit object RichMADTypeCodec extends TCodec[RichMADType, (MADType, Int)](RichMADType.unapply(_).get, RichMADType.tupled)(new NT2Codec[MADType, Int]("madtype", "priority"))
     
     
-    implicit object MADPathCodec extends PFCodec[MADPath]{
-        val encoder = {
-            case Destination(madtype) => JObject("dest" -> RichMADTypeCodec(madtype)) 
-            case EnterTree(param, next, madtype) => JObject("param" -> JString(param), "type" -> RichMADTypeCodec(madtype), "next" -> MADPathCodec(next))
-            case EnterList(index, next, madtype) => JObject("index" -> JInt(index), "type" -> RichMADTypeCodec(madtype), "next" -> MADPathCodec(next))
-            case EnterOption(next, madtype) => JObject("enter" -> JObject(), "type" -> RichMADTypeCodec(madtype), "next" -> MADPathCodec(next))
-        }
-        val decoder = {
-            case JObject(List(JField("dest", RichMADTypeCodec(madtype)))) => Destination(madtype)
-            case JObject(List(JField("param", JString(param)), JField("type", RichMADTypeCodec(madtype)), JField("next", MADPathCodec(next)))) => EnterTree(param, next, madtype)
-            case JObject(List(JField("index", JInt(index)), JField("type", RichMADTypeCodec(madtype)), JField("next", MADPathCodec(next)))) => EnterList(index.toInt, next, madtype)
-            case JObject(List(JField("enter", JObject(List())), JField("type", RichMADTypeCodec(madtype)), JField("next", MADPathCodec(next)))) => EnterOption(next, madtype)
-        }
-    }
     
     implicit object InformationCodec extends PFCodec[Information]{
         private object JInfo {
