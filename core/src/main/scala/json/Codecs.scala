@@ -160,9 +160,12 @@ trait Codecs {
         new SingletonCodec(EnterOption, JObject("option" -> JNull))
     )
     
-    implicit object MADPathCodec extends TCodec[MADPath, (RichMADType, Seq[MADPathInstruction])](MADPath.unapply(_).get, (MADPath.apply _).tupled)(new NT2Codec[RichMADType, Seq[MADPathInstruction]]("type", "instructions"))
+    implicit def madpathcodec(implicit madtype : RichMADType) = new MADPathCodec()(madtype)
+    class MADPathCodec(implicit madtype : RichMADType) extends TCodec[MADPath, Seq[MADPathInstruction]](_.instructions, MADPath(madtype, _))(implicitly[Codec[Seq[MADPathInstruction]]])
     
-    implicit object InformationCodec extends PFCodec[Information]{
+    implicit def informationcodec(implicit madtype : RichMADType) = new InformationCodec()(madtype)
+    class InformationCodec(implicit madtype : RichMADType) extends PFCodec[Information]{
+        private val MADPathCodec = madpathcodec
         private object JInfo {
             def apply(name : String, fs : List[JField]) : JValue = JObject(name -> JObject(fs))
             def unapply(j : JValue) : Option[(String, List[JField])] = j match {
