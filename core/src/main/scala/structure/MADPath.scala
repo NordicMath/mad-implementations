@@ -20,6 +20,7 @@ class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) 
     
     override def toString = (f"Root" +: instructions.map(_.toString)).mkString(" / ")
 
+    def navigate(nav : MADNavigable) : MADNavigable = if (on == nav.madtype) MADPath.navigate(nav, instructions) else throw MADException.NavigationImpossible(this, nav)
 }
 
 object MADPath {
