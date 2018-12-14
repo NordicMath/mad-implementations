@@ -4,7 +4,7 @@ lazy val commonSettings = Seq(
     parallelExecution in Test := false,
 
     // Show warnings
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused", "-Xlint"),
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused", "-Ywarn-dead-code", "-Ywarn-inaccessible", "-Ywarn-value-discard", "-Xlint"),
 
     // Dependencies
     // Scalatest
