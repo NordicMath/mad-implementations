@@ -11,6 +11,9 @@ case object EnterOption extends MADPathInstruction("EnterOption")
 
 class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) {
     
+    def ++(p : MADPath) = MADPath(on, instructions ++ p.instructions)
+    
+    
     override def toString = (f"Root" +: instructions.map(_.toString)).mkString(" / ")
 
 }
