@@ -10,8 +10,6 @@ sealed abstract class MADNavigable (val madtype : RichMADType) {
     def isset : Boolean
     def unset() : Unit
     
-    def subpaths : Seq[MADPath] = Seq(MADPath.Destination(madtype))
-    
     def toJSON() : JValue
 }
 
@@ -62,12 +60,6 @@ object MADNavigable {
             case (str, tp) => map.put(str, MADNavigable(tp))
         }
         
-        override def subpaths = for {
-            (param, _) <- params
-            nav = map(param)
-            sub <- nav.subpaths
-        } yield MADPath.EnterTree(param, sub, madtype)
-        
         def toJSON() = JObject(params.map {
             case (param, _) => param -> attr(param).get.toJSON()
         } : _*)
@@ -86,11 +78,6 @@ object MADNavigable {
         def isset = false
         def unset() = list.clear()
         
-        override def subpaths = {for {
-            (nav, i) <- list.toSeq.zipWithIndex
-            sub <- nav.subpaths
-        } yield MADPath.EnterList(i, sub, madtype)} ++ super.subpaths
-        
         def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
     }
 
@@ -104,8 +91,6 @@ object MADNavigable {
         
         def isset = !value.isEmpty
         def unset() = value = None
-        
-        override def subpaths = value.flatten.fold(super.subpaths)(_.subpaths.map(MADPath.EnterOption(_, madtype)))
         
         def toJSON() = value match {
             case None => JNull
