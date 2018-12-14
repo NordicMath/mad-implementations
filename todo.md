@@ -5,6 +5,7 @@ Management:
 Less important:
 * Look into using extraction for codecs, or at least use a codec helper for "objects", w/ union codecs
 * Implement dependency-relations for information (do we want this?)
+* Factoring from core?
 
 Interface:
 * Web-interface (!)
