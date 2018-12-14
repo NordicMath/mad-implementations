@@ -3,10 +3,12 @@ package io.github.nordicmath.mad.qa
 import io.github.nordicmath.mad._
 import memory._
 import conceptoids._
+import structure._
 
 object Main extends App {
     
-    implicit val memory = Memory(Conceptoid.Conceptoids)
+    implicit val madtype : RichMADType = Conceptoid.Conceptoids
+    implicit val memory = Memory(madtype)
     
     QA().start()
     
