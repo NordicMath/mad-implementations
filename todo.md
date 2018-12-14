@@ -26,7 +26,6 @@ Features:
 * Tags! for helping inference engine. Use the weird apply-any method.. (?)
 
 Cleanup:
-* Improve structure of MADPath - make it a list
 * Remove madtype from MADPath codec, seriously
 * Change interpreter? Maybe just "String => Information"
 * General pattern of factoring out from core
