@@ -131,15 +131,8 @@ trait Codecs {
     import structure._
     import Information._
     
-    implicit object MADPathInstructionCodec extends UnionCodec[MADPathInstruction](
-        new TCodec[EnterTree, String](_.param, EnterTree.apply)(new NT1CodecUT[String]("tree")),
-        new TCodec[EnterList, Int](_.index, EnterList.apply)(new NT1CodecUT[Int]("list")),
-        new TCodec[EnterMap, String](_.name, EnterMap.apply)(new NT1CodecUT[String]("map")),
-        new SingletonCodec(EnterOption, JObject("option" -> JNull))
-    )
-    
     implicit def madpathcodec(implicit madtype : RichMADType) = new MADPathCodec()(madtype)
-    class MADPathCodec(implicit madtype : RichMADType) extends TCodec[MADPath, Seq[MADPathInstruction]](_.instructions, MADPath(madtype, _))(implicitly[Codec[Seq[MADPathInstruction]]])
+    class MADPathCodec(implicit madtype : RichMADType) extends TCodec[MADPath, Seq[String]](_.instructions, MADPath(madtype, _))
     
     implicit def informationcodec(implicit madtype : RichMADType) = new InformationCodec()(madtype)
     class InformationCodec(implicit madtype : RichMADType) extends PFCodec[Information]{
