@@ -1,6 +1,7 @@
 package io.github.nordicmath.mad.structure
 
-import io.github.nordicmath.mad.json._
+import io.github.nordicmath.mad._
+import json._
 import MADType._
 
 import org.json4s._
@@ -108,6 +109,11 @@ object MADNavigable {
         import collection.mutable.HashMap
         
         private val map : HashMap[String, MADNavigable] = HashMap()
+        
+        def names : Seq[String] = map.toSeq.map(_._1)
+        def contains(name : String) = map.contains(name)
+        def get(name : String) : MADNavigable = map(name)
+        def put(name : String) : Unit = if (map.put(name, MADNavigable(param)).isDefined) throw MADException.MapNameInUse(name)
         
         def isset = false
         def unset() = map.clear()
