@@ -9,6 +9,7 @@ Less important:
 
 Interface:
 * Web-interface (!)
+* Make questions more natural, not the whole "path"-thing. Use context-object?
 * Definitions in Conceptoid.scala: lazy val T = "MADRef to self", lazy val Collection = MADRef where "collection" is defined (perhaps more?), lazy val Bool, lazy val REPR, def Machine(inputs*, outputs*)
 
 Misc:
@@ -26,3 +27,4 @@ Features:
 * Tags! for helping inference engine. Use the weird apply-any method.. (?)
 
 Cleanup:
+Make boolInterpreter accept yes/no
