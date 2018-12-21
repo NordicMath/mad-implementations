@@ -6,7 +6,7 @@ import MADType._
 
 object Conceptoid {    
     
-    lazy val Conceptoids = MADList(Conceptoid)
+    lazy val Conceptoids = MADMap(Conceptoid)
     
     lazy val Conceptoid = MADTree("Conceptoid", 
         "name" -> MADString,
