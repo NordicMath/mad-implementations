@@ -12,13 +12,13 @@ trait Interpreter {
 
 object Interpreter {
     
-    private def parseBool(str : String) = str match {
+    private def parseBool(str : String) : Boolean = str match {
         case "true" | "yes" => true
         case "false" | "no" => false
-        case _ => BooleanInput
+        case _ => throw BooleanInput
     }
     
-    private def parseInt(str : String) = try str.toInt catch {
+    private def parseInt(str : String) : Int = try str.toInt catch {
         case _ : IllegalArgumentException => throw IntegerInput
     }
     
@@ -40,7 +40,7 @@ object Interpreter {
     }
     
     def listInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = if parseBool(str) ListNew(path) else NoInformation
+        def interpret (str : String) = if (parseBool(str)) ListNew(path) else NoInformation
     }
     
     def mapInterpreter(path : MADPath) : Interpreter = new Interpreter {
