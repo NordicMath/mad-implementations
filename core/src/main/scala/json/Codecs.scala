@@ -168,6 +168,7 @@ trait Codecs {
             case Apply(_, _) => ??? // Unreachable
             case OptionAssign(path, p) => JInfo("OptionAssign", List("path" -> MADPathCodec(path), "possible" -> JBool(p)))
             case ListNew(path) => JInfo("ListNew", List("path" -> MADPathCodec(path)))
+            case MapNew(path, name) => JInfo("MapNew", List("path" -> MADPathCodec(path), "name" -> JString(name)))
         }
         
         val decoder = {
@@ -177,6 +178,7 @@ trait Codecs {
             case JApply("Boolean", BooleanCodec(vb), path) => Apply[Boolean](path, vb)
             case JInfo("OptionAssign", List(JField("path", MADPathCodec(path)), JField("possible", JBool(p)))) => OptionAssign(path, p)
             case JInfo("ListNew", List(JField("path", MADPathCodec(path)))) => ListNew(path)
+            case JInfo("MapNew", List(JField("path", MADPathCodec(path)), JField("name", JString(name)))) => MapNew(path, name)
         }
         
     }
