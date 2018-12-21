@@ -15,6 +15,17 @@ object Interpreter {
         case _ : IllegalArgumentException => throw ex
     }
     
+    private def parseBool(str : String) = str match {
+        case "true" | "yes" => true
+        case "false" | "no" => false
+        case _ => BooleanInput
+    }
+    
+    private def parseInt(str : String) = try str.toInt catch {
+        case _ : IllegalArgumentException => throw IntegerInput
+    }
+    
+    
     def stringInterpreter(path : MADPath) : Interpreter = new Interpreter {
         def interpret (str : String) = Apply[String](path, str)
     }
