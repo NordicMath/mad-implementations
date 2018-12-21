@@ -30,4 +30,3 @@ Cleanup:
 * Make boolInterpreter accept yes/no
 
 Spec:
-* Make representations a MADMap
