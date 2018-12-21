@@ -34,4 +34,8 @@ object Interpreter {
     def listInterpreter(path : MADPath) : Interpreter = new Interpreter {
         def interpret (str : String) = if (catchIA(str.toBoolean, BooleanInput)) ListNew(path) else NoInformation
     }
+    
+    def mapInterpreter(path : MADPath) : Interpreter = new Interpreter {
+        def interpret (str : String) = MapNew(path, str)
+    }
 }
