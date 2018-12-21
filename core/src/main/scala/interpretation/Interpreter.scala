@@ -11,9 +11,6 @@ trait Interpreter {
 }
 
 object Interpreter {
-    private def catchIA[T](t : => T, ex : MADException) = try t catch {
-        case _ : IllegalArgumentException => throw ex
-    }
     
     private def parseBool(str : String) = str match {
         case "true" | "yes" => true
@@ -31,19 +28,19 @@ object Interpreter {
     }
     
     def intInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = Apply[Int](path, catchIA(str.toInt, IntegerInput))
+        def interpret (str : String) = Apply[Int](path, parseInt(str))
     }
     
     def boolInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = Apply[Boolean](path, catchIA(str.toBoolean, BooleanInput))
+        def interpret (str : String) = Apply[Boolean](path, parseBool(str))
     }
     
     def optionInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = OptionAssign(path, catchIA(str.toBoolean, BooleanInput))
+        def interpret (str : String) = OptionAssign(path, parseBool(str))
     }
     
     def listInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = if (catchIA(str.toBoolean, BooleanInput)) ListNew(path) else NoInformation
+        def interpret (str : String) = if parseBool(str) ListNew(path) else NoInformation
     }
     
     def mapInterpreter(path : MADPath) : Interpreter = new Interpreter {
