@@ -27,6 +27,5 @@ Features:
 
 Cleanup:
 * Unify MADPathInstruction EnterMap and EnterTree?
-* Make boolInterpreter accept yes/no
 
 Spec:

@@ -7,7 +7,7 @@ sealed abstract class MADException(msg : String) extends Exception(msg)
 object MADException {
     
     abstract class InterpreterIllegalInput(correct : String) extends MADException(f"Please enter $correct!")
-    object BooleanInput extends InterpreterIllegalInput("true/false")
+    object BooleanInput extends InterpreterIllegalInput("true/yes/false/no")
     object IntegerInput extends InterpreterIllegalInput("an integer")
     
     case class MapNameInUse(name : String) extends MADException(f"The name '$name' being added to a map is already in use!")
