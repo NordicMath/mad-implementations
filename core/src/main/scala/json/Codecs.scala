@@ -134,6 +134,7 @@ trait Codecs {
     implicit object MADPathInstructionCodec extends UnionCodec[MADPathInstruction](
         new TCodec[EnterTree, String](_.param, EnterTree.apply)(new NT1CodecUT[String]("tree")),
         new TCodec[EnterList, Int](_.index, EnterList.apply)(new NT1CodecUT[Int]("list")),
+        new TCodec[EnterMap, String](_.name, EnterMap.apply)(new NT1CodecUT[String]("map")),
         new SingletonCodec(EnterOption, JObject("option" -> JNull))
     )
     
