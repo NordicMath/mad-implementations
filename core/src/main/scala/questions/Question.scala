@@ -19,6 +19,7 @@ object QuestionEngine {
         case MADInt => Seq(Question(f"What number is $p?", intInterpreter(p)))
         case MADOption(_) => Seq(Question(f"Is something like $p possible?", optionInterpreter(p)))
         case MADList(_) => Seq(Question(f"Are there more elements in $p?", listInterpreter(p)))
+        case MADMap(_) => Seq(Question(f"Please name another element of $p:", mapInterpreter(p)))
         
         case MADTree(_, _*) => Seq()
     }
