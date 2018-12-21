@@ -27,4 +27,5 @@ Features:
 * Tags! for helping inference engine. Use the weird apply-any method.. (?)
 
 Cleanup:
+Unify MADPathInstruction EnterMap and EnterTree?
 Make boolInterpreter accept yes/no
