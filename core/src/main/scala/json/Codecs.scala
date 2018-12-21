@@ -129,30 +129,7 @@ trait Codecs {
     
     // MAD Codecs
     import structure._
-    import MADType._
     import Information._
-    
-    implicit object MADTypeCodec extends PFCodec[MADType]{
-        lazy val paramsCodec = seqCodec(pairCodec(StringCodec, RichMADTypeCodec))
-        lazy val encoder = {
-            case MADString => JObject(List(JField("type", JString("string"))))
-            case MADBool => JObject(List(JField("type", JString("bool"))))
-            case MADInt => JObject(List(JField("type", JString("int"))))
-            case MADTree(name, params @ _*) => JObject(List(JField("type", JString("tree")), JField("name", JString(name)), JField("params", paramsCodec(params))))
-            case MADList(param) => JObject(List(JField("type", JString("list")), JField("param", RichMADTypeCodec(param))))
-            case MADOption(param) => JObject(List(JField("type", JString("option")), JField("param", RichMADTypeCodec(param))))
-        }
-        lazy val decoder = {
-            case JObject(List(JField("type", JString("string")))) => MADString
-            case JObject(List(JField("type", JString("bool")))) => MADBool
-            case JObject(List(JField("type", JString("int")))) => MADInt
-            case JObject(List(JField("type", JString("tree")), JField("name", JString(name)), JField("params", paramsCodec(params)))) => MADTree(name, params : _*)
-            case JObject(List(JField("type", JString("list")), JField("param", RichMADTypeCodec(param)))) => MADList(param)
-            case JObject(List(JField("type", JString("option")), JField("param", RichMADTypeCodec(param)))) => MADOption(param)
-        }
-    }
-    
-    implicit object RichMADTypeCodec extends TCodec[RichMADType, (MADType, Int)](RichMADType.unapply(_).get, RichMADType.tupled)(new NT2Codec[MADType, Int]("madtype", "priority"))
     
     implicit object MADPathInstructionCodec extends UnionCodec[MADPathInstruction](
         new TCodec[EnterTree, String](_.param, EnterTree.apply)(new NT1CodecUT[String]("tree")),
