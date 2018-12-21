@@ -18,7 +18,6 @@ Misc:
 
 Features:
 * MADRef (reference to a conceptoid, w/ predicate)
-* MADMap (essentially a list with element names)
 * MADEnums? Make MADOption an Enum?
 * MADSingletons, in ass. with MADEnum.
 * Cartesian product as a collection! How???
