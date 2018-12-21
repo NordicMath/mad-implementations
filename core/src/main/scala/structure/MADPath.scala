@@ -6,6 +6,7 @@ import MADType._
 
 sealed abstract class MADPathInstruction (override val toString : String) 
 case class EnterTree(param : String) extends MADPathInstruction(f""""$param"""")
+case class EnterMap(name : String) extends MADPathInstruction(f""""$name"""")
 case class EnterList(index : Int) extends MADPathInstruction(index.toString)
 case object EnterOption extends MADPathInstruction("EnterOption")
 
@@ -33,6 +34,7 @@ object MADPath {
         case (nav : MADValueTree, Seq(EnterTree(param), next @ _*)) => navigate(nav.attr(param), next)
         case (nav : MADValueList, Seq(EnterList(index), next @ _*)) => navigate(nav.index(index), next)
         case (nav : MADValueOption, Seq(EnterOption, next @ _*)) => navigate(nav.internal, next)
+        case (nav : MADValueMap, Seq(EnterMap(name), next @ _*)) => navigate(nav.get(name), next)
         case _ => ???
     }
     
@@ -54,6 +56,12 @@ object MADPath {
             subsub <- instructionsFrom(sub)
         } yield EnterOption +: subsub
         
+        case nav : MADValueMap => for {
+            name <- nav.names
+            sub = nav.get(name)
+            subsub <- instructionsFrom(sub)
+        } yield EnterMap(name) +: subsub
+        
         case _ : MADValue[_] => Seq()
     }) :+ Seq()
     
@@ -62,6 +70,7 @@ object MADPath {
         case (MADTree(_, params @ _*), Seq(EnterTree(param), next @ _*)) => params.find(_._1 == param).map(t => validate(t._2, next)).getOrElse(None)
         case (MADList(param), Seq(EnterList(index), next @ _*)) => if (index < 0) None else validate(param, next)
         case (MADOption(param), Seq(EnterOption, next @ _*)) => validate(param, next)
+        case (MADMap(param), Seq(EnterMap(_), next @ _*)) => validate(param, next)
         case _ => None
     }
 }
