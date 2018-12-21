@@ -29,6 +29,7 @@ object MADNavigable {
         case x : MADTree => new MADValueTree(x)
         case x : MADList => new MADValueList(x)
         case x : MADOption => new MADValueOption(x)
+        case x : MADMap => new MADValueMap(x)
     }
     
     class MADValue[T : MADValuePrimitive] (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
@@ -99,6 +100,19 @@ object MADNavigable {
             case Some(None) => JObject("None" -> JNull)
             case Some(Some(nav)) => JObject("Some" -> nav.toJSON())
         }
+    }
+    
+    class MADValueMap (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        private val param = madtype.inner.asInstanceOf[MADMap].param
+        
+        import collection.mutable.HashMap
+        
+        private val map : HashMap[String, MADNavigable] = HashMap()
+        
+        def isset = false
+        def unset() = map.clear()
+        
+        def toJSON() = JObject(for {(name, ob) <- map.toList} yield name -> ob.toJSON())
     }
 
 }
