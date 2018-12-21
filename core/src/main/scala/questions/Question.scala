@@ -21,6 +21,5 @@ object QuestionEngine {
         case MADList(_) => Seq(Question(f"Are there more elements in $p?", listInterpreter(p)))
         
         case MADTree(_, _*) => Seq()
-        case mt => throw MADException.QuestionUnsupportedType(p, mt)
     }
 }

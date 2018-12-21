@@ -15,6 +15,4 @@ object MADException {
     case class NavigationImpossible(path : MADPath, nav : MADNavigable) extends MADException(f"Navigating $path into something of type ${nav.madtype} is impossible!")
     case class MADPathMismatch(path : MADPath) extends MADException(f"In MADPath, $path did not match its own type!")
     
-    case class QuestionUnsupportedType(path : MADPath, mt : MADType) extends MADException(f"No known way to ask questions about something of type ${mt.inner.name}, at path $path!")
-    
 }
