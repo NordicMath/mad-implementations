@@ -9,7 +9,6 @@ Less important:
 
 Interface:
 * Web-interface (!)
-* DSL for MADPaths!
 * Definitions in Conceptoid.scala: lazy val T = "MADRef to self", lazy val Collection = MADRef where "collection" is defined (perhaps more?), lazy val Bool, lazy val REPR, def Machine(inputs*, outputs*)
 
 Misc:
