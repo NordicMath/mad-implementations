@@ -49,6 +49,9 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                     case ListNew(path) => {
                         getObjectAs[MADValueList](path).listNew()
                     }
+                    case MapNew(path, name) => {
+                        getObjectAs[MADValueMap](path).put(name)
+                    }
                 })
                 
                 p complete proc
