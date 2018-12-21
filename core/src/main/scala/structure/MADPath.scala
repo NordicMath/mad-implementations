@@ -4,73 +4,72 @@ import io.github.nordicmath.mad._
 import MADNavigable._
 import MADType._
 
-sealed abstract class MADPathInstruction (override val toString : String) 
-case class EnterTree(param : String) extends MADPathInstruction(f""""$param"""")
-case class EnterMap(name : String) extends MADPathInstruction(f""""$name"""")
-case class EnterList(index : Int) extends MADPathInstruction(index.toString)
-case object EnterOption extends MADPathInstruction("EnterOption")
+import util.Try
 
-class MADPath(val on : RichMADType, val instructions : Seq[MADPathInstruction]) {
+class MADPath(val on : RichMADType, val instructions : Seq[String]) {
     val madtype = MADPath.validate(on, instructions).getOrElse(throw MADException.MADPathMismatch(this))
     
     def ++(p : MADPath) = MADPath(on, instructions ++ p.instructions)
     
-    def /(instr : MADPathInstruction) = MADPath(on, instructions :+ instr)
-    def /(param : String) = MADPath(on, instructions :+ EnterTree(param))
-    def /(index : Int) = MADPath(on, instructions :+ EnterList(index))
-    
-    override def toString = (f"Root" +: instructions.map(_.toString)).mkString(" / ")
+    def /(next : String) : MADPath = MADPath(on, instructions :+ next)
+    def /(index : Int) : MADPath = this / index.toString
+        
+    override def toString = "mad://" + instructions.mkString("/")
 
     def navigate(nav : MADNavigable) : MADNavigable = if (on == nav.madtype) MADPath.navigate(nav, instructions) else throw MADException.NavigationImpossible(this, nav)
 }
 
 object MADPath {
     
-    def apply(on : RichMADType, instructions : Seq[MADPathInstruction] = Seq()) : MADPath = new MADPath(on, instructions)
+    def apply(on : RichMADType, instructions : Seq[String] = Seq()) : MADPath = new MADPath(on, instructions)
     def unapply(p : MADPath) = Some((p.on, p.instructions))
     
-    protected def navigate(nav : MADNavigable, instructions : Seq[MADPathInstruction]) : MADNavigable = (nav, instructions) match {
+    private object Index {
+        def unapply(str : String) : Option[Int] = Try(str.toInt).toOption
+    }
+    
+    protected def navigate(nav : MADNavigable, instructions : Seq[String]) : MADNavigable = (nav, instructions) match {
         case (nav, Seq()) => nav
-        case (nav : MADValueTree, Seq(EnterTree(param), next @ _*)) => navigate(nav.attr(param), next)
-        case (nav : MADValueList, Seq(EnterList(index), next @ _*)) => navigate(nav.index(index), next)
-        case (nav : MADValueOption, Seq(EnterOption, next @ _*)) => navigate(nav.internal, next)
-        case (nav : MADValueMap, Seq(EnterMap(name), next @ _*)) => navigate(nav.get(name), next)
+        case (nav : MADValueTree, Seq(param, next @ _*)) => navigate(nav.attr(param), next)
+        case (nav : MADValueList, Seq(Index(index), next @ _*)) => navigate(nav.index(index), next)
+        case (nav : MADValueOption, Seq("value", next @ _*)) => navigate(nav.internal, next)
+        case (nav : MADValueMap, Seq(name, next @ _*)) => navigate(nav.get(name), next)
         case _ => ???
     }
     
     def pathsFrom(nav : MADNavigable) = instructionsFrom(nav).map(MADPath(nav.madtype, _))
-    def instructionsFrom(nav : MADNavigable) : Seq[Seq[MADPathInstruction]] = (nav match {
+    def instructionsFrom(nav : MADNavigable) : Seq[Seq[String]] = (nav match {
         case nav : MADValueTree => for {
             (param, _) <- nav.params
             sub = nav.attr(param)
             subsub <- instructionsFrom(sub)
-        } yield EnterTree(param) +: subsub
+        } yield param +: subsub
         
         case nav : MADValueList => for {
             (sub, i) <- nav.seq.zipWithIndex
             subsub <- instructionsFrom(sub)
-        } yield EnterList(i) +: subsub
+        } yield i.toString +: subsub
         
         case nav : MADValueOption => for {
             sub <- nav.optInternal.toSeq
             subsub <- instructionsFrom(sub)
-        } yield EnterOption +: subsub
+        } yield "value" +: subsub
         
         case nav : MADValueMap => for {
             name <- nav.names
             sub = nav.get(name)
             subsub <- instructionsFrom(sub)
-        } yield EnterMap(name) +: subsub
+        } yield name +: subsub
         
         case _ : MADValue[_] => Seq()
     }) :+ Seq()
     
-    def validate (on : RichMADType, instructions : Seq[MADPathInstruction]) : Option[RichMADType] = (on.inner, instructions) match {
+    def validate (on : RichMADType, instructions : Seq[String]) : Option[RichMADType] = (on.inner, instructions) match {
         case (_, Seq()) => Some(on)
-        case (MADTree(_, params @ _*), Seq(EnterTree(param), next @ _*)) => params.find(_._1 == param).map(t => validate(t._2, next)).getOrElse(None)
-        case (MADList(param), Seq(EnterList(index), next @ _*)) => if (index < 0) None else validate(param, next)
-        case (MADOption(param), Seq(EnterOption, next @ _*)) => validate(param, next)
-        case (MADMap(param), Seq(EnterMap(_), next @ _*)) => validate(param, next)
+        case (MADTree(_, params @ _*), Seq(param, next @ _*)) => params.find(_._1 == param).map(t => validate(t._2, next)).getOrElse(None)
+        case (MADList(param), Seq(Index(index), next @ _*)) => if (index < 0) None else validate(param, next)
+        case (MADOption(param), Seq("value", next @ _*)) => validate(param, next)
+        case (MADMap(param), Seq(_, next @ _*)) => validate(param, next)
         case _ => None
     }
 }
