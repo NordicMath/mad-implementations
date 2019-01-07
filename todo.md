@@ -19,7 +19,6 @@ Misc:
 Features:
 * Requirements of the types
 * MADRef (reference to a conceptoid, w/ predicate)
-* MADEnums? Make MADOption an Enum?
 * Priority engine
 * "User session" object, for meta on qa
 * Cartesian product as a collection! How???
@@ -29,5 +28,7 @@ Features:
 * MADType embeddings
 
 Cleanup:
+* Make MADOption an Enum?
+
 
 Spec:
