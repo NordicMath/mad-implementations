@@ -32,6 +32,7 @@ object MADNavigable {
         case x : MADOption => new MADValueOption(x)
         case x : MADMap => new MADValueMap(x)
         case x : MADSingleton => new MADValueSingleton(x)
+        case x : MADEnum => new MADValueEnum(x)
     }
     
     class MADValue[T : MADValuePrimitive] (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
@@ -127,6 +128,27 @@ object MADNavigable {
         def unset() = {}
         
         def toJSON() = JString(madtype.name)
+    }
+    
+    class MADValueEnum (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        private val params = madtype.inner.asInstanceOf[MADEnum].params
+        
+        private var value : Option[(Int, MADNavigable)] = None 
+        
+        def get = value.get._2
+        def optGet = value.map(_._2)
+        def index = value.get._1
+        
+        def assign(index : Int) = value = Some((index, MADNavigable(params(index))))
+        
+        def isset = value.isDefined
+        def unset() = value = None
+        
+        def toJSON() = value match {
+            case None => JNull
+            case Some((index, value)) => JObject("type" -> JString(params(index).name), "value" -> value.toJSON())
+        }
+        
     }
 
 }

@@ -34,6 +34,7 @@ object MADPath {
         case (nav : MADValueList, Seq(Index(index), next @ _*)) => navigate(nav.index(index), next)
         case (nav : MADValueOption, Seq("value", next @ _*)) => navigate(nav.internal, next)
         case (nav : MADValueMap, Seq(name, next @ _*)) => navigate(nav.get(name), next)
+        case (nav : MADValueEnum, Seq(Index(index), next @ _*)) if index == nav.index => navigate(nav.get, next)
         case _ => ???
     }
     
@@ -61,6 +62,11 @@ object MADPath {
             subsub <- instructionsFrom(sub)
         } yield name +: subsub
         
+        case nav : MADValueEnum => for {
+            sub <- nav.optGet.toSeq
+            subsub <- instructionsFrom(sub)
+        } yield nav.index.toString +: subsub
+        
         case _ : MADValueSingleton => Seq()
         
         case _ : MADValue[_] => Seq()
@@ -72,6 +78,7 @@ object MADPath {
         case (MADList(param), Seq(Index(index), next @ _*)) => if (index < 0) None else validate(param, next)
         case (MADOption(param), Seq("value", next @ _*)) => validate(param, next)
         case (MADMap(param), Seq(_, next @ _*)) => validate(param, next)
+        case (MADEnum(params @ _*), Seq(Index(index), next @ _*)) => validate(params(index), next)
         case _ => None
     }
 }
