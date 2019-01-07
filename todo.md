@@ -19,7 +19,6 @@ Misc:
 Features:
 * MADRef (reference to a conceptoid, w/ predicate)
 * MADEnums? Make MADOption an Enum?
-* MADSingletons, in ass. with MADEnum.
 * Priority engine
 * "User session" object, for meta on qa
 * Cartesian product as a collection! How???

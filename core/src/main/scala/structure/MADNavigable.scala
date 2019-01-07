@@ -31,6 +31,7 @@ object MADNavigable {
         case x : MADList => new MADValueList(x)
         case x : MADOption => new MADValueOption(x)
         case x : MADMap => new MADValueMap(x)
+        case x : MADSingleton => new MADValueSingleton(x)
     }
     
     class MADValue[T : MADValuePrimitive] (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
@@ -119,6 +120,13 @@ object MADNavigable {
         def unset() = map.clear()
         
         def toJSON() = JObject(for {(name, ob) <- map.toList} yield name -> ob.toJSON())
+    }
+
+    class MADValueSingleton (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        def isset = true
+        def unset() = {}
+        
+        def toJSON() = JString(madtype.name)
     }
 
 }

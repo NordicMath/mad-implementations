@@ -61,6 +61,8 @@ object MADPath {
             subsub <- instructionsFrom(sub)
         } yield name +: subsub
         
+        case _ : MADValueSingleton => Seq()
+        
         case _ : MADValue[_] => Seq()
     }) :+ Seq()
     

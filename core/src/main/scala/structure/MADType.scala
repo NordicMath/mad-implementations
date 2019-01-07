@@ -14,4 +14,5 @@ object MADType {
     case class MADList(param : RichMADType) extends MADType("List(" + param.name + ")")
     case class MADOption(param : RichMADType) extends MADType("Option(" + param.name + ")")
     case class MADMap(param : RichMADType) extends MADType("Map(" + param.name + ")")
+    case class MADSingleton(sname : String) extends MADType("\"" + sname + "\"")
 }
