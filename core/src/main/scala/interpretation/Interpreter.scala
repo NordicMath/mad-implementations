@@ -46,4 +46,8 @@ object Interpreter {
     def mapInterpreter(path : MADPath) : Interpreter = new Interpreter {
         def interpret (str : String) = MapNew(path, str)
     }
+    
+    def enumInterpreter(path : MADPath) : Interpreter = new Interpreter {
+        def interpret (str : String) = EnumAssign(path, parseInt(str))
+    }
 }

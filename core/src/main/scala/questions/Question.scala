@@ -23,6 +23,8 @@ object QuestionEngine {
         
         case MADSingleton(_) => Seq()
         
+        case MADEnum(params @ _*) => Seq(Question(f"""Which of ${params.map(_.name).mkString(" and ")} is $p?""", enumInterpreter(p)))
+        
         case MADTree(_, _*) => Seq()
     }
 }
