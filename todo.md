@@ -17,6 +17,7 @@ Misc:
 * Look into using same core - different spec - for other kinds of information. Philosophy? Physics? Comp. Sci?
 
 Features:
+* Requirements of the types
 * MADRef (reference to a conceptoid, w/ predicate)
 * MADEnums? Make MADOption an Enum?
 * Priority engine
