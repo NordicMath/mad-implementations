@@ -33,6 +33,7 @@ object MADNavigable {
         case x : MADMap => new MADValueMap(x)
         case x : MADSingleton => new MADValueSingleton(x)
         case x : MADEnum => new MADValueEnum(x)
+        case x : MADRef => new MADValueRef(x)
     }
     
     class MADValue[T : MADValuePrimitive] (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
@@ -151,5 +152,18 @@ object MADNavigable {
         }
         
     }
-
+    
+    class MADValueRef (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
+        //private val MADRef(schema, filter) = madtype.asInstanceOf[MADRef]
+        
+        private var value : Option[MADPath] = None
+        def set_unchecked(nval : MADPath) = value = Some(nval)
+        
+        def get = value.get
+        
+        def isset = !value.isEmpty
+        def unset() = value = None
+        
+        def toJSON() = if(value.nonEmpty) JString(value.get.toString) else JNull
+    }
 }
