@@ -67,6 +67,7 @@ object MADPath {
             subsub <- instructionsFrom(sub)
         } yield nav.index.toString +: subsub
         
+        case _ : MADValueRef => Seq()
         case _ : MADValueSingleton => Seq()
         
         case _ : MADValue[_] => Seq()
