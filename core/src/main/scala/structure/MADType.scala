@@ -6,8 +6,8 @@ sealed abstract class MADType(val name : String)
 
 object MADType {
     import scala.language.implicitConversions
-    implicit def enrich(tp : MADType) : RichMADType = RichMADType(tp)
-    implicit def flatten(rich : RichMADType) = rich.inner
+    implicit def enrich(tp : => MADType) : RichMADType = RichMADType(tp, MADTypeInformation())
+    implicit def flatten(rich : RichMADType) : MADType = rich.inner
     
     case object MADString extends MADType("String")
     case object MADBool extends MADType("Boolean")
