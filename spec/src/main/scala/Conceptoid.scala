@@ -27,8 +27,12 @@ object Conceptoid {
     lazy val Machine = MADTree("Machine", 
         "domain" -> MADList(CollectionRef), 
         "codomain" -> MADList(CollectionRef), 
-        "defined-everywhere" -> MADBool
-        //"algorithm" -> MADList(Algorithm)
+        "defined-everywhere" -> MADBool, 
+        "algorithm" -> MADList(Algorithm)
+    )
+    
+    lazy val Algorithm = MADTree("Algorithm",
+        "javascript" -> MADString
     )
     
     lazy val Representation = MADTree("Representation",
