@@ -2,7 +2,6 @@ package io.github.nordicmath.mad.interpretation
 
 import io.github.nordicmath.mad._
 import structure._
-import predicate._
 import Information._
 import MADException._
 
@@ -52,8 +51,9 @@ object Interpreter {
         def interpret (str : String) = EnumAssign(path, parseInt(str))
     }
     
-    def pathInterpreter(path : MADPath, data : MADType.MADRef) = new Interpreter {
-        lazy val schema, predicate = (data.schema, data.predicate)
+    def pathInterpreter(path : MADPath) = new Interpreter {
+        private[this] val madtype = path.madtype.inner.asInstanceOf[MADType.MADRef]
+        private[this] val MADType.MADRef(schema, predicate) = madtype
         def interpret (str : String) = ???
     }
 }
