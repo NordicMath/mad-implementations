@@ -29,6 +29,6 @@ Features:
 
 Cleanup:
 * Make MADOption an Enum?
-
+* Potential for names to include "/", makes path parsing collision. Escape?
 
 Spec:
