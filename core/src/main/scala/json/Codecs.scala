@@ -92,6 +92,7 @@ trait Codecs {
             case ListNew(path) => JInfo("ListNew", List("path" -> MADPathCodec(path)))
             case MapNew(path, name) => JInfo("MapNew", List("path" -> MADPathCodec(path), "name" -> JString(name)))
             case EnumAssign(path, index) => JInfo("EnumAssign", List("path" -> MADPathCodec(path), "index" -> IntCodec(index)))
+            case ReferenceApply(path, value) => JInfo("ReferenceApply", List("path" -> MADPathCodec(path), "value" -> MADPathCodec(value)))
         }
         
         val decoder = {
@@ -103,6 +104,7 @@ trait Codecs {
             case JInfo("ListNew", List(JField("path", MADPathCodec(path)))) => ListNew(path)
             case JInfo("MapNew", List(JField("path", MADPathCodec(path)), JField("name", JString(name)))) => MapNew(path, name)
             case JInfo("EnumAssign", List(JField("path", MADPathCodec(path)), JField("index", IntCodec(index)))) => EnumAssign(path, index)
+            case JInfo("ReferenceApply", List(JField("path", MADPathCodec(path)), JField("value", MADPathCodec(value)))) => ReferenceApply(path, value)
         }
         
     }
