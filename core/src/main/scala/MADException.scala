@@ -9,6 +9,11 @@ object MADException {
     abstract class InterpreterIllegalInput(correct : String) extends MADException(f"Please enter $correct!")
     object BooleanInput extends InterpreterIllegalInput("true/yes/false/no")
     object IntegerInput extends InterpreterIllegalInput("an integer")
+    object MADPathInput extends InterpreterIllegalInput("a MAD-path!")
+    
+    object SchemaFailMADPath extends MADException("This MAD-path does not fit the schema!")
+    object PredicateFailMADPath extends MADException("This MAD-path does not satisfy a predicate!")
+    object UndefinedMADPath extends MADException("This MAD-path does not exist!")
     
     case class MapNameInUse(name : String) extends MADException(f"The name '$name' being added to a map is already in use!")
     
