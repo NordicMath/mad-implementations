@@ -13,6 +13,7 @@ sealed abstract class Information {
         case ListNew(path) => f"There is yet another element in $path"
         case MapNew(path, name) => f"There is something of name $name in $path"
         case EnumAssign(path, index) => f"The enum $path has index $index"
+        case ReferenceApply(path, value) => f"The reference $path points to $value"
     }
     
 }
@@ -25,5 +26,6 @@ object Information {
     case class ListNew(path : MADPath) extends Information
     case class MapNew(path : MADPath, name : String) extends Information
     case class EnumAssign(path : MADPath, index : Int) extends Information
+    case class ReferenceApply(path : MADPath, value : MADPath) extends Information
     
 }
