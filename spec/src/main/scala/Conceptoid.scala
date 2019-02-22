@@ -1,4 +1,4 @@
-package io.github.nordicmath.mad.conceptoids
+package io.github.nordicmath.mad.spec
 
 import io.github.nordicmath.mad.structure._
 import MADType._

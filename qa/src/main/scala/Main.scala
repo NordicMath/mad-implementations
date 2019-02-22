@@ -2,7 +2,7 @@ package io.github.nordicmath.mad.qa
 
 import io.github.nordicmath.mad._
 import memory._
-import conceptoids._
+import spec._
 import structure._
 
 object Main extends App {
