@@ -17,6 +17,11 @@ object Conceptoid {
     lazy val ConceptoidRef : MADRef = MADRef(mad"$Conceptoids://")
     lazy val CollectionRef : MADRef = ConceptoidRef where (mad"$Conceptoid://collection-structure" exists)
     
+    def MachineRef (domain : Pointer*)(codomain : Pointer*) : RichMADType = ConceptoidRef 
+        .where (mad"$Conceptoid://machine-structure" exists) 
+        .where (mad"$Conceptoid://machine-structure/domain" is domain)
+        .where (mad"$Conceptoid://machine-structure/codomain" is codomain)
+    
     lazy val Conceptoids = MADMap(Conceptoid)
     
     lazy val Conceptoid = MADTree("Conceptoid", 
