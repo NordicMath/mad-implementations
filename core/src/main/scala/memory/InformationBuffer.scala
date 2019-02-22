@@ -55,6 +55,9 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                     case EnumAssign(path, index) => {
                         getObjectAs[MADValueEnum](path).assign(index)
                     }
+                    case ReferenceApply(path, value) => {
+                        getObjectAs[MADValueRef](path).set_unchecked(value)
+                    }
                 })
                 
                 p complete proc
