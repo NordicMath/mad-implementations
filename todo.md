@@ -31,5 +31,6 @@ Cleanup:
 * Make MADOption an Enum?
 * Potential for names to include "/", makes path parsing collision. Escape? Also implement in interpreter!
 * Open for MADRef that points to something not yet defined, use for a clever question and auto-fill predicate!
+* MADPath navigate needs exception handling, and this should be used in interpreter
 
 Spec:
