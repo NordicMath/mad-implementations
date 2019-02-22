@@ -7,6 +7,7 @@ import MADType._
 import util.Try
 
 class MADPath(val on : RichMADType, val instructions : Seq[String]) {
+    if (instructions.exists(_.contains("/"))) throw MADException.MADPathCollision(instructions)
     val madtype = MADPath.validate(on, instructions).getOrElse(throw MADException.MADPathMismatch(this))
     
     def ++(p : MADPath) = MADPath(on, instructions ++ p.instructions)
