@@ -30,5 +30,6 @@ Features:
 Cleanup:
 * Make MADOption an Enum?
 * Potential for names to include "/", makes path parsing collision. Escape?
+* Open for MADRef that points to something not yet defined, use for a clever question and auto-fill predicate!
 
 Spec:
