@@ -154,12 +154,12 @@ object MADNavigable {
     }
     
     class MADValueRef (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
-        private val MADRef(schema, filter) = madtype.inner.asInstanceOf[MADRef]
         
         private var value : Option[MADPath] = None
-        def set_unchecked(nval : MADPath) = value = Some(nval)
         
         def get = value.get
+        
+        def set_unchecked(nval : MADPath) = value = Some(nval)
         
         def isset = !value.isEmpty
         def unset() = value = None
