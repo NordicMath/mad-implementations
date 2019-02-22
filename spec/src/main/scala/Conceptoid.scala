@@ -6,7 +6,7 @@ import DSL._
 import scala.language.postfixOps
 
 
-object Conceptoid {    
+object Conceptoid {
     
     lazy val ConceptoidRef : MADRef = MADRef(mad"$Conceptoids://")
     lazy val CollectionRef : MADRef = ConceptoidRef where (mad"$Conceptoid://collection-structure" exists)
