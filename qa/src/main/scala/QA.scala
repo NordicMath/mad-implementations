@@ -18,6 +18,10 @@ import scala.reflect.runtime.universe._
 
 case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
     
+    private val questionEngine : QuestionEngine = new QuestionEngine()
+    private val priorityEngine : PriorityEngine = new PriorityEngine(questionEngine)
+    
+    
     sealed trait Stage {
         def next() : Stage
     }
@@ -185,7 +189,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
             def next() : Stage = {
                 
                 try {
-                    val question = PriorityEngine.generateQuestion()
+                    val question = priorityEngine.generateQuestion()
                     
                     show(question.text)
                     

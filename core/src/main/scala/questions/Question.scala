@@ -3,6 +3,7 @@ package io.github.nordicmath.mad.questions
 import io.github.nordicmath.mad._
 import structure._
 import interpretation._
+import memory._
 
 import Interpreter._
 import MADType._
@@ -10,7 +11,7 @@ import MADType._
 
 case class Question(text : String, interpreter : Interpreter)
 
-object QuestionEngine {
+class QuestionEngine()(implicit mem : Memory) {
     def questions (p : MADPath) : Seq[Question] = fromMADType(p)
     
     private def fromMADType(p : MADPath) : Seq[Question] = p.madtype.inner match {
