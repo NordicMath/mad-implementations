@@ -158,7 +158,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
             def next() : Stage = {
                 show("Paths: ")
                 
-                for (path <- PriorityEngine.generatePaths()) show(path)
+                for (path <- priorityEngine.generatePaths()) show(path)
                 
                 return MainMenu
             }
