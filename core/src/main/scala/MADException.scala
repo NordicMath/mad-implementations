@@ -1,6 +1,7 @@
 package io.github.nordicmath.mad
 
 import structure._
+import predicate._
 
 sealed abstract class MADException(msg : String) extends Exception(msg)
 
@@ -24,5 +25,5 @@ object MADException {
     case class MADPathMismatch(path : MADPath) extends MADException(f"In MADPath, $path did not match its own type!")
     
     case class MADTypeNotIterable(madtype : MADType) extends MADException(f"MADType $madtype is not iterable!")
-    
+    case class InvaldPredicate(madtype : RichMADType, predicate : Predicate) extends MADException(f"Predicate $predicate doesn't work on madtype $madtype")
 }
