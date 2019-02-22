@@ -8,6 +8,11 @@ import scala.language.postfixOps
 
 object Conceptoid {
     
+    lazy val Bool : Pointer = mad"$Conceptoids://Booleans"
+    lazy val REPR : Pointer = mad"$Conceptoids://Representations"
+    
+    lazy val T : Pointer = Pointer.Self(mad"$Conceptoids://")
+    
     lazy val ConceptoidRef : MADRef = MADRef(mad"$Conceptoids://")
     lazy val CollectionRef : MADRef = ConceptoidRef where (mad"$Conceptoid://collection-structure" exists)
     
