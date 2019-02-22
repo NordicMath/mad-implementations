@@ -1,6 +1,7 @@
 package io.github.nordicmath.mad.spec
 
 import io.github.nordicmath.mad.structure._
+import predicate._
 import MADType._
 import DSL._
 import scala.language.postfixOps
