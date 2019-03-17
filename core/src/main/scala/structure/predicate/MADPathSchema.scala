@@ -5,6 +5,7 @@ import structure._
 import MADType._
 
 case class MADPathSchema(prepath : MADPath) {
+    val length = prepath.instructions.length + 1
     val madtype = prepath.on
     val pointertype = prepath.madtype.inner match {
         case MADList(param) => param
@@ -16,7 +17,9 @@ case class MADPathSchema(prepath : MADPath) {
         subpath.on == madtype && 
         subpath.madtype == pointertype && 
         subpath.instructions.startsWith(prepath.instructions) && 
-        subpath.instructions.length == prepath.instructions.length + 1
+        subpath.instructions.length == length
     }
+    
+    def fit(path : MADPath) : Option[MADPath] = if (path.on == prepath.on && path.instructions.length >= length) Some(path.take(length)) else None
 }
 
