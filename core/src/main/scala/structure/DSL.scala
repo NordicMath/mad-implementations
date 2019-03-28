@@ -13,7 +13,7 @@ package object DSL {
     
     implicit class MADPathPredicateHelper (val path : MADPath) extends AnyVal {
         def exists : Predicate = SubPredicate(path, IsDefined)
-        def is[T](value : PredicateValue[T]) : Predicate = SubPredicate(path, IsValue[T](value))
+        def is(value : PredicateValue) : Predicate = SubPredicate(path, IsValue(path, value))
     }
     
     import scala.language.implicitConversions
