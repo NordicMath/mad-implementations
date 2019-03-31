@@ -42,6 +42,7 @@ object MADNavigable {
         def set(nval : T) = value = Some(nval)
         
         def get = value.get
+        def getOpt = value
         
         def isset = !value.isEmpty
         def unset() = value = None
@@ -59,6 +60,7 @@ object MADNavigable {
         unset()
         
         def attr(param : String) = map.get(param).get
+        def toSeq : Seq[(String, MADNavigable)] = map.toSeq
         
         def isset = map.values.exists(_.isset)
         def unset() = params.foreach {
@@ -96,6 +98,7 @@ object MADNavigable {
         def internal = value.get.get
         def optInternal = value.flatten
         def exists = value.get.isDefined
+        def getOpt = value
         
         def isset = !value.isEmpty
         def unset() = value = None
@@ -118,6 +121,7 @@ object MADNavigable {
         def contains(name : String) = map.contains(name)
         def get(name : String) : MADNavigable = map(name)
         def put(name : String) : Unit = if (map.put(name, MADNavigable(param)).isDefined) throw MADException.MapNameInUse(name)
+        def seq = map.toSeq
         
         def isset = false
         def unset() = map.clear()
@@ -158,6 +162,7 @@ object MADNavigable {
         private var value : Option[MADPath] = None
         
         def get = value.get
+        def getOpt = value
         
         def set_unchecked(nval : MADPath) = value = Some(nval)
         
