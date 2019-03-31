@@ -32,3 +32,9 @@ lazy val qa = (project in file("qa"))
         commonSettings,
         name := "MAD-QA"
     ).dependsOn(core, spec)
+    
+lazy val web = (project in file("web"))
+    .settings(
+        commonSettings,
+        name := "MAD-WEB"
+    ).dependsOn(core, spec)
