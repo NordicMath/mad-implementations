@@ -66,7 +66,7 @@ object MADPath {
         } yield name +: subsub
         
         case nav : MADValueEnum => for {
-            sub <- nav.optGet.toSeq
+            sub <- nav.getOpt.toSeq
             subsub <- instructionsFrom(sub)
         } yield nav.index.toString +: subsub
         

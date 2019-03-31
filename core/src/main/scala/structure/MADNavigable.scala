@@ -138,7 +138,7 @@ object MADNavigable {
         private var value : Option[(Int, MADNavigable)] = None 
         
         def get = value.get._2
-        def optGet = value.map(_._2)
+        def getOpt = value.map(_._2)
         def index = value.get._1
         
         def assign(index : Int) = value = Some((index, MADNavigable(params(index))))
