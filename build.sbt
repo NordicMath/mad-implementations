@@ -1,5 +1,5 @@
 lazy val commonSettings = Seq(
-    scalaVersion := "2.12.3",
+    scalaVersion := "2.12.8",
 
     parallelExecution in Test := false,
 
