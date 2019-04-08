@@ -32,10 +32,17 @@ lazy val qa = (project in file("qa"))
         commonSettings,
         name := "MAD-QA"
     ).dependsOn(core, spec)
+
     
+lazy val webapi = (project in file("webapi"))
+    .settings(
+        commonSettings,
+        name := "MAD-WEB-API"
+    ).dependsOn(core, spec)
+
 lazy val web = (project in file("web"))
     .settings(
         commonSettings,
         libraryDependencies += guice,
         name := "MAD-WEB"
-    ).dependsOn(core, spec).enablePlugins(PlayScala)
+    ).dependsOn(core, spec, webapi).enablePlugins(PlayScala)
