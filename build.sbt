@@ -36,5 +36,6 @@ lazy val qa = (project in file("qa"))
 lazy val web = (project in file("web"))
     .settings(
         commonSettings,
+        libraryDependencies += guice,
         name := "MAD-WEB"
-    ).dependsOn(core, spec)
+    ).dependsOn(core, spec).enablePlugins(PlayScala)
