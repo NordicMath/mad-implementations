@@ -21,4 +21,9 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
         Ok(views.html.index())
     }
 
+    
+    def information() = Action { implicit request: Request[AnyContent] => 
+        val infolist = memory.getInformation.map(_.toString).toList
+        Ok(views.html.information(infolist))
+    }
 }

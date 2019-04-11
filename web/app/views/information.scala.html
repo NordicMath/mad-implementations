@@ -1,0 +1,10 @@
+@(info : List[String])
+
+@main("MAD Information List"){
+    <h3>Information:</h3>
+    <ol>
+    @info.map { infopiece => 
+        <li>@infopiece</li>
+    }
+    </ol>
+}
