@@ -27,6 +27,17 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
 
     def treeNoPath = tree("mad://")
     def tree(pathtext : String) = Action { implicit request: Request[AnyContent] => 
+        val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
+        val elements : Seq[TreeElement] = api.get(path)
+        import TreeElement._
+        val htmls : Seq[Html] = elements.map{
+            case Value(name, None) => views.html.tree.value(name, "No Value")
+            case Value(name, Some(value)) => views.html.tree.value(name, value.toString)
+            case Link(name, path) => views.html.tree.link(name, path.toString)
+            case Ref(name, None) => views.html.tree.value(name, "No Value")
+            case Ref(name, Some(path)) => views.html.tree.refvalue(name, path.toString)
+        }
+        Ok(views.html.tree.page(path.toString, htmls))
     }
     
     def information() = Action { implicit request: Request[AnyContent] => 
