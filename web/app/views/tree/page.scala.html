@@ -1,0 +1,12 @@
+@(path : String, elements : Seq[Html])
+
+@main("MAD Tree Display"){
+    <h3>@path</h3>
+    <div id="tree">
+        <ul>
+        @elements.map{ elem => 
+            <li> @elem </li>
+        }
+        </ul>
+    </div>
+}
