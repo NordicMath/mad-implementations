@@ -16,6 +16,10 @@ import web.api._
 @Singleton
 class MADController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
+    val madtype = Conceptoid.Conceptoids
+    val mema : MemoryAccess = MemoryAccess(madtype)
+    implicit val memory : Memory = mema.getMemory
+    implicit val api : APIInstance = new APIInstance()
 
     def index() = Action { implicit request: Request[AnyContent] =>
         Ok(views.html.index())
