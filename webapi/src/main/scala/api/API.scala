@@ -4,6 +4,7 @@ import io.github.nordicmath.mad._
 import structure._
 import memory._
 import spec._
+import questions._
 
 import MADNavigable._
 
@@ -11,6 +12,7 @@ import org.json4s._
 
 class APIInstance()(implicit memory : Memory) {
     implicit val madtype : RichMADType = memory.madtype
+    val qe : QuestionEngine = new QuestionEngine()
     
     def loadInfo() = {
         import scala.io.Source
@@ -25,6 +27,8 @@ class APIInstance()(implicit memory : Memory) {
         data foreach memory.push _
         
     }
+    
+    def questions (path : MADPath) : Seq[Question] = qe.questions(path)
     
     def get (path : MADPath) : Seq[TreeElement] = {
         

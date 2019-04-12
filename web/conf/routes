@@ -5,3 +5,5 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /information                controllers.MADController.information
 GET     /tree                       controllers.MADController.treeNoPath()
 GET     /tree/*path                 controllers.MADController.tree(path)
+GET     /answer/*path               controllers.MADController.answer(path)
+GET     /newconceptoid              controllers.MADController.newconceptoid

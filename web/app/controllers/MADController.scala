@@ -10,6 +10,7 @@ import memory._
 import structure._
 import spec._
 import interpretation._
+import questions._
 import web.api._
 
 
@@ -38,6 +39,13 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
             case Ref(name, Some(path)) => views.html.tree.refvalue(name, path.toString)
         }
         Ok(views.html.tree.page(path.toString, htmls))
+    }
+    
+    def newconceptoid = answer("mad://")
+    def answer(pathtext : String) = Action { implicit request: Request[AnyContent] => 
+        val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
+        val questions : Seq[Question] = api.questions(path)
+        Ok(views.html.answer(path.toString, questions.map(_.text)))
     }
     
     def information() = Action { implicit request: Request[AnyContent] => 
