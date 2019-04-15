@@ -46,7 +46,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
         
         case object MainMenu extends Stage {
             def next() = Menu("Options: ",
-                "Question" -> Question,
+                "Question" -> HPQuestion,
                 "Display..." -> Menu("Display...", 
                     "Memory" -> Display,
                     "Paths" -> Paths,
@@ -184,13 +184,18 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
             }
         }
         
-        case object Question extends Stage {
+        case object HPQuestion extends Stage {
+            def next() : Stage = {
+                return QuestionS(priorityEngine.generateQuestion())
+            }
+        }
+        
+        
+        case class QuestionS(question : Question) extends Stage {
             
             def next() : Stage = {
                 
                 try {
-                    val question = priorityEngine.generateQuestion()
-                    
                     show(question.text)
                     
                     val ans = read()
