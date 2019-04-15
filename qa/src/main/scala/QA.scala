@@ -49,6 +49,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
         case object MainMenu extends Stage {
             def next() = Menu("Options: ",
                 "Question" -> HPQuestion,
+                "All questions" -> AllQuestions,
                 "Display..." -> Menu("Display...", 
                     "Memory" -> Display,
                     "Paths" -> Paths,
@@ -179,6 +180,16 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
                 memory.getFailedInformation.foreach(show[Information])
                 
                 return MainMenu
+            }
+        }
+        
+        case object AllQuestions extends Stage {
+            def next() : Stage = {
+                val questions = priorityEngine.generateQuestions()
+                val questionText = questions.map (_.text)
+                val questionMenu = questions.map (QuestionS.apply)
+                
+                return Menu("Questions", ((questionText zip questionMenu) :+ ("Back" -> MainMenu)) : _*)
             }
         }
         
