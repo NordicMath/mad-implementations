@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets
 
 import scala.io.Source
 
+import scala.util.Try
+
 import org.json4s.native.JsonMethods._
 import org.json4s._
 
@@ -75,19 +77,15 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
         
         case class Menu(title : String, stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
-                def lookup[S](lst : List[(String, S)], l : String) : Option[S] = lst match {
-                    case (l1, s) :: _ if l1.headOption.map(_.toLower) == l.headOption.map(_.toLower) => Some(s) 
-                    case Seq() => None
-                    case _ :: tail => lookup(tail, l)
-                }
+                def lookup[S](seq : Seq[S], l : String) : Option[S] = Try(seq(l.toInt - 1)).toOption
                 
                 show(title)
-                for { (name, stage) <- stages } yield show(IO.StageOption("* (" + name.head.toLower + ") " + name))
+                for { ((name, stage), i) <- stages.zipWithIndex } yield show(IO.StageOption("* (" + (i + 1) + ") " + name))
                 
                 def enterOption() : Stage = {
                     show("Please enter option: ")
                     val opt = read()
-                    lookup(stages.toList, opt).getOrElse{show("No such option!"); enterOption()}
+                    lookup(stages.map(_._2), opt).getOrElse{show("No such option!"); enterOption()}
                 }
                 
                 return enterOption()
