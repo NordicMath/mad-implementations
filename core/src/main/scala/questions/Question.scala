@@ -8,8 +8,22 @@ import memory._
 import Interpreter._
 import MADType._
 
+import concurrent.Future
+import concurrent.ExecutionContext.Implicits.global
 
-case class Question(text : String, interpreter : Interpreter)
+
+
+abstract class Question(val text : String) {
+    def useSession ()(implicit sess : Session) : Future[Seq[Information]]
+}
+
+object Question {
+    def apply (text : String, interpreter : Interpreter) = new Question(text) {
+        def useSession ()(implicit sess : Session) : Future[Seq[Information]] = for {
+            ans <- sess.ask(text)
+        } yield Seq(interpreter.interpret(ans))
+    }
+}
 
 class QuestionEngine()(implicit mem : Memory) {
     def questions (p : MADPath) : Seq[Question] = fromMADType(p)
