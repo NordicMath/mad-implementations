@@ -50,7 +50,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
             def next() = Menu("Options: ",
                 "Question" -> HPQuestion,
                 "All questions" -> AllQuestions,
-                "Display..." -> Menu("Display...", 
+                "Display..." -> Menu("Display...",
                     "Memory" -> Display,
                     "Paths" -> Paths,
                     "Information list" -> InformationList,
@@ -58,10 +58,10 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
                     "Back" -> MainMenu
                 ),
                 "Clear memory..." -> Menu("Are you sure?",
-                    "Yes" -> ClearMemory, 
+                    "Yes" -> ClearMemory,
                     "No, go back" -> MainMenu
-                ), 
-                "Save..." -> Menu("How do you want to save?", 
+                ),
+                "Save..." -> Menu("How do you want to save?",
                     "String" -> Save(true),
                     "File" -> Save(false)
                 ),
@@ -74,7 +74,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
                 ),
                 "Exit" -> Exit
             )
-        } 
+        }
         
         case class Menu(title : String, stages : (String, Stage)*) extends Stage {
             def next() : Stage = {
@@ -224,5 +224,5 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
         var cstage : Stage = Stage.Intro
         while (cstage != Stage.Exit) cstage = cstage.next()
         io.show("Bye!")
-    }    
+    }
 }
