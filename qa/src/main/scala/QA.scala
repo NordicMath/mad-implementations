@@ -9,6 +9,9 @@ import json._
 import java.nio.file.{Paths => FilePaths, Files}
 import java.nio.charset.StandardCharsets
 
+import scala.concurrent._
+import scala.concurrent.duration._
+
 import scala.io.Source
 
 import scala.util.Try
@@ -205,12 +208,9 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
             def next() : Stage = {
                 
                 try {
-                    show(question.text)
+                    val info = Await.result(question.useSession(), Duration.Inf)
                     
-                    val ans = read()
-                    val info = question.interpreter.interpret(ans)
-                    
-                    memory.push(info)
+                    info foreach memory.push _
                 } catch {
                     case ex : MADException => show(ex.toString)
                 }
