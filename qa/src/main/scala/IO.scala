@@ -1,12 +1,21 @@
 package io.github.nordicmath.mad.qa
 
 import io.github.nordicmath.mad._
+import questions._
 
 import scala.reflect.runtime.universe._
 
-trait IO {
+import concurrent.Future
+import concurrent.ExecutionContext.Implicits.global
+
+
+trait IO extends Session {
     def read() : String
     def show[S : TypeTag](ob : S)
+    def ask(str : String) : Future[String] = Future {
+        show(str)
+        read()
+    }
 }
 
 object IO {
