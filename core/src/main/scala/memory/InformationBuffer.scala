@@ -27,7 +27,7 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
     
     private val mem : MADNavigable = MADNavigable(madtype)
 
-    // Buffer loop: 
+    // Buffer loop:
     Future {
         
         while (running) {
@@ -38,8 +38,6 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                 
                 
                 val proc : Try[Unit] = Try(next match {
-                    case NoInformation => {}
-                    
                     case Apply(path, value) => {
                         getObjectAs[MADValue[Any]](path).set(value)
                     }

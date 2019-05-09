@@ -83,7 +83,6 @@ trait Codecs {
         }
         
         val encoder = {
-            case NoInformation => JInfo("NoInformation", List())
             case Apply(path, value : String) => JApply("String", path, value)
             case Apply(path, value : Boolean) => JApply("Boolean", path, value)
             case Apply(path, value : Int) => JApply("Int", path, value)
@@ -96,7 +95,6 @@ trait Codecs {
         }
         
         val decoder = {
-            case JInfo("NoInformation", List()) => NoInformation
             case JApply("String", StringCodec(vs), path) => Apply[String](path, vs)
             case JApply("Int", IntCodec(vi), path) => Apply[Int](path, vi)
             case JApply("Boolean", BooleanCodec(vb), path) => Apply[Boolean](path, vb)
