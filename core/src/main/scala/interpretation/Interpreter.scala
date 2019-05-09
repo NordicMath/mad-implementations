@@ -9,7 +9,7 @@ import predicate._
 
 
 trait Interpreter {
-    def interpret (str : String) : Information
+    def interpret (str : String) : Seq[Information]
 }
 
 object Interpreter {
@@ -36,31 +36,31 @@ object Interpreter {
     
     
     def stringInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = Apply[String](path, str)
+        def interpret (str : String) = Seq(Apply[String](path, str))
     }
     
     def intInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = Apply[Int](path, parseInt(str))
+        def interpret (str : String) = Seq(Apply[Int](path, parseInt(str)))
     }
     
     def boolInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = Apply[Boolean](path, parseBool(str))
+        def interpret (str : String) = Seq(Apply[Boolean](path, parseBool(str)))
     }
     
     def optionInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = OptionAssign(path, parseBool(str))
+        def interpret (str : String) = Seq(OptionAssign(path, parseBool(str)))
     }
     
     def listInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = if (parseBool(str)) ListNew(path) else NoInformation
+        def interpret (str : String) = if (parseBool(str)) Seq(ListNew(path)) else Seq()
     }
     
     def mapInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = MapNew(path, str)
+        def interpret (str : String) = Seq(MapNew(path, str))
     }
     
     def enumInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = EnumAssign(path, parseInt(str))
+        def interpret (str : String) = Seq(EnumAssign(path, parseInt(str)))
     }
     
     def pathInterpreter(path : MADPath)(implicit mem : Memory) = new Interpreter {
@@ -73,7 +73,7 @@ object Interpreter {
             val nav = util.Try(mem.getObject(value)).getOrElse(throw MADException.UndefinedMADPath)
             if(!predicate.fold(true)(Predicate.eval(nav, _))) throw MADException.PredicateFailMADPath
             
-            ReferenceApply(path, value)
+            Seq(ReferenceApply(path, value))
         }
     }
 }

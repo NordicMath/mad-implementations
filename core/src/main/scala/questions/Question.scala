@@ -21,7 +21,7 @@ object Question {
     def apply (text : String, interpreter : Interpreter) = new Question(text) {
         def useSession ()(implicit sess : Session) : Future[Seq[Information]] = for {
             ans <- sess.ask(text)
-        } yield Seq(interpreter.interpret(ans))
+        } yield interpreter.interpret(ans)
     }
 }
 
