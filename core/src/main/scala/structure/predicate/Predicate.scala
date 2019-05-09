@@ -4,7 +4,7 @@ import io.github.nordicmath.mad._
 import structure._
 import MADType._
 
-abstract sealed class Predicate 
+abstract sealed class Predicate
 
 object Predicate {
     object NoPredicate extends Predicate
@@ -32,10 +32,10 @@ object Predicate {
     }
 }
 
-abstract sealed class PredicateValue { 
+abstract sealed class PredicateValue {
     import PredicateValue._
     
-    def validate (madtype : MADType) : Boolean 
+    def validate (madtype : MADType) : Boolean
     def information (madtype : MADType, path : MADPath) : Seq[Information]
     final def information (path : MADPath) : Seq[Information] = information(path.madtype, path)
     final def resolve (path : MADPath) : MADNavigable = createNavigable(path.madtype, information(path))
@@ -73,7 +73,7 @@ object PredicateValue {
     
     implicit def sequence[T](seq : Seq[T])(implicit conv : T => PredicateValue) = MADSequenceValue(seq.map(conv))
     case class MADSequenceValue[T](seq : Seq[PredicateValue]) extends PredicateValue {
-        def validate (madtype : MADType) = if(seq.isEmpty) true else madtype match { 
+        def validate (madtype : MADType) = if(seq.isEmpty) true else madtype match {
             case MADList(tp) => seq.forall(_.validate(tp))
             case _ => false
         }

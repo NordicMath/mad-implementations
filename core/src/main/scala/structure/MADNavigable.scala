@@ -7,7 +7,7 @@ import MADType._
 import org.json4s._
 
 
-sealed abstract class MADNavigable (val madtype : RichMADType) {    
+sealed abstract class MADNavigable (val madtype : RichMADType) {
     def isset : Boolean
     def unset() : Unit
     
@@ -139,7 +139,7 @@ object MADNavigable {
     class MADValueEnum (madtype : RichMADType) extends MADNavigable(madtype : RichMADType) {
         private val params = madtype.inner.asInstanceOf[MADEnum].params
         
-        private var value : Option[(Int, MADNavigable)] = None 
+        private var value : Option[(Int, MADNavigable)] = None
         
         def get = value.get._2
         def getOpt = value.map(_._2)

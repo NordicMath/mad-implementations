@@ -14,9 +14,9 @@ case class MADPathSchema(prepath : MADPath) {
     }
     
     def check(subpath : MADPath) : Boolean = {
-        subpath.on == madtype && 
-        subpath.madtype == pointertype && 
-        subpath.instructions.startsWith(prepath.instructions) && 
+        subpath.on == madtype &&
+        subpath.madtype == pointertype &&
+        subpath.instructions.startsWith(prepath.instructions) &&
         subpath.instructions.length == length
     }
     
