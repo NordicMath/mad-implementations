@@ -23,8 +23,43 @@ object Conceptoid extends Spec {
         .where (mad"$Conceptoid://machine-structure/value/domain" is domain)
         .where (mad"$Conceptoid://machine-structure/value/codomain" is codomain)
     
+    import Information._
     def top = Conceptoids
     def info = Seq(
+        MapNew(mad"$top://", "Booleans"),
+        MapNew(mad"$top://", "Representations"),
+        Apply(mad"$top://Booleans/name", "Booleans"),
+        Apply(mad"$top://Booleans/description", "Boolean value, true or false"),
+        Apply(mad"$top://Representations/name", "Representations"),
+        Apply(mad"$top://Representations/description", "Ways to represent something"),
+        OptionAssign(mad"$top://Booleans/machine-structure", false),
+        OptionAssign(mad"$top://Booleans/collection-structure", true),
+        OptionAssign(mad"$top://Representations/machine-structure", false),
+        OptionAssign(mad"$top://Representations/collection-structure", true),
+        MapNew(mad"$top://", "True"),
+        MapNew(mad"$top://", "False"),
+        Apply(mad"$top://True/name", "True"),
+        Apply(mad"$top://True/description", "Positive value, true"),
+        Apply(mad"$top://False/name", "False"),
+        Apply(mad"$top://False/description", "Negative value, false"),
+        OptionAssign(mad"$top://True/machine-structure", true),
+        OptionAssign(mad"$top://True/collection-structure", false),
+        OptionAssign(mad"$top://False/machine-structure", true),
+        OptionAssign(mad"$top://False/collection-structure", false),
+        Apply(mad"$top://True/machine-structure/value/defined-everywhere", false),
+        Apply(mad"$top://False/machine-structure/value/defined-everywhere", false),
+        ListNew(mad"$top://True/machine-structure/value/domain"),
+        ListNew(mad"$top://True/machine-structure/value/codomain"),
+        ListNew(mad"$top://False/machine-structure/value/domain"),
+        ListNew(mad"$top://False/machine-structure/value/codomain"),
+        ReferenceApply(mad"$top://True/machine-structure/value/domain/0", mad"$top://Booleans"),
+        ReferenceApply(mad"$top://True/machine-structure/value/codomain/0", mad"$top://Representations"),
+        ReferenceApply(mad"$top://False/machine-structure/value/domain/0", mad"$top://Booleans"),
+        ReferenceApply(mad"$top://False/machine-structure/value/codomain/0", mad"$top://Representations"),
+        MapNew(mad"$top://Booleans/collection-structure/value/representations", "True"),
+        MapNew(mad"$top://Booleans/collection-structure/value/representations", "False"),
+        ReferenceApply(mad"$top://Booleans/collection-structure/value/representations/True", mad"$top://True"),
+        ReferenceApply(mad"$top://Booleans/collection-structure/value/representations/False", mad"$top://False")
     )
     
     lazy val Conceptoids = MADMap(Conceptoid)
