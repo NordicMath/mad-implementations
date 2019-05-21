@@ -19,8 +19,8 @@ object Conceptoid extends Spec {
     
     def MachineRef (domain : Pointer*)(codomain : Pointer*) : RichMADType = ConceptoidRef
         .where (mad"$Conceptoid://machine-structure" exists)
-        .where (mad"$Conceptoid://machine-structure/domain" is domain)
-        .where (mad"$Conceptoid://machine-structure/codomain" is codomain)
+        .where (mad"$Conceptoid://machine-structure/value/domain" is domain)
+        .where (mad"$Conceptoid://machine-structure/value/codomain" is codomain)
     
     def top = Conceptoids
     def info = Seq(
