@@ -11,7 +11,7 @@ object Predicate {
     case class SubPredicate (path : MADPath, pred : Predicate) extends Predicate
     case class AndPredicate (pred1 : Predicate, pred2 : Predicate) extends Predicate
     object IsDefined extends Predicate
-    case class IsValue (path : MADPath, value : PredicateValue) extends Predicate
+    case class IsValue (value : PredicateValue) extends Predicate
     
     
     def validate (madtype : MADType, pred : Predicate) : Boolean = pred match {
@@ -19,7 +19,7 @@ object Predicate {
         case SubPredicate(path, subpred) => madtype == path.on.inner && validate(path.madtype, subpred)
         case AndPredicate(pred1, pred2) => validate(madtype, pred1) && validate(madtype, pred2)
         case IsDefined => madtype.isInstanceOf[MADOption]
-        case IsValue(_, value) => value.validate(madtype)
+        case IsValue(value) => value.validate(madtype)
     }
     
     import MADNavigable._
