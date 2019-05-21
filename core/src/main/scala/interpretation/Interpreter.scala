@@ -4,8 +4,6 @@ import io.github.nordicmath.mad._
 import structure._
 import Information._
 import MADException._
-import memory._
-import predicate._
 
 
 trait Interpreter {
@@ -63,15 +61,10 @@ object Interpreter {
         def interpret (str : String) = Seq(EnumAssign(path, parseInt(str)))
     }
     
-    def pathInterpreter(path : MADPath)(implicit mem : Memory) = new Interpreter {
-        private[this] val madtype = path.madtype.inner.asInstanceOf[MADType.MADRef]
-        private[this] val MADType.MADRef(schema, predicate) = madtype
+    def pathInterpreter(path : MADPath) = new Interpreter {
+        val MADType.MADRef(schema, predicate) = path.madtype.inner.asInstanceOf[MADType.MADRef]
         def interpret (str : String) = {
             val value = parseMADPath(str, schema.madtype)
-            if(!schema.check(value)) throw MADException.SchemaFailMADPath
-            
-            val nav = util.Try(mem.getObject(value)).getOrElse(throw MADException.UndefinedMADPath)
-            if(!predicate.fold(true)(Predicate.eval(nav, _))) throw MADException.PredicateFailMADPath
             
             Seq(ReferenceApply(path, value))
         }
