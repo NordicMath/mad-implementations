@@ -3,7 +3,7 @@ package io.github.nordicmath.mad.structure
 import io.github.nordicmath.mad._
 import predicate._
 
-sealed abstract class MADType(val name : String)
+sealed abstract class MADType(val name : String) {override def toString : String = name}
 
 object MADType {
     import scala.language.implicitConversions
