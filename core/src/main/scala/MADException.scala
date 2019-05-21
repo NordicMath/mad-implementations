@@ -25,6 +25,7 @@ object MADException {
     case class MADPathMismatch(path : MADPath) extends MADException(f"In MADPath, $path did not match its own type!")
     case class MADPathSyntaxException(args : Seq[Any], parts : Seq[String]) extends MADException(f"MADPath syntax broken! args: $args, parts: $parts")
     
+    case class MADPathSchemaFitException(path : MADPath, prepath : MADPath) extends MADException(f"Could not fit $path into $prepath")
     case class MADTypeNotIterable(madtype : MADType) extends MADException(f"MADType $madtype is not iterable!")
     case class InvaldPredicate(madtype : RichMADType, predicate : Predicate) extends MADException(f"Predicate $predicate doesn't work on madtype $madtype")
 }

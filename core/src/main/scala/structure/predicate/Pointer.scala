@@ -9,7 +9,7 @@ abstract sealed class Pointer {
 
 object Pointer {
     case class Self(schema : MADPathSchema) extends Pointer {
-        def resolvePath (path : MADPath) = schema.fit(path).get
+        def resolvePath (path : MADPath) = schema.fit(path)
     }
     
     case class Concrete(mad : MADPath) extends Pointer {

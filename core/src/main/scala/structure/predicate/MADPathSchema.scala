@@ -20,6 +20,7 @@ case class MADPathSchema(prepath : MADPath) {
         subpath.instructions.length == length
     }
     
-    def fit(path : MADPath) : Option[MADPath] = if (path.on == prepath.on && path.instructions.length >= length) Some(path.take(length)) else None
+    def fit(path : MADPath) : MADPath = if (path.on == prepath.on && path.instructions.length >= length) path.take(length)
+        else throw MADException.MADPathSchemaFitException(path, prepath)
 }
 
