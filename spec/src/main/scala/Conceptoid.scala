@@ -7,7 +7,7 @@ import DSL._
 import scala.language.postfixOps
 
 
-object Conceptoid {
+object Conceptoid extends Spec {
     
     lazy val Bool : Pointer = mad"$Conceptoids://Booleans"
     lazy val REPR : Pointer = mad"$Conceptoids://Representations"
@@ -21,6 +21,10 @@ object Conceptoid {
         .where (mad"$Conceptoid://machine-structure" exists)
         .where (mad"$Conceptoid://machine-structure/domain" is domain)
         .where (mad"$Conceptoid://machine-structure/codomain" is codomain)
+    
+    def top = Conceptoids
+    def info = Seq(
+    )
     
     lazy val Conceptoids = MADMap(Conceptoid)
     
