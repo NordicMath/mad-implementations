@@ -32,43 +32,22 @@ object Predicate {
     }
 }
 
-abstract sealed class PredicateValue {
-    import PredicateValue._
-    
+abstract sealed trait PredicateValue {
     def validate (madtype : MADType) : Boolean
-    def information (madtype : MADType, path : MADPath) : Seq[Information]
-    final def information (path : MADPath) : Seq[Information] = information(path.madtype, path)
-    final def resolve (path : MADPath) : MADNavigable = createNavigable(path.madtype, information(path))
 }
 
 object PredicateValue {
     import language.implicitConversions
-    
     import MADNavigable._
-    import Information._
-    import DSL._
-    
-    // This should be moved somewhere more general. Perhaps it is slow?
-    def createNavigable(madtype : RichMADType, info : Seq[Information]) : MADNavigable = {
-        import memory._
-        val mem = Memory(madtype)
-        info foreach {info => mem.push(info)}
-        mem.close()
-        mem.getTree
-    }
     
     implicit def madFixedValue[T : MADValuePrimitive](value : T) = MADFixedValue[T](value)
     case class MADFixedValue[T](value : T)(implicit t : MADValuePrimitive[T]) extends PredicateValue {
         def validate (madtype : MADType) = t.madtype == madtype
-        //def resolve (path : MADPath) = createNavigable(t.madtype, Apply(mad"${t.madtype}://", value))
-        def information (mad : MADType, path : MADPath) = Seq(Apply(mad"$mad://", value))
     }
     
     implicit def madRefPointer(p : Pointer) = MADRefPointer(p)
     case class MADRefPointer(p : Pointer) extends PredicateValue {
         def validate (madtype : MADType) = madtype.isInstanceOf[MADRef]
-        //def resolve (path : MADPath) = createNavigable(nav.madtype, ReferenceApply(mad"${path.madtype}://", p.resolvePath(path)))
-        def information (mad : MADType, path : MADPath) = Seq(ReferenceApply(mad"${path.madtype}://", p.resolvePath(path)))
     }
     
     implicit def sequence[T](seq : Seq[T])(implicit conv : T => PredicateValue) = MADSequenceValue(seq.map(conv))
@@ -78,7 +57,5 @@ object PredicateValue {
             case _ => false
         }
         
-        //def resolve (madtype : MADType)
-        def information (mad : MADType, path : MADPath) = seq.flatMap(ListNew(mad"mad://") +: _.information(path))
     }
 }
