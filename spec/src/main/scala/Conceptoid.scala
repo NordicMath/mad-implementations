@@ -1,6 +1,7 @@
 package io.github.nordicmath.mad.spec
 
-import io.github.nordicmath.mad.structure._
+import io.github.nordicmath.mad._
+import structure._
 import predicate._
 import MADType._
 import DSL._
