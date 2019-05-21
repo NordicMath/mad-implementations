@@ -21,7 +21,9 @@ import org.json4s._
 
 import scala.reflect.runtime.universe._
 
-case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
+case class QA()(implicit io : IO, memory : Memory, spec : Spec) {
+    
+    private implicit val madtype : RichMADType = spec.top
     
     private val questionEngine : QuestionEngine = new QuestionEngine()
     private val priorityEngine : PriorityEngine = new PriorityEngine(questionEngine)
