@@ -16,9 +16,14 @@ class MADPath(val on : RichMADType, val instructions : Seq[String]) {
     
     def /(next : String) : MADPath = MADPath(on, instructions :+ next)
     def /(index : Int) : MADPath = this / index.toString
-        
+    
     override def toString = "mad://" + instructions.mkString("/")
-
+    
+    override def equals (other : Any) = other.isInstanceOf[MADPath] && {
+        val madpath = other.asInstanceOf[MADPath]
+        madpath.on == on && madpath.instructions == instructions
+    }
+    
     def navigate(nav : MADNavigable) : MADNavigable = if (on == nav.madtype) MADPath.navigate(nav, instructions) else throw MADException.NavigationImpossible(this, nav)
 }
 
