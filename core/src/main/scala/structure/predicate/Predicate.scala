@@ -23,17 +23,18 @@ object Predicate {
     }
     
     import MADNavigable._
-    def eval (nav : MADNavigable, pred : Predicate) : Boolean = pred match {
+    def eval (path : MADPath, nav : MADNavigable, pred : Predicate, resolvepath : MADPath) : Boolean = pred match {
         case NoPredicate => true
-        case SubPredicate(path, subpred) => eval(path.navigate(nav), subpred)
-        case AndPredicate(pred1, pred2) => eval(nav, pred1) && eval(nav, pred2)
+        case SubPredicate(subpath, subpred) => eval(path ++ subpath, subpath.navigate(nav), subpred, resolvepath)
+        case AndPredicate(pred1, pred2) => eval(path, nav, pred1, resolvepath) && eval(path, nav, pred2, resolvepath)
         case IsDefined => nav.asInstanceOf[MADValueOption].exists
-        case IsValue(path, value) => value.resolve(path) == nav
+        case IsValue(value) => value.resolve(path, nav, resolvepath)
     }
 }
 
 abstract sealed trait PredicateValue {
     def validate (madtype : MADType) : Boolean
+    def resolve (path : MADPath, nav : MADNavigable, resolvepath : MADPath) : Boolean
 }
 
 object PredicateValue {
