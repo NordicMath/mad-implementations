@@ -28,5 +28,9 @@ trait Memory {
 }
 
 object Memory {
-    def apply(madtype : RichMADType) : Memory = new InformationBuffer(madtype)
+    def apply(spec : Spec) : Memory = {
+        val mem = new InformationBuffer(spec.top)
+        spec.info foreach mem.push _
+        mem
+    }
 }
