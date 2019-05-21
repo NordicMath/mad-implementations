@@ -52,7 +52,7 @@ case class QA()(implicit io : IO, memory : Memory, madtype : RichMADType) {
         case object MainMenu extends Stage {
             def next() = Menu("Options: ",
                 "Question" -> HPQuestion,
-                "All questions" -> AllQuestions,
+                "All questions..." -> AllQuestions,
                 "Display..." -> Menu("Display...",
                     "Memory" -> Display,
                     "Paths" -> Paths,
