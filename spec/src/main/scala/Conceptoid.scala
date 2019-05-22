@@ -94,8 +94,8 @@ object Conceptoid extends Spec {
     lazy val Conceptoids = MADMap(Conceptoid)
     
     lazy val Conceptoid = MADTree("Conceptoid",
-        "name" -> MADString,
-        "description" -> MADString,
+        "name" -> MADString.set(category := "meta"),
+        "description" -> MADString.set(category := "meta"),
         "machine-structure" -> MADOption(Machine),
         "collection-structure" -> MADOption(Collection)
     )
