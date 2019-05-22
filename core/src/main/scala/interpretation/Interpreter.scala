@@ -50,7 +50,7 @@ object Interpreter {
     }
     
     def listInterpreter(path : MADPath) : Interpreter = new Interpreter {
-        def interpret (str : String) = if (parseBool(str)) Seq(ListNew(path)) else Seq()
+        def interpret (str : String) = if (parseBool(str)) Seq(ListNew(path)) else Seq(ListStop(path))
     }
     
     def mapInterpreter(path : MADPath) : Interpreter = new Interpreter {
