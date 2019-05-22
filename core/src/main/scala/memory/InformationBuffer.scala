@@ -63,6 +63,12 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                         
                         getObjectAs[MADValueRef](path).set_unchecked(value)
                     }
+                    case ListStop(path) => {
+                        getObjectAs[MADValueList](path).finish()
+                    }
+                    case MapStop(path) => {
+                        getObjectAs[MADValueMap](path).finish()
+                    }
                 })
                 
                 p complete proc
