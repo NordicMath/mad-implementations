@@ -26,28 +26,43 @@ object Conceptoid extends Spec {
     import Information._
     def top = Conceptoids
     def info = Seq(
+        // Create booleans and representations collections
         MapNew(mad"$top://", "Booleans"),
         MapNew(mad"$top://", "Representations"),
+        
+        // Name and description
         Apply(mad"$top://Booleans/name", "Booleans"),
         Apply(mad"$top://Booleans/description", "Boolean value, true or false"),
         Apply(mad"$top://Representations/name", "Representations"),
         Apply(mad"$top://Representations/description", "Ways to represent something"),
+        
+        // Both have collection-structure, neither have machine-structure
         OptionAssign(mad"$top://Booleans/machine-structure", false),
         OptionAssign(mad"$top://Booleans/collection-structure", true),
         OptionAssign(mad"$top://Representations/machine-structure", false),
         OptionAssign(mad"$top://Representations/collection-structure", true),
+        
+        // True and False representations
         MapNew(mad"$top://", "True"),
         MapNew(mad"$top://", "False"),
+        
+        // Name and description
         Apply(mad"$top://True/name", "True"),
         Apply(mad"$top://True/description", "Positive value, true"),
         Apply(mad"$top://False/name", "False"),
         Apply(mad"$top://False/description", "Negative value, false"),
+        
+        // Both have machine-structure, neither collection-structure
         OptionAssign(mad"$top://True/machine-structure", true),
         OptionAssign(mad"$top://True/collection-structure", false),
         OptionAssign(mad"$top://False/machine-structure", true),
         OptionAssign(mad"$top://False/collection-structure", false),
+        
+        // Neither is defined everywhere
         Apply(mad"$top://True/machine-structure/value/defined-everywhere", false),
         Apply(mad"$top://False/machine-structure/value/defined-everywhere", false),
+        
+        // Creating 1 empty slot in domain and codomain
         ListNew(mad"$top://True/machine-structure/value/domain"),
         ListNew(mad"$top://True/machine-structure/value/codomain"),
         ListNew(mad"$top://False/machine-structure/value/domain"),
@@ -56,14 +71,22 @@ object Conceptoid extends Spec {
         ListStop(mad"$top://True/machine-structure/value/codomain"),
         ListStop(mad"$top://False/machine-structure/value/domain"),
         ListStop(mad"$top://False/machine-structure/value/codomain"),
+        
+        // Assigning these slots
         ReferenceApply(mad"$top://True/machine-structure/value/domain/0", mad"$top://Booleans"),
         ReferenceApply(mad"$top://True/machine-structure/value/codomain/0", mad"$top://Representations"),
         ReferenceApply(mad"$top://False/machine-structure/value/domain/0", mad"$top://Booleans"),
         ReferenceApply(mad"$top://False/machine-structure/value/codomain/0", mad"$top://Representations"),
+        
+        // Creating slots for Boolean representations
         MapNew(mad"$top://Booleans/collection-structure/value/representations", "True"),
         MapNew(mad"$top://Booleans/collection-structure/value/representations", "False"),
         MapStop(mad"$top://Booleans/collection-structure/value/representations"),
+        
+        // There are no representations for REPR
         MapStop(mad"$top://Representations/collection-structure/value/representations"),
+        
+        // Assigning these slots
         ReferenceApply(mad"$top://Booleans/collection-structure/value/representations/True", mad"$top://True"),
         ReferenceApply(mad"$top://Booleans/collection-structure/value/representations/False", mad"$top://False")
     )
