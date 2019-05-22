@@ -78,12 +78,7 @@ object Conceptoid extends Spec {
     lazy val Machine = MADTree("Machine",
         "domain" -> MADList(CollectionRef),
         "codomain" -> MADList(CollectionRef),
-        "defined-everywhere" -> MADBool,
-        "algorithm" -> MADList(Algorithm)
-    )
-    
-    lazy val Algorithm = MADTree("Algorithm",
-        "javascript" -> MADString
+        "defined-everywhere" -> MADBool
     )
     
     lazy val Representation = MADTree("Representation",
