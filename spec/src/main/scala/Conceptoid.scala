@@ -52,12 +52,18 @@ object Conceptoid extends Spec {
         ListNew(mad"$top://True/machine-structure/value/codomain"),
         ListNew(mad"$top://False/machine-structure/value/domain"),
         ListNew(mad"$top://False/machine-structure/value/codomain"),
+        ListStop(mad"$top://True/machine-structure/value/domain"),
+        ListStop(mad"$top://True/machine-structure/value/codomain"),
+        ListStop(mad"$top://False/machine-structure/value/domain"),
+        ListStop(mad"$top://False/machine-structure/value/codomain"),
         ReferenceApply(mad"$top://True/machine-structure/value/domain/0", mad"$top://Booleans"),
         ReferenceApply(mad"$top://True/machine-structure/value/codomain/0", mad"$top://Representations"),
         ReferenceApply(mad"$top://False/machine-structure/value/domain/0", mad"$top://Booleans"),
         ReferenceApply(mad"$top://False/machine-structure/value/codomain/0", mad"$top://Representations"),
         MapNew(mad"$top://Booleans/collection-structure/value/representations", "True"),
         MapNew(mad"$top://Booleans/collection-structure/value/representations", "False"),
+        MapStop(mad"$top://Booleans/collection-structure/value/representations"),
+        MapStop(mad"$top://Representations/collection-structure/value/representations"),
         ReferenceApply(mad"$top://Booleans/collection-structure/value/representations/True", mad"$top://True"),
         ReferenceApply(mad"$top://Booleans/collection-structure/value/representations/False", mad"$top://False")
     )
