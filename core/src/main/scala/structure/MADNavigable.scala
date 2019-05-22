@@ -78,13 +78,16 @@ object MADNavigable {
         import collection.mutable.Buffer
         
         private val list : Buffer[MADNavigable] = Buffer()
+        private var finished : Boolean = false
         
         def navlist : Seq[MADNavigable] = list.toSeq
         def index(i : Int) = list(i)
         def seq = list.toSeq
         def listNew() : Unit = list += MADNavigable(param)
         
-        def isset = false
+        def finish() = finished = true
+        
+        def isset = finished
         def unset() = list.clear()
         
         def toJSON() = JArray(list.toList.map(nav => nav.toJSON))
@@ -117,6 +120,7 @@ object MADNavigable {
         import collection.mutable.HashMap
         
         private val map : HashMap[String, MADNavigable] = HashMap()
+        private var finished : Boolean = false
         
         def names : Seq[String] = map.toSeq.map(_._1)
         def contains(name : String) = map.contains(name)
@@ -124,7 +128,9 @@ object MADNavigable {
         def put(name : String) : Unit = if (map.put(name, MADNavigable(param)).isDefined) throw MADException.MapNameInUse(name)
         def seq = map.toSeq
         
-        def isset = false
+        def finish() = finished = true
+        
+        def isset = finished
         def unset() = map.clear()
         
         def toJSON() = JObject(for {(name, ob) <- map.toList} yield name -> ob.toJSON())
