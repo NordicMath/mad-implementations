@@ -109,11 +109,4 @@ object Conceptoid extends Spec {
         "codomain" -> MADList(CollectionRef),
         "defined-everywhere" -> MADBool
     )
-    
-    lazy val Representation = MADTree("Representation",
-        "description" -> MADString,
-        "schema" -> MADString,
-        "faithful" -> MADBool,
-        "surjective" -> MADBool
-    )
 }
