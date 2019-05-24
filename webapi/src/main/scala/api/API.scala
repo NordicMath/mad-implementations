@@ -52,7 +52,8 @@ class APIInstance()(implicit memory : Memory) {
             case nav : MADValueTree => nav.toSeq.map((createElement _).tupled)
             case nav : MADValueList => for { (innernav, nr) <- nav.seq.zipWithIndex} yield createElement(s"nr. $nr", innernav)
             case nav : MADValueMap => nav.seq.map((createElement _).tupled)
-            case _ => Seq(createElement("Value", nav)) 
+            case nav : MADValueOption => Seq(createElement("value", nav))
+            case _ => Seq(createElement("Value", nav))
         }
     }
 }

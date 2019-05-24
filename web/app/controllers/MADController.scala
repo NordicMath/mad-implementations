@@ -17,8 +17,9 @@ import web.api._
 @Singleton
 class MADController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-    val madtype = Conceptoid.Conceptoids
-    val mema : MemoryAccess = MemoryAccess(madtype)
+    val spec = Conceptoid
+    val madtype = spec.top
+    val mema : MemoryAccess = MemoryAccess(spec)
     implicit val memory : Memory = mema.getMemory
     implicit val api : APIInstance = new APIInstance()
 
@@ -27,7 +28,7 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
     }
 
     def treeNoPath = tree("mad://")
-    def tree(pathtext : String) = Action { implicit request: Request[AnyContent] => 
+    def tree(pathtext : String) = Action { implicit request: Request[AnyContent] =>
         val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
         val elements : Seq[TreeElement] = api.get(path)
         import TreeElement._
@@ -42,13 +43,13 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
     }
     
     def newconceptoid = answer("mad://")
-    def answer(pathtext : String) = Action { implicit request: Request[AnyContent] => 
+    def answer(pathtext : String) = Action { implicit request: Request[AnyContent] =>
         val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
         val questions : Seq[Question] = api.questions(path)
         Ok(views.html.answer(path.toString, questions.map(_.text)))
     }
     
-    def information() = Action { implicit request: Request[AnyContent] => 
+    def information() = Action { implicit request: Request[AnyContent] =>
         val infolist = memory.getInformation.map(_.toString).toList
         Ok(views.html.information(infolist))
     }

@@ -5,14 +5,14 @@ import memory._
 import structure._
 
 trait MemoryAccess {
-    def getMemory : Memory 
+    def getMemory : Memory
 }
 
 object MemoryAccess {
-    def apply(madtype : RichMADType) : MemoryAccess = new MemoryAccess {
+    def apply(spec : Spec) : MemoryAccess = new MemoryAccess {
         lazy val getMemory = {
-            implicit val mem = Memory(madtype)
-            new APIInstance().loadInfo()
+            implicit val mem = Memory(spec)
+            //new APIInstance().loadInfo()
             mem
         }
     }
