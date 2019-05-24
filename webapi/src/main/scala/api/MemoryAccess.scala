@@ -2,7 +2,6 @@ package io.github.nordicmath.mad.web.api
 
 import io.github.nordicmath.mad._
 import memory._
-import structure._
 
 trait MemoryAccess {
     def getMemory : Memory

@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject._
-import play.api._
 import play.api.mvc._
 import play.twirl.api._
 
@@ -23,12 +22,12 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
     implicit val memory : Memory = mema.getMemory
     implicit val api : APIInstance = new APIInstance()
 
-    def index() = Action { implicit request: Request[AnyContent] =>
+    def index() = Action {
         Ok(views.html.index())
     }
 
     def treeNoPath = tree("mad://")
-    def tree(pathtext : String) = Action { implicit request: Request[AnyContent] =>
+    def tree(pathtext : String) = Action {
         val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
         val elements : Seq[TreeElement] = api.get(path)
         import TreeElement._
@@ -43,13 +42,13 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
     }
     
     def newconceptoid = answer("mad://")
-    def answer(pathtext : String) = Action { implicit request: Request[AnyContent] =>
+    def answer(pathtext : String) = Action {
         val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
         val questions : Seq[Question] = api.questions(path)
         Ok(views.html.answer(path.toString, questions.map(_.text)))
     }
     
-    def information() = Action { implicit request: Request[AnyContent] =>
+    def information() = Action {
         val infolist = memory.getInformation.map(_.toString).toList
         Ok(views.html.information(infolist))
     }

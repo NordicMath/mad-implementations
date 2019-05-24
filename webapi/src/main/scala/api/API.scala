@@ -3,7 +3,6 @@ package io.github.nordicmath.mad.web.api
 import io.github.nordicmath.mad._
 import structure._
 import memory._
-import spec._
 import questions._
 
 import MADNavigable._
