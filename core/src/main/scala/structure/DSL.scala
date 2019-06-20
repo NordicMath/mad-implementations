@@ -9,8 +9,11 @@ package object DSL {
     
     implicit class MADPathStringContextHelper (val sc : StringContext) extends AnyVal {
         def mad(args : Any*) : MADPath = (args, sc.parts) match {
-            case (Seq(madtype : MADType), Seq("", str)) if str startsWith "://" => MADPath(madtype, str.split("/").drop(2))
-            case (Seq(madtype : RichMADType), Seq("", str)) if str startsWith "://" => MADPath(madtype, str.split("/").drop(2))
+            case (Seq(madtype, otherargs @ _*), Seq("", str @ _*)) => (madtype, new StringContext(str : _*).s(otherargs : _*)) match {
+                case (madtype : MADType, str : String) if str startsWith "://" => MADPath(madtype, str.split("/").drop(2))
+                case (madtype : RichMADType, str : String) if str startsWith "://" => MADPath(madtype, str.split("/").drop(2))
+                case _ => throw MADException.MADPathSyntaxException(args, sc.parts)
+            }
             case _ => throw MADException.MADPathSyntaxException(args, sc.parts)
         }
     }
