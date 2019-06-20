@@ -12,6 +12,8 @@ object MADException {
     object IntegerInput extends InterpreterIllegalInput("an integer")
     object MADPathInput extends InterpreterIllegalInput("a MAD-path!")
     
+    case class InformationTypeMismatch(path : MADPath, madtype : String) extends MADException(f"The path $path should have type $madtype")
+    
     object SchemaFailMADPath extends MADException("This MAD-path does not fit the schema!")
     object PredicateFailMADPath extends MADException("This MAD-path does not satisfy a predicate!")
     object UndefinedMADPath extends MADException("This MAD-path does not exist!")

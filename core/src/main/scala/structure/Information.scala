@@ -1,5 +1,6 @@
 package io.github.nordicmath.mad.structure
 
+import io.github.nordicmath.mad._
 import MADNavigable._
 
 sealed abstract class Information {
@@ -20,12 +21,37 @@ sealed abstract class Information {
 }
 
 object Information {
-    case class Apply[S](path : MADPath, value : S)(implicit val madvp : MADValuePrimitive[S]) extends Information
-    case class OptionAssign(path : MADPath, possible : Boolean) extends Information
-    case class ListNew(path : MADPath) extends Information
-    case class MapNew(path : MADPath, name : String) extends Information
-    case class EnumAssign(path : MADPath, index : Int) extends Information
-    case class ReferenceApply(path : MADPath, value : MADPath) extends Information
-    case class ListStop(path : MADPath) extends Information
-    case class MapStop(path : MADPath) extends Information
+    import MADType._
+    
+    case class Apply[S](path : MADPath, value : S)(implicit val madvp : MADValuePrimitive[S]) extends Information {
+        if (path.madtype.inner != madvp.madtype.inner) throw MADException.InformationTypeMismatch(path, madvp.madtype.name)
+    }
+    
+    case class OptionAssign(path : MADPath, possible : Boolean) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADOption]) throw MADException.InformationTypeMismatch(path, "MADOption")
+    }
+    
+    case class ListNew(path : MADPath) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADList]) throw MADException.InformationTypeMismatch(path, "MADList")
+    }
+    
+    case class MapNew(path : MADPath, name : String) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADMap]) throw MADException.InformationTypeMismatch(path, "MADMap")
+    }
+    
+    case class EnumAssign(path : MADPath, index : Int) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADEnum]) throw MADException.InformationTypeMismatch(path, "MADEnum")
+    }
+    
+    case class ReferenceApply(path : MADPath, value : MADPath) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADRef]) throw MADException.InformationTypeMismatch(path, "MADRef")
+    }
+    
+    case class ListStop(path : MADPath) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADList]) throw MADException.InformationTypeMismatch(path, "MADList")
+    }
+    
+    case class MapStop(path : MADPath) extends Information {
+        if (!path.madtype.inner.isInstanceOf[MADMap]) throw MADException.InformationTypeMismatch(path, "MADMap")
+    }
 }
