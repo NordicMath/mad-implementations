@@ -1,0 +1,10 @@
+@(questions : List[String])
+
+@main("MAD Question List"){
+    <h3>Questions:</h3>
+    <ol>
+    @questions.map { question =>
+        <li>@question</li>
+    }
+    </ol>
+}
