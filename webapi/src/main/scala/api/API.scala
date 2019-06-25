@@ -12,6 +12,7 @@ import org.json4s._
 class APIInstance()(implicit memory : Memory) {
     implicit val madtype : RichMADType = memory.madtype
     val qe : QuestionEngine = new QuestionEngine()
+    val pe : PriorityEngine = new PriorityEngine(qe)
     
     def loadInfo() = {
         import scala.io.Source
@@ -27,6 +28,7 @@ class APIInstance()(implicit memory : Memory) {
         
     }
     
+    def questions () : Seq[Question] = pe.generateQuestions()
     def questions (path : MADPath) : Seq[Question] = qe.questions(path)
     
     def get (path : MADPath) : Seq[TreeElement] = {
