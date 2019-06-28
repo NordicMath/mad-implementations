@@ -17,7 +17,7 @@ lazy val commonSettings = Seq(
 
 lazy val core = (project in file("core"))
     .settings(
-        commonSettings, 
+        commonSettings,
         name := "MAD-core"
     )
     
