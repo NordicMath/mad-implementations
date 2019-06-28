@@ -6,5 +6,5 @@ GET     /information                controllers.MADController.information
 GET     /questions                  controllers.MADController.questions
 GET     /tree                       controllers.MADController.treeNoPath()
 GET     /tree/*path                 controllers.MADController.tree(path)
-GET     /answer/*path               controllers.MADController.answer(path)
+GET     /questions/*path            controllers.MADController.questionsabout(path)
 GET     /newconceptoid              controllers.MADController.newconceptoid

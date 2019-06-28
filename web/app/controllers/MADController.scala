@@ -41,11 +41,11 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
         Ok(views.html.tree.page(path.toString, htmls))
     }
     
-    def newconceptoid = answer("mad://")
-    def answer(pathtext : String) = Action {
+    def newconceptoid = questionsabout("mad://")
+    def questionsabout(pathtext : String) = Action {
         val path : MADPath = Interpreter.parseMADPath(pathtext, madtype)
         val questions : Seq[Question] = api.questions(path)
-        Ok(views.html.answer(path.toString, questions.map(_.text)))
+        Ok(views.html.questions(questions.map(_.text)))
     }
     
     def information() = Action {
@@ -55,6 +55,6 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
     
     def questions() = Action {
         val questions = api.questions()
-        Ok(views.html.questions(questions.map(_.text).toList))
+        Ok(views.html.questions(questions.map(_.text)))
     }
 }
