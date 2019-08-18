@@ -3,6 +3,7 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import play.twirl.api._
+import akka.stream.scaladsl._
 
 import io.github.nordicmath.mad._
 import memory._
@@ -56,5 +57,15 @@ class MADController @Inject()(cc: ControllerComponents) extends AbstractControll
     def questions() = Action {
         val questions = api.questions()
         Ok(views.html.questions(questions.map(_.text)))
+    }
+    
+    def session(id : String) = WebSocket.accept[String, String] { request =>
+        // Log events to the console
+        val in = Sink.foreach[String](println)
+
+        // Send a single 'Hello!' message and then leave the socket open
+        val out = Source.single(s"Hello $id!").concat(Source.maybe)
+
+        Flow.fromSinkAndSource(in, out)
     }
 }

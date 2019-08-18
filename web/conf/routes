@@ -8,3 +8,4 @@ GET     /tree                       controllers.MADController.treeNoPath()
 GET     /tree/*path                 controllers.MADController.tree(path)
 GET     /questions/*path            controllers.MADController.questionsabout(path)
 GET     /newconceptoid              controllers.MADController.newconceptoid
+GET     /api/session/:id            controllers.MADController.session(id)
