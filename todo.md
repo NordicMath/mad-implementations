@@ -23,7 +23,7 @@ Features:
 * "User session" object, for meta on qa
 * Cartesian product as a collection! How???
 * Relations between conceptoids?
-* Inference engine! Both "right-hemisphere" and "left-hemisphere"; inference of Information through relations and etc... and inference of questions through analogies 
+* Inference engine! Both "right-hemisphere" and "left-hemisphere"; inference of Information through relations and etc... and inference of questions through analogies
 * Tags! for helping inference engine. Use the weird apply-any method.. (?)
 * MADType embeddings
 * MADSearch, and Triggers in InformationBuffer

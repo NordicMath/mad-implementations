@@ -57,7 +57,7 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                     }
                     case ReferenceApply(path, value) => {
                         val MADType.MADRef(schema, predicate) = path.madtype.inner.asInstanceOf[MADType.MADRef]
-                                                
+                        
                         if(!schema.check(value)) throw MADException.SchemaFailMADPath
                         val nav = util.Try(getObject(value)).getOrElse(throw MADException.UndefinedMADPath)
                         if(!predicate.fold(true)(Predicate.eval(value, nav, _, path))) throw MADException.PredicateFailMADPath
