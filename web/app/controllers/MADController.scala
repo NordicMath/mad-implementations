@@ -17,7 +17,7 @@ import web.api._
 @Singleton
 class MADController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-    val spec = Conceptoid
+    val spec = MAD
     val madtype = spec.top
     val mema : MemoryAccess = MemoryAccess(spec)
     implicit val memory : Memory = mema.getMemory

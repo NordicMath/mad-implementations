@@ -6,7 +6,7 @@ import spec._
 
 object Main extends App {
     
-    implicit val spec : Spec = Conceptoid
+    implicit val spec : Spec = MAD
     implicit val memory = Memory(spec)
     
     QA().start()

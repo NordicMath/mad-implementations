@@ -8,7 +8,7 @@ import DSL._
 import scala.language.postfixOps
 
 
-object Conceptoid extends Spec {
+object MAD extends Spec {
     
     lazy val Bool : Pointer = mad"$top://collections/Booleans"
     lazy val REPR : Pointer = mad"$top://collections/Representations"
