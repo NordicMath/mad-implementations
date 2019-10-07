@@ -49,6 +49,7 @@ class InformationBuffer(val madtype : RichMADType) extends Memory {
                         getObjectAs[MADValueList](path).listNew()
                     }
                     case MapNew(path, name) => {
+                        if (name == "") throw MADException.MapNameNotValid
                         getObjectAs[MADValueMap](path).put(name)
                     }
                     case EnumAssign(path, index) => {

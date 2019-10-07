@@ -19,6 +19,7 @@ object MADException {
     object UndefinedMADPath extends MADException("This MAD-path does not exist!")
     
     case class MapNameInUse(name : String) extends MADException(f"The name '$name' being added to a map is already in use!")
+    case object MapNameNotValid extends MADException("Map name being added is not valid!")
     
     object NoQuestions extends MADException(f"No questions found!")
     
